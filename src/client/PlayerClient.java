@@ -3,7 +3,6 @@ package client;
 import org.omg.CosNaming.NamingContextExt;
 import org.omg.CosNaming.NamingContextExtHelper;
 
-import com.web.service.GameInterface;
 
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
@@ -21,7 +20,7 @@ public class PlayerClient {
     public static void main(String[] args) throws Exception{
         Scanner scanner = new Scanner(System.in);
         String ipAddress;
-        GameInterface obj;
+        //GameInterface obj;
 
         while (true) {
             System.out.println("Please select an action");
@@ -47,17 +46,17 @@ public class PlayerClient {
                         URL asiaURL = new URL("http://localhost:8080/asia?wsdl");
                         QName aisaQName = new QName("http://impl.service.web.com/", "AsGameClassService");
                         Service aisaService = Service.create(asiaURL, aisaQName);
-                        obj = aisaService.getPort(GameInterface.class);
+                        //obj = aisaService.getPort(GameInterface.class);
                     }else if(ipAddress.startsWith("93")){
                         URL europeURL = new URL("http://localhost:8081/europe?wsdl");
                         QName europeQName = new QName("http://impl.service.web.com/", "EuGameClassService");
                         Service europeService = Service.create(europeURL, europeQName);
-                        obj = europeService.getPort(GameInterface.class);
+                        //obj = europeService.getPort(GameInterface.class);
                     }else{
                         URL northAmericaURL = new URL("http://localhost:8082/northAmerica?wsdl");
                         QName northAmericaQName = new QName("http://impl.service.web.com/", "NaGameClassService");
                         Service northAmericaService = Service.create(northAmericaURL, northAmericaQName);
-                        obj = northAmericaService.getPort(GameInterface.class);
+                        //obj = northAmericaService.getPort(GameInterface.class);
                     }
                     System.out.print("Please enter the first name: ");
                     String firstName = scanner.nextLine();
@@ -69,8 +68,8 @@ public class PlayerClient {
                     String userName = scanner.nextLine();
                     System.out.print("Please enter the password: ");
                     String password = scanner.nextLine();
-                    String reply = obj.createPlayerAccount(firstName.trim(), lastName.trim(), age.trim(), userName.trim(), password.trim(), ipAddress);
-                    System.out.println(reply);
+                    //String reply = obj.createPlayerAccount(firstName.trim(), lastName.trim(), age.trim(), userName.trim(), password.trim(), ipAddress);
+                    //System.out.println(reply);
                     System.out.println();
                 }else{
                     System.out.println("Sorry, your ip address is wrong");
@@ -86,24 +85,24 @@ public class PlayerClient {
                     	URL asiaURL = new URL("http://localhost:8080/asia?wsdl");
                         QName aisaQName = new QName("http://impl.service.web.com/", "AsGameClassService");
                         Service aisaService = Service.create(asiaURL, aisaQName);
-                        obj = aisaService.getPort(GameInterface.class);
+                        //obj = aisaService.getPort(GameInterface.class);
                     }else if(ipAddress.startsWith("93")){
                     	URL europeURL = new URL("http://localhost:8081/europe?wsdl");
                         QName europeQName = new QName("http://impl.service.web.com/", "EuGameClassService");
                         Service europeService = Service.create(europeURL, europeQName);
-                        obj = europeService.getPort(GameInterface.class);
+                        //obj = europeService.getPort(GameInterface.class);
                     }else{
                     	URL northAmericaURL = new URL("http://localhost:8082/northAmerica?wsdl");
                         QName northAmericaQName = new QName("http://impl.service.web.com/", "NaGameClassService");
                         Service northAmericaService = Service.create(northAmericaURL, northAmericaQName);
-                        obj = northAmericaService.getPort(GameInterface.class);
+                        //obj = northAmericaService.getPort(GameInterface.class);
                     }
                     System.out.print("Please enter the user name: ");
                     String userName = scanner.nextLine();
                     System.out.print("Please enter the password: ");
                     String password = scanner.nextLine();
-                    String reply = obj.playerSignIn(userName.trim(), password.trim(), ipAddress);
-                    System.out.println(reply);
+                    //String reply = obj.playerSignIn(userName.trim(), password.trim(), ipAddress);
+                    //System.out.println(reply);
                     System.out.println();
                 }else{
                     System.out.println("Sorry, your ip address is wrong");
@@ -119,22 +118,22 @@ public class PlayerClient {
                     	URL asiaURL = new URL("http://localhost:8080/asia?wsdl");
                         QName aisaQName = new QName("http://impl.service.web.com/", "AsGameClassService");
                         Service aisaService = Service.create(asiaURL, aisaQName);
-                        obj = aisaService.getPort(GameInterface.class);
+                        //obj = aisaService.getPort(GameInterface.class);
                     }else if(ipAddress.startsWith("93")){
                     	URL europeURL = new URL("http://localhost:8081/europe?wsdl");
                         QName europeQName = new QName("http://impl.service.web.com/", "EuGameClassService");
                         Service europeService = Service.create(europeURL, europeQName);
-                        obj = europeService.getPort(GameInterface.class);
+                        //obj = europeService.getPort(GameInterface.class);
                     }else{
                     	URL northAmericaURL = new URL("http://localhost:8082/northAmerica?wsdl");
                         QName northAmericaQName = new QName("http://impl.service.web.com/", "NaGameClassService");
                         Service northAmericaService = Service.create(northAmericaURL, northAmericaQName);
-                        obj = northAmericaService.getPort(GameInterface.class);
+                        //obj = northAmericaService.getPort(GameInterface.class);
                     }
                     System.out.print("Please enter the user name: ");
                     String userName = scanner.nextLine();
-                    String reply = obj.playerSignOut(userName.trim(), ipAddress);
-                    System.out.println(reply);
+                    //String reply = obj.playerSignOut(userName.trim(), ipAddress);
+                    //System.out.println(reply);
                     System.out.println();
                 }else{
                     System.out.println("Sorry, your ip address is wrong");
@@ -150,17 +149,17 @@ public class PlayerClient {
                     	URL asiaURL = new URL("http://localhost:8080/asia?wsdl");
                         QName aisaQName = new QName("http://impl.service.web.com/", "AsGameClassService");
                         Service aisaService = Service.create(asiaURL, aisaQName);
-                        obj = aisaService.getPort(GameInterface.class);
+                        //obj = aisaService.getPort(GameInterface.class);
                     }else if(ipAddress.startsWith("93")){
                     	URL europeURL = new URL("http://localhost:8081/europe?wsdl");
                         QName europeQName = new QName("http://impl.service.web.com/", "EuGameClassService");
                         Service europeService = Service.create(europeURL, europeQName);
-                        obj = europeService.getPort(GameInterface.class);
+                        //obj = europeService.getPort(GameInterface.class);
                     }else{
                     	URL northAmericaURL = new URL("http://localhost:8082/northAmerica?wsdl");
                         QName northAmericaQName = new QName("http://impl.service.web.com/", "NaGameClassService");
                         Service northAmericaService = Service.create(northAmericaURL, northAmericaQName);
-                        obj = northAmericaService.getPort(GameInterface.class);
+                        //obj = northAmericaService.getPort(GameInterface.class);
                     }
                     System.out.print("Please enter the user name: ");
                     String userName = scanner.nextLine();
@@ -168,8 +167,8 @@ public class PlayerClient {
                     String password = scanner.nextLine();
                     System.out.print("Please enter your new ip address: ");
                     String newIPAddress = scanner.nextLine();
-                    String reply = obj.transferAccount(userName.trim(),password.trim(),ipAddress,newIPAddress.trim());
-                    System.out.println(reply);
+                    //String reply = obj.transferAccount(userName.trim(),password.trim(),ipAddress,newIPAddress.trim());
+                    //System.out.println(reply);
                     System.out.println();
                 }else{
                     System.out.println("Sorry, your old ip address is wrong");
