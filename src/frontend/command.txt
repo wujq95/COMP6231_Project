@@ -1,0 +1,2 @@
+idlj -fall DPSS.idl
+orbd -ORBInitialPort 1050 -ORBInitialHost localhost

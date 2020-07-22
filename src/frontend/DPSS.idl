@@ -1,0 +1,19 @@
+module DPSSModule
+{
+  interface DPSS
+  	{
+	string createPlayerAccount(in string firstName, in string lastName, in string age, in string userName, in string password, in string ipAddress);
+
+	string playerSignIn(in string userName, in string password, in string ipAddress);
+
+	string playerSignOut(in string userName, in string ipAddress);
+	
+	string getPlayerStatus(in string adminUsername, in string adminPassword, in string ipAddress);
+	
+	string transferAccount(in string userName, in string password, in string oldIPAddress, in string newIPAddress);
+
+	string suspendAccount(in string adminUsername, in string adminPassword, in string ipAddress, in string usernameToSuspend);
+
+	oneway void shutdown();
+    };
+};
