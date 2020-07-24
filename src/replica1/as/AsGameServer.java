@@ -67,7 +67,7 @@ public class AsGameServer {
             String name = "AS";
             NameComponent path[] = ncRef.to_name(name);
             ncRef.rebind(path, href);
-            System.out.println("Asia Server ready and listening ...  ...");
+            System.out.println("Asia Server is ready and listening ...  ...");
             // wait for invocations from clients
             orb.run();
         }catch (Exception e) {

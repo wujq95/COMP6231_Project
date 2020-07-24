@@ -67,7 +67,7 @@ public class EuGameServer {
             String name = "EU";
             NameComponent path[] = ncRef.to_name(name);
             ncRef.rebind(path, href);
-            System.out.println("Europe Server ready and listening ...  ...");
+            System.out.println("Europe Server is ready and listening ...  ...");
             // wait for invocations from clients
             orb.run();
         }catch (Exception e) {

@@ -67,7 +67,7 @@ public class NaGameServer {
             String name = "NA";
             NameComponent path[] = ncRef.to_name(name);
             ncRef.rebind(path, href);
-            System.out.println("North America Server ready and listening ...  ...");
+            System.out.println("North America Server is ready and listening ...  ...");
             // wait for invocations from clients
             orb.run();
         }catch (Exception e) {

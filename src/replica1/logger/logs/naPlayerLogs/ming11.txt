@@ -1,2 +1,3 @@
 DATE: 2020-06-05 03:33:53 PM The account has been created
-
+DATE: 2020-07-23 09:34:37 PM Login to game
+DATE: 2020-07-23 09:35:53 PM Logout the game

@@ -13,11 +13,13 @@ import java.util.regex.Pattern;
 import frontend.DPSSModule.DPSSPOA;
 import org.omg.CORBA.ORB;
 import replica1.logger.Logger;
+import replica1.util.Util;
 
 
 public class NaGameClass extends DPSSPOA {
 
     Logger logger = new Logger();
+    Util util = new Util();
     static String serverName = "na";
 
     public NaGameClass() {
@@ -60,7 +62,7 @@ public class NaGameClass extends DPSSPOA {
             }
             return "the length of password can not be less than 6";
         }
-        if(checkUserName(userName.trim())){
+        if(util.checkUserName(userName.trim(),ipAddress)){
             try {
                 logger.serverLog(serverName,"Fail to create a player account: User name has been existed");
             } catch (IOException e) {
@@ -119,7 +121,7 @@ public class NaGameClass extends DPSSPOA {
             NaGameServer.northAmericaMap.put(c,list);
         }
         try {
-            if(!checkNameExist("src/replica1/na/naAccounts.txt",str.split("\\|")[0])){
+            if(!util.checkNameExist("src/replica1/na/naAccounts.txt",str.split("\\|")[0])){
                 printWriter.println(str);
             }
         } catch (Exception e) {
@@ -175,7 +177,7 @@ public class NaGameClass extends DPSSPOA {
             }
             return "password can not be empty";
         }
-        if(!checkUserName(userName.trim())){
+        if(!util.checkUserName(userName.trim(),ipAddress)){
             try {
                 logger.serverLog(serverName,"Fail to login: User name does not exist");
             } catch (IOException e) {
@@ -183,7 +185,7 @@ public class NaGameClass extends DPSSPOA {
             }
             return "user name does not exist";
         }
-        if(!checkPassword(userName.trim(),password)){
+        if(!util.checkPassword(userName.trim(),password,ipAddress)){
             try {
                 logger.serverLog(serverName,"Fail to login: Password is wrong");
             } catch (IOException e) {
@@ -191,7 +193,7 @@ public class NaGameClass extends DPSSPOA {
             }
             return "password is wrong";
         }
-        if(checkStatus(userName.trim())){
+        if(NaGameServer.northAmericaOnline.contains(userName.trim())){
             try {
                 logger.serverLog(serverName,"Fail to login: User is currently signed-in");
             } catch (IOException e) {
@@ -226,7 +228,7 @@ public class NaGameClass extends DPSSPOA {
             }
             return "user name can not be empty!";
         }
-        if(!checkUserName(userName.trim())){
+        if(!util.checkUserName(userName.trim(),ipAddress)){
             try {
                 logger.serverLog(serverName,"Fail to logout: User name does not exist");
             } catch (IOException e) {
@@ -234,7 +236,7 @@ public class NaGameClass extends DPSSPOA {
             }
             return "user name does not exist";
         }
-        if(!checkStatus(userName.trim())){
+        if(!NaGameServer.northAmericaOnline.contains(userName.trim())){
             try {
                 logger.serverLog(serverName,"Fail to logout: User is not currently signed-in");
             } catch (IOException e) {
@@ -345,7 +347,7 @@ public class NaGameClass extends DPSSPOA {
         boolean removeResult;
         boolean addResult = false;
         synchronized (this) {
-            if(!checkAddress(newIPAddress)){
+            if(!util.checkAddress(newIPAddress)){
                 try {
                     logger.serverLog(serverName,"Fail to transfer the account: New ip address is not right");
                 } catch (IOException e) {
@@ -361,7 +363,7 @@ public class NaGameClass extends DPSSPOA {
                 }
                 return "old and new ip address can not be in the same location";
             }
-            if(!checkUserName(userName.trim())){
+            if(!util.checkUserName(userName.trim(),oldIPAddress)){
                 try {
                     logger.serverLog(serverName,"Fail to transfer the account: User name does not exist");
                 } catch (IOException e) {
@@ -369,7 +371,7 @@ public class NaGameClass extends DPSSPOA {
                 }
                 return "user name does not exist";
             }
-            if(!checkPassword(userName.trim(),password)){
+            if(!util.checkPassword(userName.trim(),password,oldIPAddress)){
                 try {
                     logger.serverLog(serverName,"Fail to transfer the account: Password is wrong");
                 } catch (IOException e) {
@@ -377,7 +379,7 @@ public class NaGameClass extends DPSSPOA {
                 }
                 return "password is wrong";
             }
-            String str = findPlayer(userName.trim());;
+            String str = util.findPlayer(userName.trim(),oldIPAddress);
             removeResult = removePlayer(userName);
             if (removeResult) {
                 addResult = addPlayer(str, newIPAddress);
@@ -393,7 +395,9 @@ public class NaGameClass extends DPSSPOA {
                 }
                 res = "successfully transfer the player";
             } else if (removeResult && (!addResult)) {
-                rollback(str);
+                List list = NaGameServer.northAmericaMap.get(str.charAt(0));
+                list.add(str);
+                NaGameServer.northAmericaMap.put(str.charAt(0),list);
                 res = "Fail to transfer the account: Unable to add the player to new location, and the reason may be that an account with the same user name already exists in the new server";
             } else {
                 res = "Fail to transfer the account: Unable to add the player to new location and remove the player from old location";
@@ -437,7 +441,7 @@ public class NaGameClass extends DPSSPOA {
                 }
                 return "admin password is wrong";
             }
-            if(!checkUserName(usernameToSuspend.trim())){
+            if(!util.checkUserName(usernameToSuspend.trim(),ipAddress)){
                 try {
                     logger.serverLog(serverName,"Fail to suspend the account: User name does not exist");
                     logger.adminLog("Fail to suspend the account: User name does not exist");
@@ -447,7 +451,7 @@ public class NaGameClass extends DPSSPOA {
                 return "user name does not exist";
             }
             List<String> list = NaGameServer.northAmericaMap.get(usernameToSuspend.charAt(0));
-            list = removeItemFromList(list,usernameToSuspend);
+            list = util.removeItemFromList(list,usernameToSuspend);
             NaGameServer.northAmericaMap.put(usernameToSuspend.charAt(0),list);
             try {
                 logger.serverLog(serverName,"Successfully suspend the user account: "+usernameToSuspend);
@@ -475,54 +479,6 @@ public class NaGameClass extends DPSSPOA {
         orb.shutdown(false);
     }
 
-    /**
-     * check if user name exists
-     * @param userName
-     * @return
-     */
-    public boolean checkUserName(String userName){
-        Character c = userName.charAt(0);
-        if(!NaGameServer.northAmericaMap.containsKey(c)){
-            return false;
-        }else{
-            List<String> list = NaGameServer.northAmericaMap.get(c);
-            for(String str:list){
-
-                if(str.split("\\|")[0].equalsIgnoreCase(userName)) return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * check if the password is right
-     * @param userName
-     * @param password
-     * @return
-     */
-    public boolean checkPassword(String userName, String password){
-        List<String> list = NaGameServer.northAmericaMap.get(userName.charAt(0));
-        for(String str:list){
-            String strName = str.split("\\|")[0];
-            String strPwd = str.split("\\|")[4];
-            if(strName.equalsIgnoreCase(userName)&&strPwd.equals(password)){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * check if user has signed in
-     * @param userName
-     * @return
-     */
-    public boolean checkStatus(String userName){
-        if(NaGameServer.northAmericaOnline.contains(userName)){
-            return true;
-        }
-        return false;
-    }
 
     /**
      * get remote message by udp
@@ -546,29 +502,7 @@ public class NaGameClass extends DPSSPOA {
         return result;
     }
 
-    /**
-     * check if ip address is in the right pattern
-     * @param ipAddress
-     * @return
-     */
-    public static boolean checkAddress(String ipAddress) {
-        String regex = "\\d{3}\\.\\d{3}\\.\\d{3}";
-        Pattern pattern = Pattern.compile(regex);
-        if (ipAddress.startsWith("182.")) {
-            if (pattern.matcher(ipAddress.substring(4)).matches()) {
-                return true;
-            }
-        } else if (ipAddress.startsWith("93.")) {
-            if (pattern.matcher(ipAddress.substring(3)).matches()) {
-                return true;
-            }
-        } else if (ipAddress.startsWith("132.")) {
-            if (pattern.matcher(ipAddress.substring(4)).matches()) {
-                return true;
-            }
-        }
-        return false;
-    }
+
 
     /**
      * add player
@@ -634,7 +568,7 @@ public class NaGameClass extends DPSSPOA {
         boolean flag = true;
         try{
             List list = NaGameServer.northAmericaMap.get(userName.trim().charAt(0));
-            list = removeItemFromList(list,userName);
+            list = util.removeItemFromList(list,userName);
             NaGameServer.northAmericaMap.put(userName.charAt(0),list);
         }catch (Exception e){
             flag = false;
@@ -643,62 +577,4 @@ public class NaGameClass extends DPSSPOA {
         }
     }
 
-    /**
-     * roll back from removing the player from the old location
-     * @param str
-     */
-    public void rollback(String str){
-        List list = NaGameServer.northAmericaMap.get(str.charAt(0));
-        list.add(str);
-        NaGameServer.northAmericaMap.put(str.charAt(0),list);
-    }
-
-    /**
-     * remove one item from a list of items
-     * @param list
-     * @param name
-     * @return
-     */
-    public List removeItemFromList(List<String> list,String name){
-        for(int i = list.size() - 1; i >= 0; i--){
-            String item = list.get(i);
-            if(item.startsWith(name+"|")){
-                list.remove(item);
-            }
-        }
-        return list;
-    }
-
-    /**
-     * find the player information by user name
-     * @param userName
-     * @return
-     */
-    public String findPlayer(String userName){
-        List<String> list = NaGameServer.northAmericaMap.get(userName.charAt(0));
-        String res = null;
-        for(String str:list){
-            if(str.startsWith(userName+"|")){
-                res = str;
-            }
-        }
-        return res;
-    }
-
-    /**
-     * check if the name has been in the account.txt
-     * @param path
-     * @param str
-     * @return
-     * @throws Exception
-     */
-    public boolean checkNameExist(String path,String str) throws Exception{
-        FileReader fileReader = new FileReader(path);
-        BufferedReader bufferedReader = new BufferedReader(fileReader);
-        String string;
-        while((string=bufferedReader.readLine())!=null){
-            if(string.startsWith(str+"|")) return true;
-        }
-        return false;
-    }
 }

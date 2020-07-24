@@ -1,17 +1,57 @@
 package frontend;
 
-public class FrontEnd {
+import frontend.DPSSModule.DPSS;
+import frontend.DPSSModule.DPSSHelper;
+import org.omg.CORBA.ORB;
+import org.omg.CosNaming.NameComponent;
+import org.omg.CosNaming.NamingContextExt;
+import org.omg.CosNaming.NamingContextExtHelper;
+import org.omg.PortableServer.POA;
+import org.omg.PortableServer.POAHelper;
 
-    private static final int sequencerPort = 1333;
-    private static final String sequencerNumber = "192.168.2.17";
-    private static final String RM_Multicast_group_address = "230.1.1.10";
-    private static final int FE_SQ_PORT = 1414;
-    private static final int FE_PORT = 1999;
-    private static final int RM_Multicast_Port = 1234;
-    public static String FE_IP_Address = "192.168.2.11";
+import java.util.Properties;
+
+public class FrontEnd {
 
     public static void main(String[] args) {
 
+        FrontEndImpl servant = new FrontEndImpl();
+        Properties props = new Properties();
+        props.put("org.omg.CORBA.ORBInitialPort", "1050");
+        props.put("org.omg.CORBA.ORBInitialHost", "localhost");
+
+        try {
+            // create and initialize the ORB
+            ORB orb = ORB.init(args, props);
+            // get reference to rootpoa & activate the POAManager
+            POA rootpoa = POAHelper.narrow(orb.resolve_initial_references("RootPOA"));
+            rootpoa.the_POAManager().activate();
+            // create servant and register it with the ORB
+            servant.setORB(orb);
+            // get object reference from the servant
+            org.omg.CORBA.Object ref = rootpoa.servant_to_reference(servant);
+            // and cast the reference to a CORBA reference
+            DPSS href = DPSSHelper.narrow(ref);
+            // get the root naming context
+            // NameService invokes the transient name service
+            org.omg.CORBA.Object objRef = orb.resolve_initial_references("NameService");
+            // Use NamingContextExt, which is part of the
+            // Interoperable Naming Service (INS) specification.
+            NamingContextExt ncRef = NamingContextExtHelper.narrow(objRef);
+            // bind the Object Reference in Naming
+            String name = "FrontEnd";
+            NameComponent path[] = ncRef.to_name(name);
+            ncRef.rebind(path, href);
+            System.out.println("Front End Server is ready and listening ...  ...");
+
+            // wait for invocations from clients
+            orb.run();
+        }catch (Exception e) {
+            System.err.println("ERROR: " + e);
+            e.printStackTrace(System.out);
+        }
+
+        System.out.println("Front Server Server Exiting ...");
     }
 
 }
