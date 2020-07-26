@@ -3,8 +3,11 @@ package frontend;
 import frontend.DPSSModule.DPSSPOA;
 import org.omg.CORBA.ORB;
 
+import java.util.concurrent.CountDownLatch;
+
 public class FrontEndImpl extends DPSSPOA {
 
+    private CountDownLatch latch;
     private ORB orb;
 
     public FrontEndImpl(){
@@ -16,7 +19,7 @@ public class FrontEndImpl extends DPSSPOA {
     }
 
     @Override
-    public String createPlayerAccount(String firstName, String lastName, String age, String userName, String password, String ipAddress) {
+    public synchronized String createPlayerAccount(String firstName, String lastName, String age, String userName, String password, String ipAddress) {
         return null;
     }
 
