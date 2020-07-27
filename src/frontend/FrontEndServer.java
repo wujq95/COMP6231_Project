@@ -73,12 +73,12 @@ public class FrontEndServer {
         DatagramSocket aSocket = null;
         try{
             aSocket = new DatagramSocket(PortConfig.FrontEndPort);
-
-            System.out.println("start update primary leader listener");
             byte[] buffer = new byte[1000];
-            DatagramPacket request = new DatagramPacket(buffer, buffer.length);
-            aSocket.receive(request);
-            String requestData = new String(request.getData()).trim();
+            while(true){
+                DatagramPacket request = new DatagramPacket(buffer, buffer.length);
+                aSocket.receive(request);
+                String requestData = new String(request.getData()).trim();
+                System.out.println("fornt end listen:"+requestData);
             /*
             if(requestData.equals("who is leader?")){
                 String resend_leader_port = Integer.toString(Front_End_Config.PRIMARY_SERVER_PORT);
@@ -94,6 +94,7 @@ public class FrontEndServer {
                 socket.send(update_leader);
             }
             */
+            }
         }catch (SocketException e) {
             System.out.println("SocketException: " + e.getMessage());
         } catch (IOException e) {

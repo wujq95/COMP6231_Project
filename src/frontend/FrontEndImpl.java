@@ -110,7 +110,7 @@ public class FrontEndImpl extends DPSSPOA {
                     return result;
                 } catch (SocketTimeoutException e) {
                     InetAddress hostResend = InetAddress.getByName("localhost");
-                    DatagramPacket requestResend = new DatagramPacket(sendData, sendData.length, hostResend, 6000);
+                    DatagramPacket requestResend = new DatagramPacket(sendData, sendData.length, hostResend, getLeaderUDPPort());
                     aSocket.send(requestResend);
                 }
             }

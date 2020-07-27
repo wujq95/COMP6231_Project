@@ -81,13 +81,7 @@ public class PlayerClient {
                 System.out.print("Please enter the ipAddress: ");
                 ipAddress = scanner.nextLine();
                 if(checkAddress(ipAddress.trim())){
-                    if(ipAddress.startsWith("182")){
-                        obj = DPSSHelper.narrow(ncRef.resolve_str("AS"));
-                    }else if(ipAddress.startsWith("93")){
-                        obj = DPSSHelper.narrow(ncRef.resolve_str("EU"));
-                    }else{
-                        obj = DPSSHelper.narrow(ncRef.resolve_str("NA"));
-                    }
+                    obj = DPSSHelper.narrow(ncRef.resolve_str("FrontEnd"));
                     System.out.print("Please enter the user name: ");
                     String userName = scanner.nextLine();
                     System.out.print("Please enter the password: ");
