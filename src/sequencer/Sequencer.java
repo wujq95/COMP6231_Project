@@ -1,5 +1,7 @@
 package sequencer;
 
+import config.PortConfig;
+
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -8,47 +10,46 @@ import java.net.SocketException;
 
 public class Sequencer {
 
-    private static Integer sequencerNumber = 0;
-    private static final String sequencerIP = "192.168.2.17";
+    private static Integer sequencerNumber = 1;
+
+    public static synchronized int getRequestID(){
+        return sequencerNumber++;
+    }
 
 
     public static void main(String[] args){
         DatagramSocket aSocket = null;
 
         try {
-            aSocket = new DatagramSocket(1333, InetAddress.getByName(sequencerIP));
-            byte[] buffer = new byte[1000];
+            aSocket = new DatagramSocket(PortConfig.sequencerPort);
+            DatagramPacket request;
+            byte[] data;
+            int count = 0;
             System.out.println("Sequencer UDP Server Started");
-
             while(true){
-                DatagramPacket request = new DatagramPacket(buffer, buffer.length);
+
+                data = new byte[1024];
+                request = new DatagramPacket(data, data.length);
                 aSocket.receive(request);
-                String sentence = new String(request.getData(), 0, request.getLength());
-                String[] parts = sentence.split(";");
-                int sequencerId1 = Integer.parseInt(parts[0]);
-                String ip = request.getAddress().getHostAddress();
 
-                String sentence1 = ip + ";" +
-                        parts[2] + ";" +
-                        parts[3] + ";" +
-                        parts[4] + ";" +
-                        parts[5] + ";" +
-                        parts[6] + ";" +
-                        parts[7] + ";" +
-                        parts[8] + ";" +
-                        parts[9] + ";";
+                String requestData = new String(request.getData()).trim();
+                System.out.println(requestData);
 
-                System.out.println(sentence1);
-                sendMessage(sentence1, sequencerId1, parts[2].equalsIgnoreCase("00"));
+                String result  = String.format("%04d", getRequestID());
 
-                byte[] SeqId = (Integer.toString(sequencerNumber)).getBytes();
-                InetAddress aHost1 = request.getAddress();
-                int port1 = request.getPort();
+                DatagramPacket reply = new DatagramPacket(result.getBytes(),result.getBytes().length, request.getAddress(), request.getPort());
+                aSocket.send(reply);
 
-                System.out.println(aHost1 + ":" + port1);
-                DatagramPacket request1 = new DatagramPacket(SeqId,
-                        SeqId.length, aHost1, port1);
-                aSocket.send(request1);
+                //String FEIpAddress = packet.getAddress().getHostAddress();
+                //String receiveMessage = new String(packet.getData(), 0, packet.getLength());
+
+                //******
+                //packetAndSendMessage(FEIpAddress, receiveMessage, aSocket);
+
+                //count++;
+                //System.out.println("Server Connected：" + count);
+                //InetAddress address = packet.getAddress();
+                //System.out.println("Server IP："+address.getHostAddress());
             }
         } catch (SocketException e) {
             System.out.println("Socket: " + e.getMessage());
@@ -60,24 +61,30 @@ public class Sequencer {
         }
     }
 
-    public static void sendMessage(String message, int sequencerId1, boolean isRequest) {
-        int port = 1234;
+    public static synchronized void packetAndSendMessage(String FEIpAddress, String receiveMessage, DatagramSocket socket) throws IOException {
 
-        if (sequencerId1 == 0 && isRequest) {
-            sequencerId1 = ++sequencerNumber;
-        }
-        String finalMessage = sequencerId1 + ";" + message;
+        String sendMessage = sequencerNumber.toString() + ":" + FEIpAddress + ":" + receiveMessage;
+        sequencerNumber++;
 
-        DatagramSocket aSocket = null;
-        try {
-            aSocket = new DatagramSocket();
-            byte[] messages = finalMessage.getBytes();
-            InetAddress aHost = InetAddress.getByName("230.1.1.10");
-            DatagramPacket request = new DatagramPacket(messages, messages.length, aHost, port);
-            aSocket.send(request);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+        //2.multicast the message to replica
+        multicastMessage(sendMessage, socket);
     }
+
+
+    private static void multicastMessage(String packageMessage, DatagramSocket socket) throws IOException {
+
+        //TODO：可能不是本地的localhost，需要修改为replica主机的ip
+        InetAddress address = InetAddress.getByName("localhost");
+
+        byte[] data = packageMessage.getBytes();
+        DatagramPacket sendPacket1 = new DatagramPacket(data, data.length, address, PortConfig.replica1);
+        //DatagramPacket sendPacket2 = new DatagramPacket(data, data.length, address, PortConfig.replica2);
+        //DatagramPacket sendPacket3 = new DatagramPacket(data, data.length, address, PortConfig.replica3);
+
+        socket.send(sendPacket1);
+        //socket.send(sendPacket2);
+        //socket.send(sendPacket3);
+    }
+
+
 }

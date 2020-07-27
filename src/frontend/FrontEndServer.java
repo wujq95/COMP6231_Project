@@ -1,5 +1,6 @@
 package frontend;
 
+import config.PortConfig;
 import frontend.DPSSModule.DPSS;
 import frontend.DPSSModule.DPSSHelper;
 import org.omg.CORBA.ORB;
@@ -9,11 +10,25 @@ import org.omg.CosNaming.NamingContextExtHelper;
 import org.omg.PortableServer.POA;
 import org.omg.PortableServer.POAHelper;
 
+import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.SocketException;
 import java.util.Properties;
 
-public class FrontEnd {
+public class FrontEndServer {
 
     public static void main(String[] args) {
+
+        Runnable taskUDP = () -> {
+            try {
+                frontEndListen();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        };
+
+        new Thread(taskUDP).start();
 
         FrontEndImpl servant = new FrontEndImpl();
         Properties props = new Properties();
@@ -52,6 +67,41 @@ public class FrontEnd {
         }
 
         System.out.println("Front Server Server Exiting ...");
+    }
+
+    public static void frontEndListen(){
+        DatagramSocket aSocket = null;
+        try{
+            aSocket = new DatagramSocket(PortConfig.FrontEndPort);
+
+            System.out.println("start update primary leader listener");
+            byte[] buffer = new byte[1000];
+            DatagramPacket request = new DatagramPacket(buffer, buffer.length);
+            aSocket.receive(request);
+            String requestData = new String(request.getData()).trim();
+            /*
+            if(requestData.equals("who is leader?")){
+                String resend_leader_port = Integer.toString(Front_End_Config.PRIMARY_SERVER_PORT);
+                DatagramPacket reply_leader = new DatagramPacket(resend_leader_port.getBytes(),resend_leader_port.getBytes().length, request.getAddress(), request.getPort());
+                aSocket.send(reply_leader);
+            }else{
+                String receivedContent = new String(request.getData()).trim();
+                int leader_port = Integer.parseInt(receivedContent.substring(9));
+                Front_End_Config.PRIMARY_SERVER_PORT = leader_port;
+                String acknowledgement = "OK";
+                DatagramPacket update_leader = new DatagramPacket(acknowledgement.getBytes(),acknowledgement.getBytes().length, request.getAddress(), request.getPort());
+                System.out.println("new leader is " + leader_port);
+                socket.send(update_leader);
+            }
+            */
+        }catch (SocketException e) {
+            System.out.println("SocketException: " + e.getMessage());
+        } catch (IOException e) {
+            System.out.println("IOException: " + e.getMessage());
+        } finally {
+            if (aSocket != null)
+                aSocket.close();
+        }
     }
 
 }
