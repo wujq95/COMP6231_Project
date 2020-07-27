@@ -78,7 +78,14 @@ public class FrontEndServer {
                 DatagramPacket request = new DatagramPacket(buffer, buffer.length);
                 aSocket.receive(request);
                 String requestData = new String(request.getData()).trim();
-                System.out.println("fornt end listen:"+requestData);
+                System.out.println("front end listen:"+requestData);
+
+
+
+                //需要设置time out的时间
+                //需要设置发送的id，并与接收的比较
+
+
             /*
             if(requestData.equals("who is leader?")){
                 String resend_leader_port = Integer.toString(Front_End_Config.PRIMARY_SERVER_PORT);

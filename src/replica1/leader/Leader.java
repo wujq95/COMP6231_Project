@@ -54,11 +54,11 @@ public class Leader {
                 DatagramPacket request = new DatagramPacket(buffer, buffer.length);
                 aSocket.receive(request);
                 String requestData = new String(request.getData());
-                System.out.println(requestData);
+                System.out.println("leader gets the message from the front end:"+requestData);
 
                 //String result1 = broadCast(requestData,6001);
                 //String result2 = broadCast(requestData,6002);
-                String result3 = resultFromThis();
+                String result3 = resultFromThis(requestData);
                 /*if(result1.equals("fail")){
                     String Msg = "Server 1 is fail";
                     notifyRM(Msg);
@@ -67,7 +67,7 @@ public class Leader {
                     String Msg = "Server 2 is fail";
                     notifyRM(Msg);
                 }*/
-                if(result3.equals("fail")){
+                if(result3==null){
                     String Msg = "Server 3 is fail";
                     notifyRM(Msg);
                 }
@@ -154,7 +154,7 @@ public class Leader {
         }
     }
 
-    public static String resultFromThis() throws Exception{
+    public static String resultFromThis(String str) throws Exception{
         DPSS obj;
         Properties props = new Properties();
         props.put("org.omg.CORBA.ORBInitialPort", "1050");
@@ -165,9 +165,29 @@ public class Leader {
         org.omg.CORBA.Object objRef = orb.resolve_initial_references("NameService");
         // Use NamingContextExt instead of NamingContext. This is part of the Interoperable naming Service.
         NamingContextExt ncRef = NamingContextExtHelper.narrow(objRef);
-        obj = DPSSHelper.narrow(ncRef.resolve_str("EU"));
-        //return obj.playerSignIn("guanyu","gunayu","93.111.111.111");
-        return "result3333";
+
+        String result = null;
+        if(str.startsWith("playerSignIn|")){
+            String[] strs = str.split("\\|");
+            System.out.println("debug:"+strs[3]+"   "+strs[2]);
+            if(strs[3].startsWith("93.")){
+                obj = DPSSHelper.narrow(ncRef.resolve_str("EU"));
+                String userName = strs[1];
+                String password  = strs[2];
+                result = obj.playerSignIn(userName,password,strs[3]);
+            }else if(strs[3].startsWith("132.")){
+                obj = DPSSHelper.narrow(ncRef.resolve_str("NA"));
+                String userName = strs[1];
+                String password  = strs[2];
+                result = obj.playerSignIn(userName,password,strs[3]);
+            }else{
+                obj = DPSSHelper.narrow(ncRef.resolve_str("AS"));
+                String userName = strs[1];
+                String password  = strs[2];
+                result = obj.playerSignIn(userName,password,strs[3]);
+            }
+        }
+        return result;
     }
 
     public static void notifyRM(String Msg){
@@ -188,6 +208,7 @@ public class Leader {
         // Use NamingContextExt instead of NamingContext. This is part of the Interoperable naming Service.
         NamingContextExt ncRef = NamingContextExtHelper.narrow(objRef);
         obj = DPSSHelper.narrow(ncRef.resolve_str("EU"));
-        return obj.playerSignIn("guanyu","gunayu","93.111.111.111");
+        String result = obj.playerSignIn("guanyu","guanyu","93.222.222.222");
+        return result;
     }
 }

@@ -13,7 +13,6 @@ import java.util.HashMap;
 
 public class FrontEndImpl extends DPSSPOA {
 
-    static HashMap<String,String> map = new HashMap<String, String>();
     private ORB orb;
 
     public FrontEndImpl(){
@@ -31,7 +30,7 @@ public class FrontEndImpl extends DPSSPOA {
 
     @Override
     public String playerSignIn(String userName, String password, String ipAddress) {
-        String message = "002"+"\\|"+userName+"\\"+password+"\\|"+ipAddress;
+        String message = "playerSignIn"+"|"+userName+"|"+password+"|"+ipAddress;
         String result = sendMsgToLeader(message);
         return result;
     }
@@ -89,7 +88,7 @@ public class FrontEndImpl extends DPSSPOA {
 
     public static String sendMsgToLeader(String message){
 
-        System.out.println("front end send udp message: "+message);
+        System.out.println("Front End Sends message to the leader: "+message);
 
         DatagramSocket aSocket = null;
         try {
@@ -130,6 +129,4 @@ public class FrontEndImpl extends DPSSPOA {
 
         return 6000;
     }
-
-
 }
