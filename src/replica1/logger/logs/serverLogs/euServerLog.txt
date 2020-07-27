@@ -5,3 +5,9 @@ DATE: 2020-07-23 09:36:48 PM Successfully create an account: zhangfei
 DATE: 2020-07-23 09:37:58 PM Successfully check players status: NA: 1 online, 1 offline, EU: 1 online, 2 offline, AS: 0 online, 1offline
 DATE: 2020-07-27 02:18:34 PM Fail to login: Password is wrong
 DATE: 2020-07-27 02:28:47 PM Successfully login: guanyu
+DATE: 2020-07-27 03:18:13 PM Successfully login: guanyu
+DATE: 2020-07-27 03:18:17 PM Fail to login: User is currently signed-in
+DATE: 2020-07-27 03:22:27 PM Successfully login: guanyu
+DATE: 2020-07-27 03:22:27 PM Fail to login: User is currently signed-in
+DATE: 2020-07-27 03:44:23 PM Successfully login: guanyu
+DATE: 2020-07-27 03:44:23 PM Fail to login: User is currently signed-in

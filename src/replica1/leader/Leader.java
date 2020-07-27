@@ -12,6 +12,7 @@ import org.omg.CosNaming.NamingContextPackage.NotFound;
 
 import java.io.IOException;
 import java.net.*;
+import java.util.ArrayList;
 import java.util.Properties;
 import java.util.Scanner;
 
@@ -56,31 +57,54 @@ public class Leader {
                 String requestData = new String(request.getData());
                 System.out.println("leader gets the message from the front end:"+requestData);
 
-                //String result1 = broadCast(requestData,6001);
-                //String result2 = broadCast(requestData,6002);
-                String result3 = resultFromThis(requestData);
-                /*if(result1.equals("fail")){
+                String result1 = broadCast(requestData,6001);
+                //String result2 = broadCast(requestData,6001);
+                String result3 = operation(requestData);
+                ArrayList<String> res = new ArrayList<>();
+                if(result1==null){
                     String Msg = "Server 1 is fail";
                     notifyRM(Msg);
+                }else{
+                    res.add(result1);
                 }
-                if(result2.equals("fail")){
+                /*if(result2.equals("fail")){
                     String Msg = "Server 2 is fail";
                     notifyRM(Msg);
+                }else{
+                    res.add(result2);
                 }*/
                 if(result3==null){
                     String Msg = "Server 3 is fail";
                     notifyRM(Msg);
+                }else{
+                    res.add(result3);
                 }
+                String result = null;
 
+                if(res.size()==0){
+                    result = "System has a crash that no reply got";
+                }else if(res.size()==1){
+                    result = res.get(0);
+                }else if(res.size()==2){
+                    result = res.get(0);
+                    //这里需要处理一下
+                }else{
+                    if(res.get(1).equals(res.get(2))){
+                        result = res.get(1);
+                    }else {
+                        result = res.get(0);
+                    }
+                }
                 //自己的server corba处理
                 //接收另外两个server的结果
                 //设置timeout，超时报告给rm
                 //有结果不对的报告rm
                 //选择一个正确的结果传回去
 
+                //这里要保证至少一个不是null，不然会空指针
 
-                byte[] sendData = result3.getBytes();
-                DatagramPacket reply = new DatagramPacket(sendData, result3.length(), request.getAddress(),
+                byte[] sendData = result.getBytes();
+                DatagramPacket reply = new DatagramPacket(sendData, result.length(), request.getAddress(),
                         request.getPort());
                 aSocket.send(reply);
 
@@ -98,16 +122,19 @@ public class Leader {
     public static String listenBroadCast(Integer port) throws Exception{
         DatagramSocket aSocket = null;
         try{
-            aSocket = new DatagramSocket(port);
+            aSocket = new DatagramSocket(6003);
             byte[] buffer = new byte[1000];
             while(true){
                 DatagramPacket request = new DatagramPacket(buffer, buffer.length);
                 aSocket.receive(request);
                 String requestData = new String(request.getData()).trim();
                 System.out.println("replica1 gets the broadcast:" + requestData);
-                String result = replica1Corba();
+                String result = operation(requestData);
                 System.out.println(result);
-                return result;
+                byte[] sendData = result.getBytes();
+                DatagramPacket reply = new DatagramPacket(sendData, result.length(), request.getAddress(),
+                        request.getPort());
+                aSocket.send(reply);
             }
         }catch (SocketException e) {
             System.out.println("SocketException: " + e.getMessage());
@@ -120,29 +147,21 @@ public class Leader {
         return "fail";
     }
 
-    public static void broadCast(String message,Integer replicaUdpPort2){
+    public static String broadCast(String message,Integer replicaUdpPort2){
         DatagramSocket aSocket = null;
-        String[] res = new String[]{"fail","fail"};
         try{
             aSocket = new DatagramSocket(replicaUdpPort2);
             byte[] sendData = message.getBytes();
             InetAddress host = InetAddress.getByName("localhost");
             DatagramPacket request = new DatagramPacket(sendData, message.length(), host,6003);
-            //DatagramPacket request2 = new DatagramPacket(sendData, message.length(), host,6004);
             aSocket.send(request);
-            //aSocket.setSoTimeout(5000);
-            //aSocket.send(request2);
             aSocket.setSoTimeout(5000);
             byte[] buffer = new byte[1000];
             DatagramPacket reply = new DatagramPacket(buffer, buffer.length);
             while(true){
                 aSocket.receive(reply);
                 String result = new String(reply.getData()).trim();
-                if(result.startsWith("02")){
-                    res[0] = result;
-                }else {
-                    res[1] = result;
-                }
+                return result;
             }
         }catch (SocketException e) {
             System.out.println("SocketException: " + e.getMessage());
@@ -152,9 +171,10 @@ public class Leader {
             if (aSocket != null)
                 aSocket.close();
         }
+        return null;
     }
 
-    public static String resultFromThis(String str) throws Exception{
+    public static String operation(String str) throws Exception{
         DPSS obj;
         Properties props = new Properties();
         props.put("org.omg.CORBA.ORBInitialPort", "1050");
@@ -191,24 +211,6 @@ public class Leader {
     }
 
     public static void notifyRM(String Msg){
-
         System.out.println("notify rm:"+Msg);
-    }
-
-    public static String replica1Corba() throws Exception {
-
-        DPSS obj;
-        Properties props = new Properties();
-        props.put("org.omg.CORBA.ORBInitialPort", "1050");
-        props.put("org.omg.CORBA.ORBInitialHost", "localhost");
-        // create and initialize the ORB
-        ORB orb = ORB.init(new String[0], props);
-        // get the root naming context
-        org.omg.CORBA.Object objRef = orb.resolve_initial_references("NameService");
-        // Use NamingContextExt instead of NamingContext. This is part of the Interoperable naming Service.
-        NamingContextExt ncRef = NamingContextExtHelper.narrow(objRef);
-        obj = DPSSHelper.narrow(ncRef.resolve_str("EU"));
-        String result = obj.playerSignIn("guanyu","guanyu","93.222.222.222");
-        return result;
     }
 }
