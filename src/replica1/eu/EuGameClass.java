@@ -1,5 +1,6 @@
 package replica1.eu;
 
+import config.PortConfig;
 import frontend.DPSSModule.DPSSPOA;
 import org.omg.CORBA.ORB;
 import replica1.logger.Logger;
@@ -294,7 +295,7 @@ public class EuGameClass  extends DPSSPOA {
         String naMsg = null;
         try {
             aSocket = new DatagramSocket();
-            asMsg = getRemote(2970,aSocket,"");
+            asMsg = getRemote(PortConfig.replicaAS1,aSocket,"");
         } catch (SocketException e) {
             System.out.println("Socket: " + e.getMessage());
         } catch (IOException e) {
@@ -309,7 +310,7 @@ public class EuGameClass  extends DPSSPOA {
         }
         try {
             aSocket1 = new DatagramSocket();
-            naMsg = getRemote(2972,aSocket1,"");
+            naMsg = getRemote(PortConfig.replicaNA1,aSocket1,"");
         } catch (SocketException e) {
             System.out.println("Socket: " + e.getMessage());
         } catch (IOException e) {
@@ -524,7 +525,7 @@ public class EuGameClass  extends DPSSPOA {
         if(newIPAddress.startsWith("132.")){
             try {
                 aSocket = new DatagramSocket();
-                naMsg = getRemote(2972,aSocket,str);
+                naMsg = getRemote(PortConfig.replicaNA1,aSocket,str);
             } catch (SocketException e) {
                 System.out.println("Socket: " + e.getMessage());
             } catch (IOException e) {
@@ -544,7 +545,7 @@ public class EuGameClass  extends DPSSPOA {
         }else{
             try {
                 aSocket1 = new DatagramSocket();
-                asMsg = getRemote(2970,aSocket1,str);
+                asMsg = getRemote(PortConfig.replicaAS1,aSocket1,str);
             } catch (SocketException e) {
                 System.out.println("Socket: " + e.getMessage());
             } catch (IOException e) {

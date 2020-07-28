@@ -5,6 +5,7 @@ import frontend.DPSSModule.DPSSHelper;
 import org.omg.CORBA.ORB;
 import org.omg.CosNaming.NamingContextExt;
 import org.omg.CosNaming.NamingContextExtHelper;
+import replica1.util.Util;
 
 import java.util.Properties;
 import java.util.Scanner;
@@ -19,8 +20,8 @@ public class PlayerClient {
      */
     public static void main(String[] args) throws Exception{
         Scanner scanner = new Scanner(System.in);
+        Util util =new Util();
         String ipAddress;
-        DPSS obj;
         Properties props = new Properties();
         props.put("org.omg.CORBA.ORBInitialPort", "1050");
         props.put("org.omg.CORBA.ORBInitialHost", "localhost");
@@ -30,6 +31,7 @@ public class PlayerClient {
         org.omg.CORBA.Object objRef = orb.resolve_initial_references("NameService");
         // Use NamingContextExt instead of NamingContext. This is part of the Interoperable naming Service.
         NamingContextExt ncRef = NamingContextExtHelper.narrow(objRef);
+        DPSS  obj = DPSSHelper.narrow(ncRef.resolve_str("FrontEnd"));
 
         while (true) {
             System.out.println("Please select an action");
@@ -50,14 +52,7 @@ public class PlayerClient {
             if (input == 1) {
                 System.out.print("Please enter the ipAddress: ");
                 ipAddress = scanner.nextLine();
-                if(checkAddress(ipAddress.trim())){
-                    if(ipAddress.startsWith("182")){
-                        obj = DPSSHelper.narrow(ncRef.resolve_str("AS"));
-                    }else if(ipAddress.startsWith("93")){
-                        obj = DPSSHelper.narrow(ncRef.resolve_str("EU"));
-                    }else{
-                        obj = DPSSHelper.narrow(ncRef.resolve_str("NA"));
-                    }
+                if(util.checkAddress(ipAddress.trim())){
                     System.out.print("Please enter the first name: ");
                     String firstName = scanner.nextLine();
                     System.out.print("Please enter the last name: ");
@@ -80,8 +75,7 @@ public class PlayerClient {
             } else if (input == 2) {
                 System.out.print("Please enter the ipAddress: ");
                 ipAddress = scanner.nextLine();
-                if(checkAddress(ipAddress.trim())){
-                    obj = DPSSHelper.narrow(ncRef.resolve_str("FrontEnd"));
+                if(util.checkAddress(ipAddress.trim())){
                     System.out.print("Please enter the user name: ");
                     String userName = scanner.nextLine();
                     System.out.print("Please enter the password: ");
@@ -98,14 +92,7 @@ public class PlayerClient {
             } else if (input == 3) {
                 System.out.print("Please enter the ipAddress:");
                 ipAddress = scanner.nextLine();
-                if(checkAddress(ipAddress.trim())){
-                    if(ipAddress.startsWith("182")){
-                        obj = DPSSHelper.narrow(ncRef.resolve_str("AS"));
-                    }else if(ipAddress.startsWith("93")){
-                        obj = DPSSHelper.narrow(ncRef.resolve_str("EU"));
-                    }else{
-                        obj = DPSSHelper.narrow(ncRef.resolve_str("NA"));
-                    }
+                if(util.checkAddress(ipAddress.trim())){
                     System.out.print("Please enter the user name: ");
                     String userName = scanner.nextLine();
                     String reply = obj.playerSignOut(userName.trim(), ipAddress);
@@ -120,14 +107,7 @@ public class PlayerClient {
             } else if (input == 4) {
                 System.out.print("Please enter your old ip address: ");
                 ipAddress = scanner.nextLine();
-                if(checkAddress(ipAddress.trim())){
-                    if(ipAddress.startsWith("182")){
-                        obj = DPSSHelper.narrow(ncRef.resolve_str("AS"));
-                    }else if(ipAddress.startsWith("93")){
-                        obj = DPSSHelper.narrow(ncRef.resolve_str("EU"));
-                    }else{
-                        obj = DPSSHelper.narrow(ncRef.resolve_str("NA"));
-                    }
+                if(util.checkAddress(ipAddress.trim())){
                     System.out.print("Please enter the user name: ");
                     String userName = scanner.nextLine();
                     System.out.print("Please enter the password: ");
@@ -150,27 +130,5 @@ public class PlayerClient {
         }
     }
 
-    /**
-     * check if ip address is in the right pattern
-     * @param ipAddress
-     * @return
-     */
-    public static boolean checkAddress(String ipAddress){
-        String regex="\\d{3}\\.\\d{3}\\.\\d{3}";
-        Pattern pattern = Pattern.compile(regex);
-        if(ipAddress.startsWith("182.")){
-            if(pattern.matcher(ipAddress.substring(4)).matches()){
-                return true;
-            }
-        }else if(ipAddress.startsWith("93.")){
-            if(pattern.matcher(ipAddress.substring(3)).matches()){
-                return true;
-            }
-        }else if(ipAddress.startsWith("132.")){
-            if(pattern.matcher(ipAddress.substring(4)).matches()){
-                return true;
-            }
-        }
-        return false;
-    }
+
 }

@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import config.PortConfig;
 import frontend.DPSSModule.DPSSPOA;
 import org.omg.CORBA.ORB;
 import replica1.logger.Logger;
@@ -293,7 +294,7 @@ public class NaGameClass extends DPSSPOA {
         String asMsg = null;
         try {
             aSocket = new DatagramSocket();
-            euMsg = getRemote(2971,aSocket,"");
+            euMsg = getRemote(PortConfig.replicaEU1,aSocket,"");
         } catch (SocketException e) {
             System.out.println("Socket: " + e.getMessage());
         } catch (IOException e) {
@@ -308,7 +309,7 @@ public class NaGameClass extends DPSSPOA {
         }
         try {
             aSocket1 = new DatagramSocket();
-            asMsg = getRemote(2970,aSocket1,"");
+            asMsg = getRemote(PortConfig.replicaAS1,aSocket1,"");
         } catch (SocketException e) {
             System.out.println("Socket: " + e.getMessage());
         } catch (IOException e) {
@@ -519,7 +520,7 @@ public class NaGameClass extends DPSSPOA {
         if(newIPAddress.startsWith("182.")){
             try {
                 aSocket = new DatagramSocket();
-                asMsg = getRemote(2970,aSocket,str);
+                asMsg = getRemote(PortConfig.replicaAS1,aSocket,str);
             } catch (SocketException e) {
                 System.out.println("Socket: " + e.getMessage());
             } catch (IOException e) {
@@ -539,7 +540,7 @@ public class NaGameClass extends DPSSPOA {
         }else{
             try {
                 aSocket1 = new DatagramSocket();
-                euMsg = getRemote(2971,aSocket1,str);
+                euMsg = getRemote(PortConfig.replicaEU1,aSocket1,str);
             } catch (SocketException e) {
                 System.out.println("Socket: " + e.getMessage());
             } catch (IOException e) {

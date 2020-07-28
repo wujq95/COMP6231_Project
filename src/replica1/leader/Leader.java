@@ -71,7 +71,7 @@ public class Leader {
                 }else{
                     res.add(result3);
                 }
-                String result = null;
+                String result;
 
                 if(res.size()==0){
                     result = "System has a crash that no reply got";

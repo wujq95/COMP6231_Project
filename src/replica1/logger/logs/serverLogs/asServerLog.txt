@@ -1,3 +1,4 @@
 DATE: 2020-07-23 09:34:24 PM Fail to login: User name does not exist
 DATE: 2020-07-23 09:35:05 PM Fail to logout: User is not currently signed-in
 DATE: 2020-07-23 09:37:43 PM successfully transfer the player
+DATE: 2020-07-28 09:36:08 AM Fail to login: User name does not exist
