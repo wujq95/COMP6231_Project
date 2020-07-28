@@ -11,8 +11,8 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import config.PortConfig;
-import frontend.DPSSModule.DPSSPOA;
 import org.omg.CORBA.ORB;
+import replica1.DPSSModule.DPSSPOA;
 import replica1.logger.Logger;
 import replica1.util.Util;
 

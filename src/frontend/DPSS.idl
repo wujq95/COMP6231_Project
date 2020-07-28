@@ -1,6 +1,6 @@
-module DPSSModule
+module FrontEndModule
 {
-  interface DPSS
+  interface FrontEnd
   	{
 	string createPlayerAccount(in string firstName, in string lastName, in string age, in string userName, in string password, in string ipAddress);
 

@@ -1,8 +1,8 @@
 package frontend;
 
 import config.PortConfig;
-import frontend.DPSSModule.DPSS;
-import frontend.DPSSModule.DPSSHelper;
+import frontend.FrontEndModule.FrontEnd;
+import frontend.FrontEndModule.FrontEndHelper;
 import org.omg.CORBA.ORB;
 import org.omg.CosNaming.NameComponent;
 import org.omg.CosNaming.NamingContextExt;
@@ -46,7 +46,7 @@ public class FrontEndServer {
             // get object reference from the servant
             org.omg.CORBA.Object ref = rootpoa.servant_to_reference(servant);
             // and cast the reference to a CORBA reference
-            DPSS href = DPSSHelper.narrow(ref);
+            FrontEnd href = FrontEndHelper.narrow(ref);
             // get the root naming context
             // NameService invokes the transient name service
             org.omg.CORBA.Object objRef = orb.resolve_initial_references("NameService");
@@ -57,7 +57,7 @@ public class FrontEndServer {
             String name = "FrontEnd";
             NameComponent path[] = ncRef.to_name(name);
             ncRef.rebind(path, href);
-            System.out.println("Front End Server is ready and listening ...  ...");
+            System.out.println("Front End Server is ready and listening ...");
 
             // wait for invocations from clients
             orb.run();

@@ -1,7 +1,7 @@
 package client;
 
-import frontend.DPSSModule.DPSS;
-import frontend.DPSSModule.DPSSHelper;
+import frontend.FrontEndModule.FrontEnd;
+import frontend.FrontEndModule.FrontEndHelper;
 import org.omg.CORBA.ORB;
 import org.omg.CosNaming.NamingContextExt;
 import org.omg.CosNaming.NamingContextExtHelper;
@@ -9,7 +9,6 @@ import replica1.util.Util;
 
 import java.util.Properties;
 import java.util.Scanner;
-import java.util.regex.Pattern;
 
 public class PlayerClient {
 
@@ -31,7 +30,7 @@ public class PlayerClient {
         org.omg.CORBA.Object objRef = orb.resolve_initial_references("NameService");
         // Use NamingContextExt instead of NamingContext. This is part of the Interoperable naming Service.
         NamingContextExt ncRef = NamingContextExtHelper.narrow(objRef);
-        DPSS  obj = DPSSHelper.narrow(ncRef.resolve_str("FrontEnd"));
+        FrontEnd obj = FrontEndHelper.narrow(ncRef.resolve_str("FrontEnd"));
 
         while (true) {
             System.out.println("Please select an action");
@@ -90,7 +89,7 @@ public class PlayerClient {
                     continue;
                 }
             } else if (input == 3) {
-                System.out.print("Please enter the ipAddress:");
+                System.out.print("Please enter the ipAddress: ");
                 ipAddress = scanner.nextLine();
                 if(util.checkAddress(ipAddress.trim())){
                     System.out.print("Please enter the user name: ");

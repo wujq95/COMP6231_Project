@@ -1,7 +1,7 @@
 package replica1.eu;
 
 import config.PortConfig;
-import frontend.DPSSModule.DPSSPOA;
+import replica1.DPSSModule.DPSSPOA;
 import org.omg.CORBA.ORB;
 import replica1.logger.Logger;
 import replica1.util.Util;

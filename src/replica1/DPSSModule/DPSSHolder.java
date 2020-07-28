@@ -1,4 +1,4 @@
-package frontend.DPSSModule;
+package replica1.DPSSModule;
 
 /**
 * DPSSModule/DPSSHolder.java .

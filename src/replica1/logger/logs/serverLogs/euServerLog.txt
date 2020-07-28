@@ -13,3 +13,18 @@ DATE: 2020-07-27 03:44:23 PM Successfully login: guanyu
 DATE: 2020-07-27 03:44:23 PM Fail to login: User is currently signed-in
 DATE: 2020-07-27 05:06:06 PM Successfully login: guanyu
 DATE: 2020-07-27 05:06:14 PM Successfully logout: guanyu
+DATE: 2020-07-28 09:56:48 AM Successfully login: guanyu
+DATE: 2020-07-28 12:45:11 PM Successfully login: guanyu
+DATE: 2020-07-28 12:53:44 PM Successfully login: guanyu
+DATE: 2020-07-28 12:54:06 PM Successfully logout: guanyu
+DATE: 2020-07-28 01:08:19 PM Successfully login: guanyu
+DATE: 2020-07-28 01:08:40 PM Successfully logout: guanyu
+DATE: 2020-07-28 01:09:15 PM Successfully login: guanyu
+DATE: 2020-07-28 01:14:09 PM Successfully login: guanyu
+DATE: 2020-07-28 01:14:24 PM Successfully logout: guanyu
+DATE: 2020-07-28 01:21:24 PM Successfully login: guanyu
+DATE: 2020-07-28 01:21:34 PM Successfully logout: guanyu
+DATE: 2020-07-28 02:17:21 PM Successfully login: guanyu
+DATE: 2020-07-28 02:17:29 PM Successfully logout: guanyu
+DATE: 2020-07-28 02:18:51 PM Successfully login: guanyu
+DATE: 2020-07-28 02:19:14 PM Fail to login: User is currently signed-in

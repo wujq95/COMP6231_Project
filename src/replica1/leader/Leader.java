@@ -1,8 +1,8 @@
 package replica1.leader;
 
 import config.PortConfig;
-import frontend.DPSSModule.DPSS;
-import frontend.DPSSModule.DPSSHelper;
+import replica1.DPSSModule.DPSS;
+import replica1.DPSSModule.DPSSHelper;
 import org.omg.CORBA.ORB;
 import org.omg.CosNaming.NamingContextExt;
 import org.omg.CosNaming.NamingContextExtHelper;
@@ -50,7 +50,7 @@ public class Leader {
                 System.out.println("leader gets the message from the front end:"+requestData);
 
                 String result1 = broadCast(requestData);
-                //String result2 = broadCast(requestData,6001);
+                //String result2 = broadCast(requestData);
                 String result3 = operation(requestData);
                 ArrayList<String> res = new ArrayList<>();
                 if(result1==null){
@@ -118,7 +118,7 @@ public class Leader {
     public static String listenBroadCast() throws Exception{
         DatagramSocket aSocket = null;
         try{
-            aSocket = new DatagramSocket(PortConfig.leader2);
+            aSocket = new DatagramSocket(6666);
             byte[] buffer = new byte[1000];
             while(true){
                 DatagramPacket request = new DatagramPacket(buffer, buffer.length);
@@ -146,7 +146,7 @@ public class Leader {
     public static String broadCast(String message){
         DatagramSocket aSocket = null;
         try{
-            aSocket = new DatagramSocket(PortConfig.leader2);
+            aSocket = new DatagramSocket();
             byte[] sendData = message.getBytes();
             InetAddress host = InetAddress.getByName("localhost");
             DatagramPacket request = new DatagramPacket(sendData, message.length(), host,PortConfig.leader2);
@@ -182,26 +182,64 @@ public class Leader {
         // Use NamingContextExt instead of NamingContext. This is part of the Interoperable naming Service.
         NamingContextExt ncRef = NamingContextExtHelper.narrow(objRef);
 
+        String[] strs = str.split("\\|");
+
+
         String result = null;
-        if(str.startsWith("playerSignIn|")){
-            String[] strs = str.split("\\|");
-            System.out.println("debug:"+strs[3]+"   "+strs[2]);
-            if(strs[3].startsWith("93.")){
+        if(str.startsWith("createPlayerAccount|")){
+            if(strs[6].startsWith("93.")){
                 obj = DPSSHelper.narrow(ncRef.resolve_str("EU"));
-                String userName = strs[1];
-                String password  = strs[2];
-                result = obj.playerSignIn(userName,password,strs[3]);
-            }else if(strs[3].startsWith("132.")){
+            }else if(strs[6].startsWith("132.")){
                 obj = DPSSHelper.narrow(ncRef.resolve_str("NA"));
-                String userName = strs[1];
-                String password  = strs[2];
-                result = obj.playerSignIn(userName,password,strs[3]);
             }else{
                 obj = DPSSHelper.narrow(ncRef.resolve_str("AS"));
-                String userName = strs[1];
-                String password  = strs[2];
-                result = obj.playerSignIn(userName,password,strs[3]);
             }
+            result = obj.createPlayerAccount(strs[1],strs[2],strs[3],strs[4],strs[5],strs[6]);
+        }else if(str.startsWith("playerSignIn|")){
+            if(strs[3].startsWith("93.")){
+                obj = DPSSHelper.narrow(ncRef.resolve_str("EU"));
+            }else if(strs[3].startsWith("132.")){
+                obj = DPSSHelper.narrow(ncRef.resolve_str("NA"));
+            }else{
+                obj = DPSSHelper.narrow(ncRef.resolve_str("AS"));
+            }
+            result = obj.playerSignIn(strs[1],strs[2],strs[3]);
+        }else if(str.startsWith("playerSignOut|")){
+            if(strs[2].startsWith("93.")){
+                obj = DPSSHelper.narrow(ncRef.resolve_str("EU"));
+            }else if(strs[2].startsWith("132.")){
+                obj = DPSSHelper.narrow(ncRef.resolve_str("NA"));
+            }else{
+                obj = DPSSHelper.narrow(ncRef.resolve_str("AS"));
+            }
+            result = obj.playerSignOut(strs[1],strs[2]);
+        }else if(str.startsWith("getPlayerStatus|")){
+            if(strs[3].startsWith("93.")){
+                obj = DPSSHelper.narrow(ncRef.resolve_str("EU"));
+            }else if(strs[3].startsWith("132.")){
+                obj = DPSSHelper.narrow(ncRef.resolve_str("NA"));
+            }else{
+                obj = DPSSHelper.narrow(ncRef.resolve_str("AS"));
+            }
+            result = obj.getPlayerStatus(strs[1],strs[2],strs[3]);
+        }else if(str.startsWith("transferAccount|")){
+            if(strs[3].startsWith("93.")){
+                obj = DPSSHelper.narrow(ncRef.resolve_str("EU"));
+            }else if(strs[3].startsWith("132.")){
+                obj = DPSSHelper.narrow(ncRef.resolve_str("NA"));
+            }else{
+                obj = DPSSHelper.narrow(ncRef.resolve_str("AS"));
+            }
+            result = obj.transferAccount(strs[1],strs[2],strs[3],strs[4]);
+        }else if(str.startsWith("suspendAccount|")){
+            if(strs[3].startsWith("93.")){
+                obj = DPSSHelper.narrow(ncRef.resolve_str("EU"));
+            }else if(strs[3].startsWith("132.")){
+                obj = DPSSHelper.narrow(ncRef.resolve_str("NA"));
+            }else{
+                obj = DPSSHelper.narrow(ncRef.resolve_str("AS"));
+            }
+            result = obj.suspendAccount(strs[1],strs[2],strs[3],strs[4]);
         }
         return result;
     }

@@ -1,18 +1,16 @@
 package frontend;
 
 import config.PortConfig;
-import frontend.DPSSModule.DPSSPOA;
+import frontend.FrontEndModule.FrontEndPOA;
 import org.omg.CORBA.ORB;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketTimeoutException;
-import java.util.HashMap;
-import java.util.Random;
 
 
-public class FrontEndImpl extends DPSSPOA {
+public class FrontEndImpl extends FrontEndPOA {
 
     private ORB orb;
 
@@ -68,7 +66,6 @@ public class FrontEndImpl extends DPSSPOA {
 
     @Override
     public void shutdown() {
-
     }
 
 

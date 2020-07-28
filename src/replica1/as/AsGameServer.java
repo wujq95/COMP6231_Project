@@ -10,8 +10,8 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 import config.PortConfig;
-import frontend.DPSSModule.DPSS;
-import frontend.DPSSModule.DPSSHelper;
+import replica1.DPSSModule.DPSS;
+import replica1.DPSSModule.DPSSHelper;
 import org.omg.CORBA.ORB;
 import org.omg.CosNaming.NameComponent;
 import org.omg.CosNaming.NamingContextExt;
