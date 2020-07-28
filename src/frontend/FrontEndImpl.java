@@ -9,6 +9,7 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketTimeoutException;
 import java.util.HashMap;
+import java.util.Random;
 
 
 public class FrontEndImpl extends DPSSPOA {
@@ -25,7 +26,9 @@ public class FrontEndImpl extends DPSSPOA {
 
     @Override
     public synchronized String createPlayerAccount(String firstName, String lastName, String age, String userName, String password, String ipAddress) {
-        return null;
+        String message = "createPlayerAccount"+"|"+firstName+"|"+lastName+"|"+age+"|"+userName+"|"+password+"|"+ipAddress;
+        String result = sendMsgToLeader(message);
+        return result;
     }
 
     @Override
@@ -37,22 +40,30 @@ public class FrontEndImpl extends DPSSPOA {
 
     @Override
     public String playerSignOut(String userName, String ipAddress) {
-        return null;
+        String message = "playerSignOut"+"|"+userName+"|"+ipAddress;
+        String result = sendMsgToLeader(message);
+        return result;
     }
 
     @Override
     public String getPlayerStatus(String adminUsername, String adminPassword, String ipAddress) {
-        return null;
+        String message = "getPlayerStatus"+"|"+adminUsername+"|"+adminPassword+"|"+ipAddress;
+        String result = sendMsgToLeader(message);
+        return result;
     }
 
     @Override
     public String transferAccount(String userName, String password, String oldIPAddress, String newIPAddress) {
-        return null;
+        String message = "transferAccount"+"|"+userName+"|"+password+"|"+oldIPAddress+"|"+newIPAddress;
+        String result = sendMsgToLeader(message);
+        return result;
     }
 
     @Override
     public String suspendAccount(String adminUsername, String adminPassword, String ipAddress, String usernameToSuspend) {
-        return null;
+        String message = "suspendAccount"+"|"+adminUsername+"|"+adminPassword+"|"+ipAddress+"|"+usernameToSuspend;
+        String result = sendMsgToLeader(message);
+        return result;
     }
 
     @Override
@@ -91,6 +102,9 @@ public class FrontEndImpl extends DPSSPOA {
         System.out.println("Front End Sends message to the leader: "+message);
 
         DatagramSocket aSocket = null;
+
+        //front server 和impl这里需要处理一下
+        //现在server那边是接不到东西的
         try {
             aSocket = new DatagramSocket();
             byte[] sendData = message.getBytes();
@@ -105,7 +119,7 @@ public class FrontEndImpl extends DPSSPOA {
                 try {
                     aSocket.receive(reply);
                     String result = new String(reply.getData()).trim();
-                    System.out.println("front end gets the result"+result);
+                    System.out.println("front end gets the result: "+result);
                     return result;
                 } catch (SocketTimeoutException e) {
                     InetAddress hostResend = InetAddress.getByName("localhost");
@@ -127,6 +141,6 @@ public class FrontEndImpl extends DPSSPOA {
 
     public static Integer getLeaderUDPPort(){
 
-        return 6000;
+        return PortConfig.leader1;
     }
 }

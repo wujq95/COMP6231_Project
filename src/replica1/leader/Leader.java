@@ -4,28 +4,20 @@ import config.PortConfig;
 import frontend.DPSSModule.DPSS;
 import frontend.DPSSModule.DPSSHelper;
 import org.omg.CORBA.ORB;
-import org.omg.CORBA.ORBPackage.InvalidName;
 import org.omg.CosNaming.NamingContextExt;
 import org.omg.CosNaming.NamingContextExtHelper;
-import org.omg.CosNaming.NamingContextPackage.CannotProceed;
-import org.omg.CosNaming.NamingContextPackage.NotFound;
 
 import java.io.IOException;
 import java.net.*;
 import java.util.ArrayList;
 import java.util.Properties;
-import java.util.Scanner;
 
 public class Leader {
-
-     static final Integer leaderUDPPort1 = 6000;
-     static final Integer leaderUDPPort2 = 6003;
-     static final Integer leaderUDPPort3 = 6004;
 
     public static void main(String[] args) {
         Runnable frontEndTaskUDP = () -> {
             try {
-                listenFrontEnd(leaderUDPPort1);
+                listenFrontEnd();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -36,7 +28,7 @@ public class Leader {
 
         Runnable broadCastTaskUDP = () -> {
             try {
-                listenBroadCast(leaderUDPPort2);
+                listenBroadCast();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -46,10 +38,10 @@ public class Leader {
         System.out.println("Leader Server has started");
     }
 
-    public static void listenFrontEnd(Integer port) throws Exception{
+    public static void listenFrontEnd() throws Exception{
         DatagramSocket aSocket = null;
         try {
-            aSocket = new DatagramSocket(port);
+            aSocket = new DatagramSocket(PortConfig.leader1);
             byte[] buffer = new byte[1024];
             while(true){
                 DatagramPacket request = new DatagramPacket(buffer, buffer.length);
@@ -57,7 +49,7 @@ public class Leader {
                 String requestData = new String(request.getData());
                 System.out.println("leader gets the message from the front end:"+requestData);
 
-                String result1 = broadCast(requestData,6001);
+                String result1 = broadCast(requestData);
                 //String result2 = broadCast(requestData,6001);
                 String result3 = operation(requestData);
                 ArrayList<String> res = new ArrayList<>();
@@ -86,7 +78,11 @@ public class Leader {
                 }else if(res.size()==1){
                     result = res.get(0);
                 }else if(res.size()==2){
-                    result = res.get(0);
+                    if(res.get(0).startsWith("S")){
+                        result = res.get(0);
+                    }else{
+                        result = res.get(1);
+                    }
                     //这里需要处理一下
                 }else{
                     if(res.get(1).equals(res.get(2))){
@@ -119,10 +115,10 @@ public class Leader {
         }
     }
 
-    public static String listenBroadCast(Integer port) throws Exception{
+    public static String listenBroadCast() throws Exception{
         DatagramSocket aSocket = null;
         try{
-            aSocket = new DatagramSocket(6003);
+            aSocket = new DatagramSocket(PortConfig.leader2);
             byte[] buffer = new byte[1000];
             while(true){
                 DatagramPacket request = new DatagramPacket(buffer, buffer.length);
@@ -147,13 +143,13 @@ public class Leader {
         return "fail";
     }
 
-    public static String broadCast(String message,Integer replicaUdpPort2){
+    public static String broadCast(String message){
         DatagramSocket aSocket = null;
         try{
-            aSocket = new DatagramSocket(replicaUdpPort2);
+            aSocket = new DatagramSocket(PortConfig.leader2);
             byte[] sendData = message.getBytes();
             InetAddress host = InetAddress.getByName("localhost");
-            DatagramPacket request = new DatagramPacket(sendData, message.length(), host,6003);
+            DatagramPacket request = new DatagramPacket(sendData, message.length(), host,PortConfig.leader2);
             aSocket.send(request);
             aSocket.setSoTimeout(5000);
             byte[] buffer = new byte[1000];

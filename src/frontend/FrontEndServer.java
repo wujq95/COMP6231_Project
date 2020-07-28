@@ -78,7 +78,7 @@ public class FrontEndServer {
                 DatagramPacket request = new DatagramPacket(buffer, buffer.length);
                 aSocket.receive(request);
                 String requestData = new String(request.getData()).trim();
-                System.out.println("front end listen:"+requestData);
+                System.out.println("front end listen: "+requestData);
 
 
 

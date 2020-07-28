@@ -11,3 +11,5 @@ DATE: 2020-07-27 03:22:27 PM Successfully login: guanyu
 DATE: 2020-07-27 03:22:27 PM Fail to login: User is currently signed-in
 DATE: 2020-07-27 03:44:23 PM Successfully login: guanyu
 DATE: 2020-07-27 03:44:23 PM Fail to login: User is currently signed-in
+DATE: 2020-07-27 05:06:06 PM Successfully login: guanyu
+DATE: 2020-07-27 05:06:14 PM Successfully logout: guanyu

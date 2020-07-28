@@ -1,5 +1,6 @@
 package replica1.na;
 
+import config.PortConfig;
 import frontend.DPSSModule.DPSS;
 import frontend.DPSSModule.DPSSHelper;
 import org.omg.CORBA.ORB;
@@ -23,8 +24,6 @@ public class NaGameServer {
     public static ConcurrentHashMap<Character, List<String>> northAmericaMap = new ConcurrentHashMap<>();
     public static Set<String> northAmericaOnline = Collections.synchronizedSet(new HashSet<>());
 
-    static  Integer serverUdpPort = 2972;
-
     /**
      * main method
      * @param args
@@ -34,7 +33,7 @@ public class NaGameServer {
         load();
         Runnable taskUDP = () -> {
             try {
-                serverReceive(serverUdpPort);
+                serverReceive();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -79,13 +78,12 @@ public class NaGameServer {
 
     /**
      * add a listener for udp message
-     * @param serverUdpPort
      * @throws Exception
      */
-    public static void serverReceive(Integer serverUdpPort){
+    public static void serverReceive(){
         DatagramSocket aSocket = null;
         try {
-            aSocket = new DatagramSocket(serverUdpPort);
+            aSocket = new DatagramSocket(PortConfig.replicaNA1);
             byte[] buffer = new byte[1024];
             while (true){
                 DatagramPacket request = new DatagramPacket(buffer, buffer.length);

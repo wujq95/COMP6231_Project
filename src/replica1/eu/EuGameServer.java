@@ -1,5 +1,6 @@
 package replica1.eu;
 
+import config.PortConfig;
 import frontend.DPSSModule.DPSS;
 import frontend.DPSSModule.DPSSHelper;
 import org.omg.CORBA.ORB;
@@ -23,7 +24,6 @@ public class EuGameServer {
     public static ConcurrentHashMap<Character, List<String>> europeMap = new ConcurrentHashMap<>();
     public static Set<String> europeOnline = Collections.synchronizedSet(new HashSet<>());
 
-    static  Integer serverUdpPort = 2971;
 
     /**
      * main method
@@ -34,7 +34,7 @@ public class EuGameServer {
         load();
         Runnable taskUDP = () -> {
             try {
-                serverReceive(serverUdpPort);
+                serverReceive();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -79,13 +79,12 @@ public class EuGameServer {
 
     /**
      * add a listener for udp message
-     * @param serverUdpPort
      * @throws Exception
      */
-    public static void serverReceive(Integer serverUdpPort){
+    public static void serverReceive(){
         DatagramSocket aSocket = null;
         try {
-            aSocket = new DatagramSocket(serverUdpPort);
+            aSocket = new DatagramSocket(PortConfig.replicaEU1);
             byte[] buffer = new byte[1024];
             while (true){
                 DatagramPacket request = new DatagramPacket(buffer, buffer.length);

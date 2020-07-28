@@ -77,11 +77,11 @@ public class Sequencer {
         InetAddress address = InetAddress.getByName("localhost");
 
         byte[] data = packageMessage.getBytes();
-        DatagramPacket sendPacket1 = new DatagramPacket(data, data.length, address, PortConfig.replica1);
+        //DatagramPacket sendPacket1 = new DatagramPacket(data, data.length, address, PortConfig.replica1);
         //DatagramPacket sendPacket2 = new DatagramPacket(data, data.length, address, PortConfig.replica2);
         //DatagramPacket sendPacket3 = new DatagramPacket(data, data.length, address, PortConfig.replica3);
 
-        socket.send(sendPacket1);
+        //socket.send(sendPacket1);
         //socket.send(sendPacket2);
         //socket.send(sendPacket3);
     }
