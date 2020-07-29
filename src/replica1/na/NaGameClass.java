@@ -294,7 +294,7 @@ public class NaGameClass extends DPSSPOA {
         String asMsg = null;
         try {
             aSocket = new DatagramSocket();
-            euMsg = getRemote(PortConfig.replicaEU1,aSocket,"");
+            euMsg = util.getRemote(PortConfig.replicaEU1,aSocket,"");
         } catch (SocketException e) {
             System.out.println("Socket: " + e.getMessage());
         } catch (IOException e) {
@@ -309,7 +309,7 @@ public class NaGameClass extends DPSSPOA {
         }
         try {
             aSocket1 = new DatagramSocket();
-            asMsg = getRemote(PortConfig.replicaAS1,aSocket1,"");
+            asMsg = util.getRemote(PortConfig.replicaAS1,aSocket1,"");
         } catch (SocketException e) {
             System.out.println("Socket: " + e.getMessage());
         } catch (IOException e) {
@@ -381,7 +381,7 @@ public class NaGameClass extends DPSSPOA {
                 return "password is wrong";
             }
             String str = util.findPlayer(userName.trim(),oldIPAddress);
-            removeResult = removePlayer(userName);
+            removeResult = util.removePlayer(userName,oldIPAddress);
             if (removeResult) {
                 addResult = addPlayer(str, newIPAddress);
             }
@@ -481,27 +481,7 @@ public class NaGameClass extends DPSSPOA {
     }
 
 
-    /**
-     * get remote message by udp
-     * @param udpPort
-     * @param aSocket
-     * @return
-     * @throws Exception
-     */
-    public String getRemote(Integer udpPort, DatagramSocket aSocket,String Msg) throws Exception{
-        if(Msg==null){
-            return "";
-        }
-        byte[] message = Msg.getBytes();
-        InetAddress aHost = InetAddress.getByName("localhost");
-        DatagramPacket request = new DatagramPacket(message, Msg.length(), aHost, udpPort);
-        aSocket.send(request);
-        byte[] buffer = new byte[1000];
-        DatagramPacket reply = new DatagramPacket(buffer, buffer.length);
-        aSocket.receive(reply);
-        String result = new String(reply.getData());
-        return result;
-    }
+
 
 
 
@@ -520,7 +500,7 @@ public class NaGameClass extends DPSSPOA {
         if(newIPAddress.startsWith("182.")){
             try {
                 aSocket = new DatagramSocket();
-                asMsg = getRemote(PortConfig.replicaAS1,aSocket,str);
+                asMsg = util.getRemote(PortConfig.replicaAS1,aSocket,str);
             } catch (SocketException e) {
                 System.out.println("Socket: " + e.getMessage());
             } catch (IOException e) {
@@ -540,7 +520,7 @@ public class NaGameClass extends DPSSPOA {
         }else{
             try {
                 aSocket1 = new DatagramSocket();
-                euMsg = getRemote(PortConfig.replicaEU1,aSocket1,str);
+                euMsg = util.getRemote(PortConfig.replicaEU1,aSocket1,str);
             } catch (SocketException e) {
                 System.out.println("Socket: " + e.getMessage());
             } catch (IOException e) {
@@ -560,22 +540,6 @@ public class NaGameClass extends DPSSPOA {
         }
     }
 
-    /**
-     * remove the player from the old location
-     * @param userName
-     * @return
-     */
-    public boolean removePlayer(String userName){
-        boolean flag = true;
-        try{
-            List list = NaGameServer.northAmericaMap.get(userName.trim().charAt(0));
-            list = util.removeItemFromList(list,userName);
-            NaGameServer.northAmericaMap.put(userName.charAt(0),list);
-        }catch (Exception e){
-            flag = false;
-        }finally {
-            return flag;
-        }
-    }
+
 
 }

@@ -14,10 +14,6 @@ public class FrontEndImpl extends FrontEndPOA {
 
     private ORB orb;
 
-    public FrontEndImpl(){
-
-    }
-
     public void setORB(ORB orb_val) {
         orb = orb_val;
     }
@@ -65,8 +61,7 @@ public class FrontEndImpl extends FrontEndPOA {
     }
 
     @Override
-    public void shutdown() {
-    }
+    public void shutdown() {}
 
 
     public static String getNumberFromRequestIDGenerator(){
@@ -109,14 +104,21 @@ public class FrontEndImpl extends FrontEndPOA {
             Integer leaderUDPPort = getLeaderUDPPort();
             DatagramPacket request = new DatagramPacket(sendData, message.length(), host,leaderUDPPort);
             aSocket.send(request);
-            aSocket.setSoTimeout(5000);
-            byte[] buffer = new byte[1000];
-            DatagramPacket reply = new DatagramPacket(buffer, buffer.length);
             while(true){
                 try {
+                    byte[] buffer = new byte[1000];
+                    DatagramPacket reply = new DatagramPacket(buffer, buffer.length);
+                    aSocket.setSoTimeout(5000);
                     aSocket.receive(reply);
                     String result = new String(reply.getData()).trim();
                     System.out.println("front end gets the result: "+result);
+                    //之后测试一下
+                    if(result.startsWith("No reply")){
+                        InetAddress hostResend = InetAddress.getByName("localhost");
+                        DatagramPacket requestResend = new DatagramPacket(sendData, sendData.length, hostResend, getLeaderUDPPort());
+                        aSocket.send(requestResend);
+                        continue;
+                    }
                     return result;
                 } catch (SocketTimeoutException e) {
                     InetAddress hostResend = InetAddress.getByName("localhost");
@@ -124,8 +126,7 @@ public class FrontEndImpl extends FrontEndPOA {
                     aSocket.send(requestResend);
                 }
             }
-        }
-        catch(Exception e){
+        } catch(Exception e){
             e.printStackTrace();
         }
         finally{

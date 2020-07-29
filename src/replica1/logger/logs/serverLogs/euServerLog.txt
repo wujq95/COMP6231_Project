@@ -28,3 +28,7 @@ DATE: 2020-07-28 02:17:21 PM Successfully login: guanyu
 DATE: 2020-07-28 02:17:29 PM Successfully logout: guanyu
 DATE: 2020-07-28 02:18:51 PM Successfully login: guanyu
 DATE: 2020-07-28 02:19:14 PM Fail to login: User is currently signed-in
+DATE: 2020-07-28 02:31:06 PM Successfully create an account: ming12
+DATE: 2020-07-28 02:52:46 PM Successfully login: guanyu
+DATE: 2020-07-28 02:52:51 PM Fail to login: User is currently signed-in
+DATE: 2020-07-28 02:55:55 PM Successfully login: guanyu

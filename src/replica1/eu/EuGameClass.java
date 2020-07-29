@@ -7,16 +7,14 @@ import replica1.logger.Logger;
 import replica1.util.Util;
 
 import java.io.*;
-import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.net.InetAddress;
 import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-public class EuGameClass  extends DPSSPOA {
+public class EuGameClass extends DPSSPOA {
 
     Logger logger = new Logger();
     Util util = new Util();
@@ -295,7 +293,7 @@ public class EuGameClass  extends DPSSPOA {
         String naMsg = null;
         try {
             aSocket = new DatagramSocket();
-            asMsg = getRemote(PortConfig.replicaAS1,aSocket,"");
+            asMsg = util.getRemote(PortConfig.replicaAS1,aSocket,"");
         } catch (SocketException e) {
             System.out.println("Socket: " + e.getMessage());
         } catch (IOException e) {
@@ -310,7 +308,7 @@ public class EuGameClass  extends DPSSPOA {
         }
         try {
             aSocket1 = new DatagramSocket();
-            naMsg = getRemote(PortConfig.replicaNA1,aSocket1,"");
+            naMsg = util.getRemote(PortConfig.replicaNA1,aSocket1,"");
         } catch (SocketException e) {
             System.out.println("Socket: " + e.getMessage());
         } catch (IOException e) {
@@ -383,7 +381,7 @@ public class EuGameClass  extends DPSSPOA {
                 return "password is wrong";
             }
             String str = util.findPlayer(userName.trim(),oldIPAddress);
-            removeResult = removePlayer(userName);
+            removeResult = util.removePlayer(userName,oldIPAddress);
             if(removeResult){
                 addResult = addPlayer(str, newIPAddress);
             }
@@ -482,34 +480,6 @@ public class EuGameClass  extends DPSSPOA {
         orb.shutdown(false);
     }
 
-
-
-
-
-
-    /**
-     * get remote message by udp
-     * @param udpPort
-     * @param aSocket
-     * @return response message
-     * @throws Exception
-     */
-    public String getRemote(Integer udpPort, DatagramSocket aSocket,String Msg) throws Exception{
-        if(Msg==null){
-            return "";
-        }
-        byte[] message = Msg.getBytes();
-        InetAddress aHost = InetAddress.getByName("localhost");
-        DatagramPacket request = new DatagramPacket(message, Msg.length(), aHost, udpPort);
-        aSocket.send(request);
-        byte[] buffer = new byte[1000];
-        DatagramPacket reply = new DatagramPacket(buffer, buffer.length);
-        aSocket.receive(reply);
-        String result = new String(reply.getData());
-        return result;
-    }
-
-
     /**
      * add the player to the new location
      * @param str
@@ -525,7 +495,7 @@ public class EuGameClass  extends DPSSPOA {
         if(newIPAddress.startsWith("132.")){
             try {
                 aSocket = new DatagramSocket();
-                naMsg = getRemote(PortConfig.replicaNA1,aSocket,str);
+                naMsg = util.getRemote(PortConfig.replicaNA1,aSocket,str);
             } catch (SocketException e) {
                 System.out.println("Socket: " + e.getMessage());
             } catch (IOException e) {
@@ -545,7 +515,7 @@ public class EuGameClass  extends DPSSPOA {
         }else{
             try {
                 aSocket1 = new DatagramSocket();
-                asMsg = getRemote(PortConfig.replicaAS1,aSocket1,str);
+                asMsg = util.getRemote(PortConfig.replicaAS1,aSocket1,str);
             } catch (SocketException e) {
                 System.out.println("Socket: " + e.getMessage());
             } catch (IOException e) {
@@ -565,23 +535,6 @@ public class EuGameClass  extends DPSSPOA {
         }
     }
 
-    /**
-     * remove the player from the old location
-     * @param userName
-     * @return
-     */
-    public boolean removePlayer(String userName){
-        boolean flag = true;
-        try{
-            List list = EuGameServer.europeMap.get(userName.trim().charAt(0));
-            list = util.removeItemFromList(list,userName);
-            EuGameServer.europeMap.put(userName.charAt(0),list);
-        }catch (Exception e){
-            flag = false;
-        }finally {
-            return flag;
-        }
-    }
 
 
 }

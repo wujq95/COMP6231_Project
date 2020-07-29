@@ -47,15 +47,14 @@ public class Leader {
                 DatagramPacket request = new DatagramPacket(buffer, buffer.length);
                 aSocket.receive(request);
                 String requestData = new String(request.getData());
-                System.out.println("leader gets the message from the front end:"+requestData);
-
+                System.out.println("The leader gets the message from the front end: "+requestData);
                 String result1 = broadCast(requestData);
                 //String result2 = broadCast(requestData);
                 String result3 = operation(requestData);
                 ArrayList<String> res = new ArrayList<>();
                 if(result1==null){
-                    String Msg = "Server 1 is fail";
-                    notifyRM(Msg);
+                    String Msg = "RM1";
+                    notifyRM(Msg,PortConfig.RMPort1);
                 }else{
                     res.add(result1);
                 }
@@ -65,16 +64,19 @@ public class Leader {
                 }else{
                     res.add(result2);
                 }*/
+
                 if(result3==null){
-                    String Msg = "Server 3 is fail";
-                    notifyRM(Msg);
+                    String Msg = "RM2";
+                    //notifyRM(Msg,PortConfig.RMPort1);
+                    notifyRM(Msg,PortConfig.RMPort2);
                 }else{
                     res.add(result3);
                 }
                 String result;
 
                 if(res.size()==0){
-                    result = "System has a crash that no reply got";
+                    result = "No reply";
+                    // 之后要改
                 }else if(res.size()==1){
                     result = res.get(0);
                 }else if(res.size()==2){
@@ -98,7 +100,9 @@ public class Leader {
                 //选择一个正确的结果传回去
 
                 //这里要保证至少一个不是null，不然会空指针
-
+                if(result==null){
+                    result = "No reply";
+                }
                 byte[] sendData = result.getBytes();
                 DatagramPacket reply = new DatagramPacket(sendData, result.length(), request.getAddress(),
                         request.getPort());
@@ -151,13 +155,15 @@ public class Leader {
             InetAddress host = InetAddress.getByName("localhost");
             DatagramPacket request = new DatagramPacket(sendData, message.length(), host,PortConfig.leader2);
             aSocket.send(request);
-            aSocket.setSoTimeout(5000);
-            byte[] buffer = new byte[1000];
-            DatagramPacket reply = new DatagramPacket(buffer, buffer.length);
-            while(true){
+            try {
+                aSocket.setSoTimeout(3000);
+                byte[] buffer = new byte[1000];
+                DatagramPacket reply = new DatagramPacket(buffer, buffer.length);
                 aSocket.receive(reply);
                 String result = new String(reply.getData()).trim();
                 return result;
+            }catch (SocketTimeoutException e){
+                return null;
             }
         }catch (SocketException e) {
             System.out.println("SocketException: " + e.getMessage());
@@ -183,8 +189,6 @@ public class Leader {
         NamingContextExt ncRef = NamingContextExtHelper.narrow(objRef);
 
         String[] strs = str.split("\\|");
-
-
         String result = null;
         if(str.startsWith("createPlayerAccount|")){
             if(strs[6].startsWith("93.")){
@@ -244,7 +248,22 @@ public class Leader {
         return result;
     }
 
-    public static void notifyRM(String Msg){
-        System.out.println("notify rm:"+Msg);
+    public static void notifyRM(String Msg,Integer port){
+        DatagramSocket aSocket = null;
+        try {
+            aSocket = new DatagramSocket();
+            byte[] sendData = Msg.getBytes();
+            InetAddress host = InetAddress.getByName("localhost");
+            DatagramPacket request = new DatagramPacket(sendData, Msg.length(), host, port);
+            aSocket.send(request);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        finally{
+            if(aSocket != null){
+                aSocket.close();
+            }
+        }
+
     }
 }

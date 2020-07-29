@@ -6,6 +6,9 @@ import replica1.na.NaGameServer;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
@@ -150,5 +153,54 @@ public class Util {
         return false;
     }
 
+    /**
+     * remove the player from the old location
+     * @param userName
+     * @return
+     */
+    public boolean removePlayer(String userName,String ipAddress){
+        boolean flag = true;
+        try{
+            if(ipAddress.startsWith("182")){
+                List list = AsGameServer.asiaMap.get(userName.trim().charAt(0));
+                list = removeItemFromList(list,userName);
+                AsGameServer.asiaMap.put(userName.charAt(0),list);
+            }else if(ipAddress.startsWith("132")){
+                List list = NaGameServer.northAmericaMap.get(userName.trim().charAt(0));
+                list = removeItemFromList(list,userName);
+                NaGameServer.northAmericaMap.put(userName.charAt(0),list);
+            }else {
+                List list = EuGameServer.europeMap.get(userName.trim().charAt(0));
+                list = removeItemFromList(list, userName);
+                EuGameServer.europeMap.put(userName.charAt(0), list);
+            }
+        }catch (Exception e){
+            flag = false;
+        }finally {
+            return flag;
+        }
+    }
+
+    /**
+     * get remote message by udp
+     * @param udpPort
+     * @param aSocket
+     * @return
+     * @throws Exception
+     */
+    public String getRemote(Integer udpPort, DatagramSocket aSocket, String Msg) throws Exception{
+        if(Msg==null){
+            return "";
+        }
+        byte[] message = Msg.getBytes();
+        InetAddress aHost = InetAddress.getByName("localhost");
+        DatagramPacket request = new DatagramPacket(message, Msg.length(), aHost, udpPort);
+        aSocket.send(request);
+        byte[] buffer = new byte[1000];
+        DatagramPacket reply = new DatagramPacket(buffer, buffer.length);
+        aSocket.receive(reply);
+        String result = new String(reply.getData());
+        return result;
+    }
 
 }
