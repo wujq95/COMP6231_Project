@@ -6,10 +6,10 @@ import frontend.FrontEndModule.FrontEndHelper;
 import org.omg.CORBA.ORB;
 import org.omg.CosNaming.NamingContextExt;
 import org.omg.CosNaming.NamingContextExtHelper;
-import replica1.util.Util;
 
 import java.util.Properties;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 public class AdministratorClient {
 
@@ -20,7 +20,6 @@ public class AdministratorClient {
      */
     public static void main(String[] args) throws Exception {
         Scanner scanner = new Scanner(System.in);
-        Util util = new Util();
         String ipAddress;
         Properties props = new Properties();
         props.put("org.omg.CORBA.ORBInitialPort", "1050");
@@ -50,7 +49,7 @@ public class AdministratorClient {
             if (input == 1) {
                 System.out.print("Please enter the ipAddress: ");
                 ipAddress = scanner.nextLine();
-                if(util.checkAddress(ipAddress)){
+                if(checkAddress(ipAddress)){
                     System.out.print("Press enter your user name: ");
                     String userName = scanner.nextLine();
                     System.out.print("Please enter the password: ");
@@ -67,7 +66,7 @@ public class AdministratorClient {
             }else if (input == 2) {
                 System.out.print("Please enter the ipAddress: ");
                 ipAddress = scanner.nextLine();
-                if(util.checkAddress(ipAddress)){
+                if(checkAddress(ipAddress)){
                     System.out.print("Press enter your user name: ");
                     String userName = scanner.nextLine();
                     System.out.print("Please enter the password: ");
@@ -88,5 +87,29 @@ public class AdministratorClient {
                 break;
             }
         }
+    }
+
+    /**
+     * check if ip address is in the right pattern
+     * @param ipAddress
+     * @return
+     */
+    public static boolean checkAddress(String ipAddress) {
+        String regex = "\\d{3}\\.\\d{3}\\.\\d{3}";
+        Pattern pattern = Pattern.compile(regex);
+        if (ipAddress.startsWith("182.")) {
+            if (pattern.matcher(ipAddress.substring(4)).matches()) {
+                return true;
+            }
+        } else if (ipAddress.startsWith("93.")) {
+            if (pattern.matcher(ipAddress.substring(3)).matches()) {
+                return true;
+            }
+        } else if (ipAddress.startsWith("132.")) {
+            if (pattern.matcher(ipAddress.substring(4)).matches()) {
+                return true;
+            }
+        }
+        return false;
     }
 }
