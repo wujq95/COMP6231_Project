@@ -1,6 +1,5 @@
 package frontend;
 
-import config.PortConfig;
 import frontend.FrontEndModule.FrontEnd;
 import frontend.FrontEndModule.FrontEndHelper;
 import org.omg.CORBA.ORB;

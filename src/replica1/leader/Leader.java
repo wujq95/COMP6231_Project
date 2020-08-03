@@ -47,10 +47,13 @@ public class Leader {
                 DatagramPacket request = new DatagramPacket(buffer, buffer.length);
                 aSocket.receive(request);
                 String requestData = new String(request.getData());
-                System.out.println("The leader gets the message from the front end: "+requestData);
-                String result1 = broadCast(requestData);
+                System.out.println("The Leader Gets the Message from the Front End: "+requestData);
+                String result1 = operation(requestData);
+
+                //这里可以把两个和在一起broadcast出去吧，不然就需要传port，不行在依次来
+                String result3 = broadCast(requestData);
                 //String result2 = broadCast(requestData);
-                String result3 = operation(requestData);
+
                 ArrayList<String> res = new ArrayList<>();
                 if(result1==null){
                     String Msg = "RM1";
@@ -75,7 +78,6 @@ public class Leader {
                 System.out.println("result1:"+result1);
                 System.out.println("result3:"+result3);
                 String result;
-
                 if(res.size()==0){
                     result = "No reply";
                     // 之后要改
@@ -121,18 +123,16 @@ public class Leader {
         }
     }
 
-    public static String listenBroadCast() throws Exception{
+    public static void listenBroadCast() throws Exception{
         DatagramSocket aSocket = null;
         try{
-            aSocket = new DatagramSocket(6666);
+            aSocket = new DatagramSocket(PortConfig.leader1);
             byte[] buffer = new byte[1000];
             while(true){
                 DatagramPacket request = new DatagramPacket(buffer, buffer.length);
                 aSocket.receive(request);
                 String requestData = new String(request.getData()).trim();
-                System.out.println("replica1 gets the broadcast:" + requestData);
                 String result = operation(requestData);
-                System.out.println(result);
                 byte[] sendData = result.getBytes();
                 DatagramPacket reply = new DatagramPacket(sendData, result.length(), request.getAddress(),
                         request.getPort());
@@ -146,11 +146,11 @@ public class Leader {
             if (aSocket != null)
                 aSocket.close();
         }
-        return "fail";
     }
 
     public static String broadCast(String message){
         DatagramSocket aSocket = null;
+        String result = null;
         try{
             aSocket = new DatagramSocket();
             byte[] sendData = message.getBytes();
@@ -158,14 +158,13 @@ public class Leader {
             DatagramPacket request = new DatagramPacket(sendData, message.length(), host,PortConfig.leader2);
             aSocket.send(request);
             try {
-                aSocket.setSoTimeout(3000);
+                aSocket.setSoTimeout(2000);
                 byte[] buffer = new byte[1000];
                 DatagramPacket reply = new DatagramPacket(buffer, buffer.length);
                 aSocket.receive(reply);
-                String result = new String(reply.getData()).trim();
-                return result;
+                result = new String(reply.getData()).trim();
             }catch (SocketTimeoutException e){
-                return null;
+                result = null;
             }
         }catch (SocketException e) {
             System.out.println("SocketException: " + e.getMessage());
@@ -174,8 +173,8 @@ public class Leader {
         } finally {
             if (aSocket != null)
                 aSocket.close();
+            return result;
         }
-        return null;
     }
 
     public static String operation(String str) throws Exception{
@@ -258,6 +257,19 @@ public class Leader {
             InetAddress host = InetAddress.getByName("localhost");
             DatagramPacket request = new DatagramPacket(sendData, Msg.length(), host, port);
             aSocket.send(request);
+            while(true){
+                try {
+                    byte[] buffer = new byte[1000];
+                    DatagramPacket reply = new DatagramPacket(buffer, buffer.length);
+                    aSocket.setSoTimeout(2000);
+                    aSocket.receive(reply);
+                    break;
+                } catch (SocketTimeoutException e) {
+                    InetAddress hostResend = InetAddress.getByName("localhost");
+                    DatagramPacket requestResend = new DatagramPacket(sendData, sendData.length, hostResend, port);
+                    aSocket.send(requestResend);
+                }
+            }
         }catch(Exception e){
             e.printStackTrace();
         }

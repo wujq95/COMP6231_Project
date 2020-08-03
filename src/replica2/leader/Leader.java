@@ -24,7 +24,7 @@ public class Leader {
     }
 
 
-    public static String listenBroadCast(){
+    public static void listenBroadCast(){
         DatagramSocket aSocket = null;
         try{
             aSocket = new DatagramSocket(PortConfig.leader2);
@@ -33,9 +33,8 @@ public class Leader {
                 DatagramPacket request = new DatagramPacket(buffer, buffer.length);
                 aSocket.receive(request);
                 String requestData = new String(request.getData()).trim();
-                System.out.println("replica2 gets the broadcast:" + requestData);
+                System.out.println("Replica2 Gets the Broadcast:" + requestData);
                 String result = operation(requestData);
-                System.out.println(result);
                 byte[] sendData = result.getBytes();
                 DatagramPacket reply = new DatagramPacket(sendData, result.length(), request.getAddress(),
                         request.getPort());
@@ -49,7 +48,6 @@ public class Leader {
             if (aSocket != null)
                 aSocket.close();
         }
-        return "fail";
     }
 
     public static String operation(String request){

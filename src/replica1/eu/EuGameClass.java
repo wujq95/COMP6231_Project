@@ -530,7 +530,4 @@ public class EuGameClass extends DPSSPOA {
             return flag;
         }
     }
-
-
-
 }

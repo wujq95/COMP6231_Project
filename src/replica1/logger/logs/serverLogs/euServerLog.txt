@@ -36,3 +36,15 @@ DATE: 2020-07-30 08:37:18 PM Successfully login: guanyu
 DATE: 2020-07-30 08:38:04 PM Fail to login: User is currently signed-in
 DATE: 2020-07-30 08:41:48 PM Successfully login: guanyu
 DATE: 2020-07-30 08:42:19 PM Fail to login: User name does not exist
+DATE: 2020-08-03 05:26:29 PM Successfully login: guanyu
+DATE: 2020-08-03 05:26:34 PM Fail to login: User is currently signed-in
+DATE: 2020-08-03 05:26:39 PM Fail to login: User is currently signed-in
+DATE: 2020-08-03 05:26:45 PM Fail to login: User is currently signed-in
+DATE: 2020-08-03 05:26:50 PM Fail to login: User is currently signed-in
+DATE: 2020-08-03 05:26:55 PM Fail to login: User is currently signed-in
+DATE: 2020-08-03 05:27:00 PM Fail to login: User is currently signed-in
+DATE: 2020-08-03 05:27:05 PM Fail to login: User is currently signed-in
+DATE: 2020-08-03 05:27:10 PM Fail to login: User is currently signed-in
+DATE: 2020-08-03 05:29:17 PM Successfully login: guanyu
+DATE: 2020-08-03 05:29:31 PM Successfully logout: guanyu
+DATE: 2020-08-03 05:29:39 PM Fail to logout: User is not currently signed-in

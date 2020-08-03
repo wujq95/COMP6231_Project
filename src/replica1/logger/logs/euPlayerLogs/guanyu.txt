@@ -23,3 +23,6 @@ DATE: 2020-07-28 02:52:46 PM Login to game
 DATE: 2020-07-28 02:55:55 PM Login to game
 DATE: 2020-07-30 08:37:18 PM Login to game
 DATE: 2020-07-30 08:41:48 PM Login to game
+DATE: 2020-08-03 05:26:29 PM Login to game
+DATE: 2020-08-03 05:29:17 PM Login to game
+DATE: 2020-08-03 05:29:31 PM Logout the game

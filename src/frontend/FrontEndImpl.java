@@ -8,15 +8,11 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketTimeoutException;
-import java.util.LinkedList;
-import java.util.Queue;
 
 
 public class FrontEndImpl extends FrontEndPOA {
 
     private ORB orb;
-
-    private Queue<String> queue = new LinkedList<String>();
 
     public void setORB(ORB orb_val) {
         orb = orb_val;
@@ -77,16 +73,15 @@ public class FrontEndImpl extends FrontEndPOA {
     }
 
     @Override
-    public void shutdown() {}
+    public void shutdown() {
+        orb.shutdown(false);
+    }
 
     public static String sendMsgToLeader(String message){
 
-        System.out.println("Front End Sends message to the leader: "+message);
-
         DatagramSocket aSocket = null;
+        String result = "Network failure!";
 
-        //front server 和impl这里需要处理一下
-        //现在server那边是接不到东西的
         try {
             aSocket = new DatagramSocket();
             byte[] sendData = message.getBytes();
@@ -100,16 +95,17 @@ public class FrontEndImpl extends FrontEndPOA {
                     DatagramPacket reply = new DatagramPacket(buffer, buffer.length);
                     aSocket.setSoTimeout(5000);
                     aSocket.receive(reply);
-                    String result = new String(reply.getData()).trim();
-                    System.out.println("front end gets the result: "+result);
+                    result = new String(reply.getData()).trim();
+                    System.out.println("Front End Gets The result From the Leader: "+result);
                     //之后测试一下
+                    //可能存在的问题是发出去第二个之后，收到第一个的结果，在收第二的结果的时候，端口已经关闭了。
                     if(result.startsWith("No reply")){
                         InetAddress hostResend = InetAddress.getByName("localhost");
                         DatagramPacket requestResend = new DatagramPacket(sendData, sendData.length, hostResend, getLeaderUDPPort());
                         aSocket.send(requestResend);
-                        continue;
+                    }else{
+                        break;
                     }
-                    return result;
                 } catch (SocketTimeoutException e) {
                     InetAddress hostResend = InetAddress.getByName("localhost");
                     DatagramPacket requestResend = new DatagramPacket(sendData, sendData.length, hostResend, getLeaderUDPPort());
@@ -123,8 +119,8 @@ public class FrontEndImpl extends FrontEndPOA {
             if(aSocket != null){
                 aSocket.close();
             }
+            return result;
         }
-        return null;
     }
 
     public static Integer getLeaderUDPPort(){

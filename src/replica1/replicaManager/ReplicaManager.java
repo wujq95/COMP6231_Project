@@ -35,14 +35,16 @@ public class ReplicaManager {
                 DatagramPacket request = new DatagramPacket(buffer, buffer.length);
                 aSocket.receive(request);
                 String requestData = new String(request.getData()).trim();
-                System.out.println("replica manager listen: "+requestData);
-                if(requestData.startsWith("RM1")){
-                    RMFailureCount++;
-                    if(RMFailureCount>=3){
-                        reload();
-                        RMFailureCount=0;
-                    }
+                System.out.println("RM1 Listen: "+requestData);
+                RMFailureCount++;
+                if(RMFailureCount>=3){
+                    reload();
+                    RMFailureCount=0;
                 }
+                byte[] sendData = "ok".getBytes();
+                DatagramPacket reply = new DatagramPacket(sendData, "ok".length(), request.getAddress(),
+                        request.getPort());
+                aSocket.send(reply);
             }
         }catch (SocketException e) {
             System.out.println("SocketException: " + e.getMessage());
