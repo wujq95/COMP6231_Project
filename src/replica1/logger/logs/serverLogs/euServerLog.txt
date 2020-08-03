@@ -32,3 +32,7 @@ DATE: 2020-07-28 02:31:06 PM Successfully create an account: ming12
 DATE: 2020-07-28 02:52:46 PM Successfully login: guanyu
 DATE: 2020-07-28 02:52:51 PM Fail to login: User is currently signed-in
 DATE: 2020-07-28 02:55:55 PM Successfully login: guanyu
+DATE: 2020-07-30 08:37:18 PM Successfully login: guanyu
+DATE: 2020-07-30 08:38:04 PM Fail to login: User is currently signed-in
+DATE: 2020-07-30 08:41:48 PM Successfully login: guanyu
+DATE: 2020-07-30 08:42:19 PM Fail to login: User name does not exist

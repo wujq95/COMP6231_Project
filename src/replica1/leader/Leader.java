@@ -68,10 +68,12 @@ public class Leader {
                 if(result3==null){
                     String Msg = "RM2";
                     //notifyRM(Msg,PortConfig.RMPort1);
-                    notifyRM(Msg,PortConfig.RMPort2);
+                    notifyRM(Msg,PortConfig.RMPort1);
                 }else{
                     res.add(result3);
                 }
+                System.out.println("result1:"+result1);
+                System.out.println("result3:"+result3);
                 String result;
 
                 if(res.size()==0){

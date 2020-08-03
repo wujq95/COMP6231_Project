@@ -1,9 +1,7 @@
 package replica1.as;
 
 import java.io.*;
-import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.net.InetAddress;
 import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.List;
@@ -349,70 +347,68 @@ public class AsGameClass extends DPSSPOA {
         String res;
         boolean removeResult;
         boolean addResult = false;
-        synchronized (this){
-            if(!util.checkAddress(newIPAddress)){
-                try {
-                    logger.serverLog(serverName,"Fail to transfer the account: New ip address is not right");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                return "new ip address is wrong";
-            }
-            if(newIPAddress.startsWith("182.")){
-                try {
-                    logger.serverLog(serverName,"Fail to transfer the account: Old and new ip address are in the same location");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                return "old and new ip address can not be in the same location";
-            }
-            if(!util.checkUserName(userName.trim(),oldIPAddress)){
-                try {
-                    logger.serverLog(serverName,"Fail to transfer the account: User name does not exist");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                return "user name does not exist";
-            }
-            if(!util.checkPassword(userName.trim(),password,oldIPAddress)){
-                try {
-                    logger.serverLog(serverName,"Fail to transfer the account: Password is wrong");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                return "password is wrong";
-            }
-            String str = util.findPlayer(userName.trim(),oldIPAddress);
-            removeResult = util.removePlayer(userName,oldIPAddress);
-            if(removeResult){
-                addResult = addPlayer(str, newIPAddress);
-            }
-            if(removeResult&&addResult){
-                if(AsGameServer.asiaOnline.contains(userName.trim())){
-                    AsGameServer.asiaOnline.remove(userName.trim());
-                    try {
-                        logger.playerLog(serverName,userName.trim().trim(),"User has logout because the account has been transfered");
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-                res = "successfully transfer the player";
-            }else if(removeResult&&(!addResult)){
-                List list = AsGameServer.asiaMap.get(str.charAt(0));
-                list.add(str);
-                AsGameServer.asiaMap.put(str.charAt(0),list);
-                res = "Fail to transfer the account: Unable to add the player to new location, and the reason may be that an account with the same user name already exists in the new server";
-            }else{
-                res = "Fail to transfer the account: Unable to add the player to new location and remove the player from old location";
-            }
+        if(!util.checkAddress(newIPAddress)){
             try {
-                logger.serverLog(serverName,res);
-                logger.playerLog(serverName,userName,res);
+                logger.serverLog(serverName,"Fail to transfer the account: New ip address is not right");
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            return res;
+            return "new ip address is wrong";
         }
+        if(newIPAddress.startsWith("182.")){
+            try {
+                logger.serverLog(serverName,"Fail to transfer the account: Old and new ip address are in the same location");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return "old and new ip address can not be in the same location";
+        }
+        if(!util.checkUserName(userName.trim(),oldIPAddress)){
+            try {
+                logger.serverLog(serverName,"Fail to transfer the account: User name does not exist");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return "user name does not exist";
+        }
+        if(!util.checkPassword(userName.trim(),password,oldIPAddress)){
+            try {
+                logger.serverLog(serverName,"Fail to transfer the account: Password is wrong");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return "password is wrong";
+        }
+        String str = util.findPlayer(userName.trim(),oldIPAddress);
+        removeResult = util.removePlayer(userName,oldIPAddress);
+        if(removeResult){
+            addResult = addPlayer(str, newIPAddress);
+        }
+        if(removeResult&&addResult){
+            if(AsGameServer.asiaOnline.contains(userName.trim())){
+                AsGameServer.asiaOnline.remove(userName.trim());
+                try {
+                    logger.playerLog(serverName,userName.trim().trim(),"User has logout because the account has been transfered");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            res = "successfully transfer the player";
+        }else if(removeResult&&(!addResult)){
+            List list = AsGameServer.asiaMap.get(str.charAt(0));
+            list.add(str);
+            AsGameServer.asiaMap.put(str.charAt(0),list);
+            res = "Fail to transfer the account: Unable to add the player to new location, and the reason may be that an account with the same user name already exists in the new server";
+        }else{
+            res = "Fail to transfer the account: Unable to add the player to new location and remove the player from old location";
+        }
+        try {
+            logger.serverLog(serverName,res);
+            logger.playerLog(serverName,userName,res);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return res;
     }
 
     /**
@@ -425,53 +421,51 @@ public class AsGameClass extends DPSSPOA {
      */
     @Override
     public String suspendAccount(String adminUsername, String adminPassword, String ipAddress, String usernameToSuspend) {
-        synchronized (this){
-            if (!adminUsername.equals("Admin")) {
-                try {
-                    logger.serverLog(serverName,"Fail to suspend the account: Admin user name is wrong");
-                    logger.adminLog("Fail to suspend the account: Admin user name is wrong");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                return "admin name is wrong";
-            }
-            if (!adminPassword.equals("Admin")) {
-                try {
-                    logger.serverLog(serverName,"Fail to suspend the account: Admin password is wrong");
-                    logger.adminLog("Fail to suspend the account: Admin password name is wrong");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                return "admin password is wrong";
-            }
-            if(!util.checkUserName(usernameToSuspend.trim(),ipAddress)){
-                try {
-                    logger.serverLog(serverName,"Fail to suspend the account: User name does not exist");
-                    logger.adminLog("Fail to suspend the account: User name does not exist");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                return "user name does not exist";
-            }
-            List<String> list = AsGameServer.asiaMap.get(usernameToSuspend.charAt(0));
-            list = util.removeItemFromList(list,usernameToSuspend);
-            AsGameServer.asiaMap.put(usernameToSuspend.charAt(0),list);
+        if (!adminUsername.equals("Admin")) {
             try {
-                logger.serverLog(serverName,"Successfully suspend the user account: "+usernameToSuspend);
-                logger.adminLog("Successfully suspend the user account: "+usernameToSuspend);
+                logger.serverLog(serverName,"Fail to suspend the account: Admin user name is wrong");
+                logger.adminLog("Fail to suspend the account: Admin user name is wrong");
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            if(AsGameServer.asiaOnline.contains(usernameToSuspend.trim())){
-                AsGameServer.asiaOnline.remove(usernameToSuspend.trim());
-                try {
-                    logger.playerLog(serverName,usernameToSuspend.trim(),"User has logout because the account has been suspended");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            return "successfully suspend the player account";
+            return "admin name is wrong";
         }
+        if (!adminPassword.equals("Admin")) {
+            try {
+                logger.serverLog(serverName,"Fail to suspend the account: Admin password is wrong");
+                logger.adminLog("Fail to suspend the account: Admin password name is wrong");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return "admin password is wrong";
+        }
+        if(!util.checkUserName(usernameToSuspend.trim(),ipAddress)){
+            try {
+                logger.serverLog(serverName,"Fail to suspend the account: User name does not exist");
+                logger.adminLog("Fail to suspend the account: User name does not exist");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return "user name does not exist";
+        }
+        List<String> list = AsGameServer.asiaMap.get(usernameToSuspend.charAt(0));
+        list = util.removeItemFromList(list,usernameToSuspend);
+        AsGameServer.asiaMap.put(usernameToSuspend.charAt(0),list);
+        try {
+            logger.serverLog(serverName,"Successfully suspend the user account: "+usernameToSuspend);
+            logger.adminLog("Successfully suspend the user account: "+usernameToSuspend);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if(AsGameServer.asiaOnline.contains(usernameToSuspend.trim())){
+            AsGameServer.asiaOnline.remove(usernameToSuspend.trim());
+            try {
+                logger.playerLog(serverName,usernameToSuspend.trim(),"User has logout because the account has been suspended");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return "successfully suspend the player account";
     }
 
     /**
@@ -479,6 +473,7 @@ public class AsGameClass extends DPSSPOA {
      */
     @Override
     public void shutdown() {
+
         orb.shutdown(false);
     }
 
