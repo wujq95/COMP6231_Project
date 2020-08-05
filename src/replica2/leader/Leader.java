@@ -6,8 +6,13 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
+import java.util.List;
 
 public class Leader {
+
+    private List<String> msgReceived;
+
+    private static Integer num = 1000;
 
     public static void main(String[] args) {
 

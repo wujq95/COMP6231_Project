@@ -10,9 +10,12 @@ import org.omg.CosNaming.NamingContextExtHelper;
 import java.io.IOException;
 import java.net.*;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 public class Leader {
+
+    private static Integer sequencer = 1000;
 
     public static void main(String[] args) {
         Runnable frontEndTaskUDP = () -> {
@@ -24,7 +27,7 @@ public class Leader {
         };
 
         new Thread(frontEndTaskUDP).start();
-        System.out.println("Leader FrontEnd Listener has started");
+        System.out.println("Leader FrontEnd Listener has Started");
 
         Runnable broadCastTaskUDP = () -> {
             try {
@@ -33,7 +36,7 @@ public class Leader {
                 e.printStackTrace();
             }
         };
-        new Thread(broadCastTaskUDP).start();
+        //new Thread(broadCastTaskUDP).start();
         System.out.println("Leader BroadCast Listener has started");
         System.out.println("Leader Server has started");
     }
@@ -48,70 +51,76 @@ public class Leader {
                 aSocket.receive(request);
                 String requestData = new String(request.getData());
                 System.out.println("The Leader Gets the Message from the Front End: "+requestData);
-                String result1 = operation(requestData);
 
-                //这里可以把两个和在一起broadcast出去吧，不然就需要传port，不行在依次来
-                String result3 = broadCast(requestData);
-                //String result2 = broadCast(requestData);
-
-                ArrayList<String> res = new ArrayList<>();
-                if(result1==null){
-                    String Msg = "RM1";
-                    notifyRM(Msg,PortConfig.RMPort1);
-                }else{
-                    res.add(result1);
-                }
-                /*if(result2.equals("fail")){
-                    String Msg = "Server 2 is fail";
-                    notifyRM(Msg);
-                }else{
-                    res.add(result2);
-                }*/
-
-                if(result3==null){
-                    String Msg = "RM2";
-                    //notifyRM(Msg,PortConfig.RMPort1);
-                    notifyRM(Msg,PortConfig.RMPort1);
-                }else{
-                    res.add(result3);
-                }
-                System.out.println("result1:"+result1);
-                System.out.println("result3:"+result3);
+                String[] strings = requestData.split(":");
                 String result;
-                if(res.size()==0){
+                if(sequencer<Integer.parseInt(strings[0])){
                     result = "No reply";
-                    // 之后要改
-                }else if(res.size()==1){
-                    result = res.get(0);
-                }else if(res.size()==2){
-                    if(res.get(0).startsWith("S")){
-                        result = res.get(0);
-                    }else{
-                        result = res.get(1);
-                    }
-                    //这里需要处理一下
                 }else{
-                    if(res.get(1).equals(res.get(2))){
-                        result = res.get(1);
-                    }else {
-                        result = res.get(0);
+                    String result1 = operation(requestData);
+                    //这里可以把两个和在一起broadcast出去吧，不然就需要传port，不行在依次来
+                    String result3 = broadCast(requestData,PortConfig.leader2);
+                    //String result2 = broadCast(requestData);
+                    ArrayList<String> res = new ArrayList<>();
+                    if(result1==null){
+                        String Msg = "RM1";
+                        notifyRM(Msg,PortConfig.RMPort1);
+                    }else{
+                        res.add(result1);
                     }
-                }
-                //自己的server corba处理
-                //接收另外两个server的结果
-                //设置timeout，超时报告给rm
-                //有结果不对的报告rm
-                //选择一个正确的结果传回去
+                    /*if(result2.equals("fail")){
+                        String Msg = "Server 2 is fail";
+                        notifyRM(Msg);
+                    }else{
+                        res.add(result2);
+                    }*/
 
-                //这里要保证至少一个不是null，不然会空指针
-                if(result==null){
-                    result = "No reply";
+                    if(result3==null){
+                        String Msg = "RM2";
+                        //notifyRM(Msg,PortConfig.RMPort1);
+                        notifyRM(Msg,PortConfig.RMPort1);
+                    }else{
+                        res.add(result3);
+                    }
+                    System.out.println("result1:"+result1);
+                    System.out.println("result3:"+result3);
+
+                    if(res.size()==0){
+                        result = "No reply";
+                        // 之后要改
+                    }else if(res.size()==1){
+                        result = res.get(0);
+                    }else if(res.size()==2){
+                        if(res.get(0).startsWith("S")){
+                            result = res.get(0);
+                        }else{
+                            result = res.get(1);
+                        }
+                        //这里需要处理一下
+                    }else{
+                        if(res.get(1).equals(res.get(2))){
+                            result = res.get(1);
+                        }else {
+                            result = res.get(0);
+                        }
+                    }
+                    //自己的server corba处理
+                    //接收另外两个server的结果
+                    //设置timeout，超时报告给rm
+                    //有结果不对的报告rm
+                    //选择一个正确的结果传回去
+
+                    //这里要保证至少一个不是null，不然会空指针
+                    if(result==null){
+                        result = "No reply";
+                    }
+
                 }
                 byte[] sendData = result.getBytes();
                 DatagramPacket reply = new DatagramPacket(sendData, result.length(), request.getAddress(),
                         request.getPort());
                 aSocket.send(reply);
-
+                sequencer++;
             }
         }catch (SocketException e) {
             System.out.println("SocketException: " + e.getMessage());
@@ -148,14 +157,14 @@ public class Leader {
         }
     }
 
-    public static String broadCast(String message){
+    public static String broadCast(String message,Integer port){
         DatagramSocket aSocket = null;
         String result = null;
         try{
             aSocket = new DatagramSocket();
             byte[] sendData = message.getBytes();
             InetAddress host = InetAddress.getByName("localhost");
-            DatagramPacket request = new DatagramPacket(sendData, message.length(), host,PortConfig.leader2);
+            DatagramPacket request = new DatagramPacket(sendData, message.length(), host,port);
             aSocket.send(request);
             try {
                 aSocket.setSoTimeout(2000);
