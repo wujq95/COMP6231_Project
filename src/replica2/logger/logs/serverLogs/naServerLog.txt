@@ -1,0 +1,19 @@
+DATE: 2020-07-23 09:32:32 PM Successfully check players status: NA: 0 online, 2offline, EU: 0 online, 1offline, AS: 0 online, 2offline 
+DATE: 2020-07-23 09:32:43 PM Fail to login: Admin user name is wrong
+DATE: 2020-07-23 09:33:02 PM Fail to suspend the account: Admin user name is wrong
+DATE: 2020-07-23 09:33:12 PM Fail to suspend the account: User name does not exist
+DATE: 2020-07-23 09:33:28 PM Successfully suspend the user account: ming12
+DATE: 2020-07-23 09:33:49 PM Fail to login: User name does not exist
+DATE: 2020-07-23 09:34:37 PM Successfully login: ming11
+DATE: 2020-07-23 09:34:50 PM Fail to logout: User name does not exist
+DATE: 2020-07-23 09:35:53 PM Successfully logout: ming11
+DATE: 2020-07-23 09:37:06 PM Successfully create an account: ming12
+DATE: 2020-07-23 09:37:19 PM Successfully login: ming12
+DATE: 2020-07-28 09:25:08 AM Successfully login: ming11
+DATE: 2020-07-28 09:44:30 AM Successfully check players status: NA: 0 online, 2offline, EU: 0 online, 2offline, AS: 0 online, 3offline 
+DATE: 2020-07-28 02:56:09 PM Successfully login: ming11
+DATE: 2020-07-30 08:35:55 PM Successfully login: ming11
+DATE: 2020-07-30 08:42:44 PM Fail to login: User name does not exist
+DATE: 2020-07-30 08:44:21 PM Successfully login: ming11
+DATE: 2020-07-30 08:44:33 PM Successfully logout: ming11
+DATE: 2020-07-30 08:44:52 PM Successfully login: ming11

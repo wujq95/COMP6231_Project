@@ -1,14 +1,14 @@
-package replica1.eu;
+package replica3.as;
 
 import config.PortConfig;
-import replica1.DPSSModule.DPSS;
-import replica1.DPSSModule.DPSSHelper;
 import org.omg.CORBA.ORB;
 import org.omg.CosNaming.NameComponent;
 import org.omg.CosNaming.NamingContextExt;
 import org.omg.CosNaming.NamingContextExtHelper;
 import org.omg.PortableServer.POA;
 import org.omg.PortableServer.POAHelper;
+import replica2.DPSSModule.DPSS;
+import replica2.DPSSModule.DPSSHelper;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -19,10 +19,10 @@ import java.net.SocketException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class EuGameServer {
+public class AsGameServer {
 
-    public static ConcurrentHashMap<Character, List<String>> europeMap = new ConcurrentHashMap<>();
-    public static Set<String> europeOnline = Collections.synchronizedSet(new HashSet<>());
+    public static ConcurrentHashMap<Character, List<String>> asiaMap = new ConcurrentHashMap<>();
+    public static Set<String> asiaOnline = Collections.synchronizedSet(new HashSet<>());
 
 
     /**
@@ -40,8 +40,8 @@ public class EuGameServer {
             }
         };
         new Thread(taskUDP).start();
-        EuGameClass euGameClass = new EuGameClass();
-        System.out.println("Europe server1 has been started");
+        AsGameClass asGameClass = new AsGameClass();
+        System.out.println("Asia server3 has been started");
         Properties props = new Properties();
         props.put("org.omg.CORBA.ORBInitialPort", "1050");
         props.put("org.omg.CORBA.ORBInitialHost", "localhost");
@@ -52,9 +52,9 @@ public class EuGameServer {
             POA rootpoa = POAHelper.narrow(orb.resolve_initial_references("RootPOA"));
             rootpoa.the_POAManager().activate();
             // create servant and register it with the ORB
-            euGameClass.setORB(orb);
+            asGameClass.setORB(orb);
             // get object reference from the servant
-            org.omg.CORBA.Object ref = rootpoa.servant_to_reference(euGameClass);
+            org.omg.CORBA.Object ref = rootpoa.servant_to_reference(asGameClass);
             // and cast the reference to a CORBA reference
             DPSS href = DPSSHelper.narrow(ref);
             // get the root naming context
@@ -64,19 +64,18 @@ public class EuGameServer {
             // Interoperable Naming Service (INS) specification.
             NamingContextExt ncRef = NamingContextExtHelper.narrow(objRef);
             // bind the Object Reference in Naming
-            String name = "EU1";
+            String name = "AS3";
             NameComponent path[] = ncRef.to_name(name);
             ncRef.rebind(path, href);
-            System.out.println("Europe Server1 is ready and listening ...  ...");
+            System.out.println("Asia Server3 is ready and listening ...  ...");
             // wait for invocations from clients
             orb.run();
         }catch (Exception e) {
             System.err.println("ERROR: " + e);
             e.printStackTrace(System.out);
         }
-        System.out.println("Europe Server1 Exiting ...");
+        System.out.println("Asia Server3 Exiting ...");
     }
-
     /**
      * add a listener for udp message
      * @throws Exception
@@ -84,7 +83,7 @@ public class EuGameServer {
     public static void serverReceive(){
         DatagramSocket aSocket = null;
         try {
-            aSocket = new DatagramSocket(PortConfig.replicaEU1);
+            aSocket = new DatagramSocket(PortConfig.replicaAS2);
             byte[] buffer = new byte[1024];
             while (true){
                 DatagramPacket request = new DatagramPacket(buffer, buffer.length);
@@ -93,20 +92,20 @@ public class EuGameServer {
                 String result;
                 if(request.getLength()==0){
                     Integer sum = 0;
-                    for(Map.Entry<Character, List<String>> entry:europeMap.entrySet()){
+                    for(Map.Entry<Character, List<String>> entry:asiaMap.entrySet()){
                         sum +=entry.getValue().size();
                     }
-                    Integer online = europeOnline.size();
+                    Integer online = asiaOnline.size();
                     result = (online)+";"+(sum-online)+";";
                 }else{
                     String str = requestData.substring(0,request.getLength());
                     List<String> list;
-                    if(!europeMap.containsKey(str.charAt(0))){
+                    if(!asiaMap.containsKey(str.charAt(0))){
                         list = new ArrayList();list.add(str);
-                        europeMap.put(str.charAt(0),list);
+                        asiaMap.put(str.charAt(0),list);
                         result = "success";
                     }else{
-                        list = europeMap.get(str.charAt(0));
+                        list = asiaMap.get(str.charAt(0));
                         boolean flag = true;
                         for(String s:list){
                             if(s.split("\\|")[0].equals(str.split("\\|")[0])){
@@ -115,13 +114,14 @@ public class EuGameServer {
                         }
                         if(flag){
                             list.add(str);
-                            europeMap.put(str.charAt(0),list);
+                            asiaMap.put(str.charAt(0),list);
                             result = "success";
                         }else{
                             result = "fail";
                         }
                     }
                 }
+
                 byte[] sendData = result.getBytes();
                 DatagramPacket reply = new DatagramPacket(sendData, result.length(), request.getAddress(),
                         request.getPort());
@@ -142,19 +142,19 @@ public class EuGameServer {
      * @throws IOException
      */
     public static void load() throws IOException {
-        FileReader fr = new FileReader("src/replica1/eu/euAccounts.txt");
+        FileReader fr = new FileReader("src/replica2/as/asAccounts.txt");
         BufferedReader br = new BufferedReader(fr);
         String str;
         while((str=br.readLine())!=null){
             char c = str.charAt(0);
-            if(europeMap.get(c)==null){
+            if(asiaMap.get(c)==null){
                 List<String> list = new ArrayList<>();
                 list.add(str);
-                europeMap.put(c,list);
+                asiaMap.put(c,list);
             }else{
-                List<String> list = europeMap.get(c);
+                List<String> list = asiaMap.get(c);
                 list.add(str);
-                europeMap.put(c,list);
+                asiaMap.put(c,list);
             }
         }
         br.close();

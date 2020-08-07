@@ -41,7 +41,7 @@ public class AsGameServer {
         };
         new Thread(taskUDP).start();
         AsGameClass asGameClass = new AsGameClass();
-        System.out.println("Asia server has been started");
+        System.out.println("Asia server1 has been started");
         Properties props = new Properties();
         props.put("org.omg.CORBA.ORBInitialPort", "1050");
         props.put("org.omg.CORBA.ORBInitialHost", "localhost");
@@ -64,17 +64,17 @@ public class AsGameServer {
             // Interoperable Naming Service (INS) specification.
             NamingContextExt ncRef = NamingContextExtHelper.narrow(objRef);
             // bind the Object Reference in Naming
-            String name = "AS";
+            String name = "AS1";
             NameComponent path[] = ncRef.to_name(name);
             ncRef.rebind(path, href);
-            System.out.println("Asia Server is ready and listening ...  ...");
+            System.out.println("Asia Server1 is ready and listening ...  ...");
             // wait for invocations from clients
             orb.run();
         }catch (Exception e) {
             System.err.println("ERROR: " + e);
             e.printStackTrace(System.out);
         }
-        System.out.println("Asia Server Exiting ...");
+        System.out.println("Asia Server1 Exiting ...");
     }
     /**
      * add a listener for udp message

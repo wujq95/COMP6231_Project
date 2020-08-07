@@ -1,4 +1,4 @@
-package replica1.replicaManager;
+package replica3.replicaManager;
 
 import config.PortConfig;
 
@@ -20,19 +20,19 @@ public class ReplicaManager {
             }
         };
         new Thread(taskUDP).start();
-        System.out.println("Replica manager is ready and listening");
+        System.out.println("Replica Manager is ready and listening");
     }
 
     public static void RMListener(){
         DatagramSocket aSocket = null;
         try{
-            aSocket = new DatagramSocket(PortConfig.RMPort1);
+            aSocket = new DatagramSocket(PortConfig.RMPort3);
             byte[] buffer = new byte[1000];
             while(true){
                 DatagramPacket request = new DatagramPacket(buffer, buffer.length);
                 aSocket.receive(request);
                 String requestData = new String(request.getData()).trim();
-                System.out.println("RM1 Listen: "+requestData);
+                System.out.println("RM3 Listen: "+requestData);
                 RMFailureCount++;
                 if(RMFailureCount>=3){
                     reload();
@@ -55,6 +55,6 @@ public class ReplicaManager {
 
 
     public static void reload(){
-        System.out.println("RM1 server reload");
+        System.out.println("RM3 server reload");
     }
 }

@@ -40,7 +40,7 @@ public class NaGameServer {
         };
         new Thread(taskUDP).start();
         NaGameClass naGameClass = new NaGameClass();
-        System.out.println("North America server has been started");
+        System.out.println("North America server1 has been started");
         Properties props = new Properties();
         props.put("org.omg.CORBA.ORBInitialPort", "1050");
         props.put("org.omg.CORBA.ORBInitialHost", "localhost");
@@ -63,17 +63,17 @@ public class NaGameServer {
             // Interoperable Naming Service (INS) specification.
             NamingContextExt ncRef = NamingContextExtHelper.narrow(objRef);
             // bind the Object Reference in Naming
-            String name = "NA";
+            String name = "NA1";
             NameComponent path[] = ncRef.to_name(name);
             ncRef.rebind(path, href);
-            System.out.println("North America Server is ready and listening ...  ...");
+            System.out.println("North America Server1 is ready and listening ...  ...");
             // wait for invocations from clients
             orb.run();
         }catch (Exception e) {
             System.err.println("ERROR: " + e);
             e.printStackTrace(System.out);
         }
-        System.out.println("North America Server Exiting ...");
+        System.out.println("North America Server1 Exiting ...");
     }
 
     /**

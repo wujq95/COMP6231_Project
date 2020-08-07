@@ -1,0 +1,8 @@
+DATE: 2020-07-23 07:37:42 PM Successfully check players status: NA: 1 online, 1offline, EU: 0 online, 1offline, AS: 0 online, 2offline 
+DATE: 2020-07-23 09:32:32 PM Successfully check players status: NA: 0 online, 2offline, EU: 0 online, 1offline, AS: 0 online, 2offline 
+DATE: 2020-07-23 09:32:43 PM Fail to login: Admin user name is wrong
+DATE: 2020-07-23 09:33:02 PM Fail to suspend the account: Admin user name is wrong
+DATE: 2020-07-23 09:33:12 PM Fail to suspend the account: User name does not exist
+DATE: 2020-07-23 09:33:28 PM Successfully suspend the user account: ming12
+DATE: 2020-07-23 09:37:58 PM Successfully check players status: NA: 1 online, 1 offline, EU: 1 online, 2 offline, AS: 0 online, 1offline
+DATE: 2020-07-28 09:44:30 AM Successfully check players status: NA: 0 online, 2offline, EU: 0 online, 2offline, AS: 0 online, 3offline 

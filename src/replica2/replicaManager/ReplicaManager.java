@@ -55,8 +55,6 @@ public class ReplicaManager {
 
 
     public static void reload(){
-        //关闭原来的线程
-        //重新开启
         System.out.println("RM2 server reload");
     }
 }

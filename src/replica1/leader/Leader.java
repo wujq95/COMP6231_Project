@@ -15,8 +15,6 @@ import java.util.Properties;
 
 public class Leader {
 
-    private static Integer sequencer = 1000;
-
     public static void main(String[] args) {
         Runnable frontEndTaskUDP = () -> {
             try {
@@ -27,7 +25,7 @@ public class Leader {
         };
 
         new Thread(frontEndTaskUDP).start();
-        System.out.println("Leader FrontEnd Listener has Started");
+        System.out.println("Leader frontend listener1 has Started");
 
         Runnable broadCastTaskUDP = () -> {
             try {
@@ -36,9 +34,9 @@ public class Leader {
                 e.printStackTrace();
             }
         };
-        //new Thread(broadCastTaskUDP).start();
-        System.out.println("Leader BroadCast Listener has started");
-        System.out.println("Leader Server has started");
+        new Thread(broadCastTaskUDP).start();
+        System.out.println("Leader broadcast listener1 has started");
+        System.out.println("Leader server1 has started");
     }
 
     public static void listenFrontEnd() throws Exception{
@@ -50,77 +48,60 @@ public class Leader {
                 DatagramPacket request = new DatagramPacket(buffer, buffer.length);
                 aSocket.receive(request);
                 String requestData = new String(request.getData());
-                System.out.println("The Leader Gets the Message from the Front End: "+requestData);
+                System.out.println("The leader1 receives the message from the front end: "+requestData);
 
-                String[] strings = requestData.split(":");
                 String result;
-                if(sequencer<Integer.parseInt(strings[0])){
-                    result = "No reply";
+                String result1 = operation(requestData);
+                String result2 = broadCast(requestData,PortConfig.leader2);
+                String result3 = broadCast(requestData,PortConfig.leader3);
+
+                ArrayList<String> res = new ArrayList<>();
+                if(result1==null){
+                    String Msg = "RM1";
+                    notifyRM(Msg,PortConfig.RMPort1);
                 }else{
-                    String result1 = operation(requestData);
-                    //这里可以把两个和在一起broadcast出去吧，不然就需要传port，不行在依次来
-                    String result3 = broadCast(requestData,PortConfig.leader2);
-                    //String result2 = broadCast(requestData);
-                    ArrayList<String> res = new ArrayList<>();
-                    if(result1==null){
-                        String Msg = "RM1";
-                        notifyRM(Msg,PortConfig.RMPort1);
-                    }else{
-                        res.add(result1);
-                    }
-                    /*if(result2.equals("fail")){
-                        String Msg = "Server 2 is fail";
-                        notifyRM(Msg);
-                    }else{
-                        res.add(result2);
-                    }*/
-
-                    if(result3==null){
-                        String Msg = "RM2";
-                        //notifyRM(Msg,PortConfig.RMPort1);
-                        notifyRM(Msg,PortConfig.RMPort1);
-                    }else{
-                        res.add(result3);
-                    }
-                    System.out.println("result1:"+result1);
-                    System.out.println("result3:"+result3);
-
-                    if(res.size()==0){
-                        result = "No reply";
-                        // 之后要改
-                    }else if(res.size()==1){
-                        result = res.get(0);
-                    }else if(res.size()==2){
-                        if(res.get(0).startsWith("S")){
-                            result = res.get(0);
-                        }else{
-                            result = res.get(1);
-                        }
-                        //这里需要处理一下
-                    }else{
-                        if(res.get(1).equals(res.get(2))){
-                            result = res.get(1);
-                        }else {
-                            result = res.get(0);
-                        }
-                    }
-                    //自己的server corba处理
-                    //接收另外两个server的结果
-                    //设置timeout，超时报告给rm
-                    //有结果不对的报告rm
-                    //选择一个正确的结果传回去
-
-                    //这里要保证至少一个不是null，不然会空指针
-                    if(result==null){
-                        result = "No reply";
-                    }
-
+                    res.add(result1);
                 }
+                if(result2==null){
+                    String Msg = "RM2";
+                    notifyRM(Msg,PortConfig.RMPort2);
+                }else{
+                    res.add(result2);
+                }
+                if(result3==null){
+                    String Msg = "RM3";
+                    notifyRM(Msg,PortConfig.RMPort3);
+                }else{
+                    res.add(result3);
+                }
+                System.out.println("result1:"+result1);
+                System.out.println("result2:"+result2);
+                System.out.println("result3:"+result3);
+                if(res.size()==0){
+                    result = "No reply";
+                }else if(res.size()==1){
+                    result = res.get(0);
+                }else if(res.size()==2){
+                    if(res.get(0).startsWith("S")){
+                        result = res.get(0);
+                    }else{
+                        result = res.get(1);
+                    }
+                }else{
+                    if(res.get(1).equals(res.get(2))){
+                        result = res.get(1);
+                    }else {
+                        result = res.get(0);
+                    }
+                }
+                if(result==null){
+                    result = "No reply";
+                }
+
                 byte[] sendData = result.getBytes();
                 DatagramPacket reply = new DatagramPacket(sendData, result.length(), request.getAddress(),
                         request.getPort());
                 aSocket.send(reply);
-                sequencer++;
             }
         }catch (SocketException e) {
             System.out.println("SocketException: " + e.getMessage());
@@ -202,56 +183,56 @@ public class Leader {
         String result = null;
         if(str.startsWith("createPlayerAccount|")){
             if(strs[6].startsWith("93.")){
-                obj = DPSSHelper.narrow(ncRef.resolve_str("EU"));
+                obj = DPSSHelper.narrow(ncRef.resolve_str("EU1"));
             }else if(strs[6].startsWith("132.")){
-                obj = DPSSHelper.narrow(ncRef.resolve_str("NA"));
+                obj = DPSSHelper.narrow(ncRef.resolve_str("NA1"));
             }else{
-                obj = DPSSHelper.narrow(ncRef.resolve_str("AS"));
+                obj = DPSSHelper.narrow(ncRef.resolve_str("AS1"));
             }
             result = obj.createPlayerAccount(strs[1],strs[2],strs[3],strs[4],strs[5],strs[6]);
         }else if(str.startsWith("playerSignIn|")){
             if(strs[3].startsWith("93.")){
-                obj = DPSSHelper.narrow(ncRef.resolve_str("EU"));
+                obj = DPSSHelper.narrow(ncRef.resolve_str("EU1"));
             }else if(strs[3].startsWith("132.")){
-                obj = DPSSHelper.narrow(ncRef.resolve_str("NA"));
+                obj = DPSSHelper.narrow(ncRef.resolve_str("NA1"));
             }else{
-                obj = DPSSHelper.narrow(ncRef.resolve_str("AS"));
+                obj = DPSSHelper.narrow(ncRef.resolve_str("AS1"));
             }
             result = obj.playerSignIn(strs[1],strs[2],strs[3]);
         }else if(str.startsWith("playerSignOut|")){
             if(strs[2].startsWith("93.")){
-                obj = DPSSHelper.narrow(ncRef.resolve_str("EU"));
+                obj = DPSSHelper.narrow(ncRef.resolve_str("EU1"));
             }else if(strs[2].startsWith("132.")){
-                obj = DPSSHelper.narrow(ncRef.resolve_str("NA"));
+                obj = DPSSHelper.narrow(ncRef.resolve_str("NA1"));
             }else{
-                obj = DPSSHelper.narrow(ncRef.resolve_str("AS"));
+                obj = DPSSHelper.narrow(ncRef.resolve_str("AS1"));
             }
             result = obj.playerSignOut(strs[1],strs[2]);
         }else if(str.startsWith("getPlayerStatus|")){
             if(strs[3].startsWith("93.")){
-                obj = DPSSHelper.narrow(ncRef.resolve_str("EU"));
+                obj = DPSSHelper.narrow(ncRef.resolve_str("EU1"));
             }else if(strs[3].startsWith("132.")){
-                obj = DPSSHelper.narrow(ncRef.resolve_str("NA"));
+                obj = DPSSHelper.narrow(ncRef.resolve_str("NA1"));
             }else{
-                obj = DPSSHelper.narrow(ncRef.resolve_str("AS"));
+                obj = DPSSHelper.narrow(ncRef.resolve_str("AS1"));
             }
             result = obj.getPlayerStatus(strs[1],strs[2],strs[3]);
         }else if(str.startsWith("transferAccount|")){
             if(strs[3].startsWith("93.")){
-                obj = DPSSHelper.narrow(ncRef.resolve_str("EU"));
+                obj = DPSSHelper.narrow(ncRef.resolve_str("EU1"));
             }else if(strs[3].startsWith("132.")){
-                obj = DPSSHelper.narrow(ncRef.resolve_str("NA"));
+                obj = DPSSHelper.narrow(ncRef.resolve_str("NA1"));
             }else{
-                obj = DPSSHelper.narrow(ncRef.resolve_str("AS"));
+                obj = DPSSHelper.narrow(ncRef.resolve_str("AS1"));
             }
             result = obj.transferAccount(strs[1],strs[2],strs[3],strs[4]);
         }else if(str.startsWith("suspendAccount|")){
             if(strs[3].startsWith("93.")){
-                obj = DPSSHelper.narrow(ncRef.resolve_str("EU"));
+                obj = DPSSHelper.narrow(ncRef.resolve_str("EU1"));
             }else if(strs[3].startsWith("132.")){
-                obj = DPSSHelper.narrow(ncRef.resolve_str("NA"));
+                obj = DPSSHelper.narrow(ncRef.resolve_str("NA1"));
             }else{
-                obj = DPSSHelper.narrow(ncRef.resolve_str("AS"));
+                obj = DPSSHelper.narrow(ncRef.resolve_str("AS1"));
             }
             result = obj.suspendAccount(strs[1],strs[2],strs[3],strs[4]);
         }

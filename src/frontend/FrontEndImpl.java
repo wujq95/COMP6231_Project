@@ -16,15 +16,12 @@ public class FrontEndImpl extends FrontEndPOA {
 
     public void setORB(ORB orb_val) {
         orb = orb_val;
-    }
-
-    private static Integer sequencer = 1000;
+    };
 
     @Override
     public String createPlayerAccount(String firstName, String lastName, String age, String userName, String password, String ipAddress) {
         synchronized (this){
-            String message = sequencer+":"+"createPlayerAccount"+"|"+firstName+"|"+lastName+"|"+age+"|"+userName+"|"+password+"|"+ipAddress;
-            sequencer++;
+            String message = "createPlayerAccount"+"|"+firstName+"|"+lastName+"|"+age+"|"+userName+"|"+password+"|"+ipAddress;
             String result = sendMsgToLeader(message);
             return result;
         }
@@ -33,8 +30,7 @@ public class FrontEndImpl extends FrontEndPOA {
     @Override
     public String playerSignIn(String userName, String password, String ipAddress) {
         synchronized (this) {
-            String message = sequencer+":"+"playerSignIn" + "|" + userName + "|" + password + "|" + ipAddress;
-            sequencer++;
+            String message = "playerSignIn" + "|" + userName + "|" + password + "|" + ipAddress;
             String result = sendMsgToLeader(message);
             return result;
         }
@@ -43,8 +39,7 @@ public class FrontEndImpl extends FrontEndPOA {
     @Override
     public String playerSignOut(String userName, String ipAddress) {
         synchronized (this){
-            String message = sequencer+":"+"playerSignOut"+"|"+userName+"|"+ipAddress;
-            sequencer++;
+            String message = "playerSignOut"+"|"+userName+"|"+ipAddress;
             String result = sendMsgToLeader(message);
             return result;
         }
@@ -53,8 +48,7 @@ public class FrontEndImpl extends FrontEndPOA {
     @Override
     public String getPlayerStatus(String adminUsername, String adminPassword, String ipAddress) {
         synchronized (this){
-            String message = sequencer+":"+"getPlayerStatus"+"|"+adminUsername+"|"+adminPassword+"|"+ipAddress;
-            sequencer++;
+            String message = "getPlayerStatus"+"|"+adminUsername+"|"+adminPassword+"|"+ipAddress;
             String result = sendMsgToLeader(message);
             return result;
         }
@@ -63,8 +57,7 @@ public class FrontEndImpl extends FrontEndPOA {
     @Override
     public String transferAccount(String userName, String password, String oldIPAddress, String newIPAddress) {
         synchronized (this){
-            String message = sequencer+":"+"transferAccount"+"|"+userName+"|"+password+"|"+oldIPAddress+"|"+newIPAddress;
-            sequencer++;
+            String message = "transferAccount"+"|"+userName+"|"+password+"|"+oldIPAddress+"|"+newIPAddress;
             String result = sendMsgToLeader(message);
             return result;
         }
@@ -73,8 +66,7 @@ public class FrontEndImpl extends FrontEndPOA {
     @Override
     public String suspendAccount(String adminUsername, String adminPassword, String ipAddress, String usernameToSuspend) {
         synchronized (this){
-            String message = sequencer+":"+"suspendAccount"+"|"+adminUsername+"|"+adminPassword+"|"+ipAddress+"|"+usernameToSuspend;
-            sequencer++;
+            String message = "suspendAccount"+"|"+adminUsername+"|"+adminPassword+"|"+ipAddress+"|"+usernameToSuspend;
             String result = sendMsgToLeader(message);
             return result;
         }
@@ -104,9 +96,7 @@ public class FrontEndImpl extends FrontEndPOA {
                     aSocket.setSoTimeout(5000);
                     aSocket.receive(reply);
                     result = new String(reply.getData()).trim();
-                    System.out.println("Front End Gets The result From the Leader: "+result);
-                    //之后测试一下
-                    //可能存在的问题是发出去第二个之后，收到第一个的结果，在收第二的结果的时候，端口已经关闭了。
+                    System.out.println("Front end receives the result from the leader: "+result);
                     if(result.startsWith("No reply")){
                         InetAddress hostResend = InetAddress.getByName("localhost");
                         DatagramPacket requestResend = new DatagramPacket(sendData, sendData.length, hostResend, getLeaderUDPPort());

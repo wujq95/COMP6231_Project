@@ -1,14 +1,14 @@
-package replica1.eu;
+package replica2.eu;
 
 import config.PortConfig;
-import replica1.DPSSModule.DPSS;
-import replica1.DPSSModule.DPSSHelper;
 import org.omg.CORBA.ORB;
 import org.omg.CosNaming.NameComponent;
 import org.omg.CosNaming.NamingContextExt;
 import org.omg.CosNaming.NamingContextExtHelper;
 import org.omg.PortableServer.POA;
 import org.omg.PortableServer.POAHelper;
+import replica2.DPSSModule.DPSS;
+import replica2.DPSSModule.DPSSHelper;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -41,7 +41,7 @@ public class EuGameServer {
         };
         new Thread(taskUDP).start();
         EuGameClass euGameClass = new EuGameClass();
-        System.out.println("Europe server1 has been started");
+        System.out.println("Europe server2 has been started");
         Properties props = new Properties();
         props.put("org.omg.CORBA.ORBInitialPort", "1050");
         props.put("org.omg.CORBA.ORBInitialHost", "localhost");
@@ -64,17 +64,17 @@ public class EuGameServer {
             // Interoperable Naming Service (INS) specification.
             NamingContextExt ncRef = NamingContextExtHelper.narrow(objRef);
             // bind the Object Reference in Naming
-            String name = "EU1";
+            String name = "EU2";
             NameComponent path[] = ncRef.to_name(name);
             ncRef.rebind(path, href);
-            System.out.println("Europe Server1 is ready and listening ...  ...");
+            System.out.println("Europe Server2 is ready and listening ...  ...");
             // wait for invocations from clients
             orb.run();
         }catch (Exception e) {
             System.err.println("ERROR: " + e);
             e.printStackTrace(System.out);
         }
-        System.out.println("Europe Server1 Exiting ...");
+        System.out.println("Europe Server2 Exiting ...");
     }
 
     /**
@@ -84,7 +84,7 @@ public class EuGameServer {
     public static void serverReceive(){
         DatagramSocket aSocket = null;
         try {
-            aSocket = new DatagramSocket(PortConfig.replicaEU1);
+            aSocket = new DatagramSocket(PortConfig.replicaEU2);
             byte[] buffer = new byte[1024];
             while (true){
                 DatagramPacket request = new DatagramPacket(buffer, buffer.length);
@@ -142,7 +142,7 @@ public class EuGameServer {
      * @throws IOException
      */
     public static void load() throws IOException {
-        FileReader fr = new FileReader("src/replica1/eu/euAccounts.txt");
+        FileReader fr = new FileReader("src/replica2/eu/euAccounts.txt");
         BufferedReader br = new BufferedReader(fr);
         String str;
         while((str=br.readLine())!=null){

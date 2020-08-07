@@ -1,11 +1,11 @@
-package replica2.leader;
+package replica3.leader;
 
 import config.PortConfig;
 import org.omg.CORBA.ORB;
 import org.omg.CosNaming.NamingContextExt;
 import org.omg.CosNaming.NamingContextExtHelper;
-import replica1.DPSSModule.DPSS;
-import replica1.DPSSModule.DPSSHelper;
+import replica3.DPSSModule.DPSS;
+import replica3.DPSSModule.DPSSHelper;
 
 import java.io.IOException;
 import java.net.*;
@@ -24,7 +24,7 @@ public class Leader {
         };
 
         new Thread(frontEndTaskUDP).start();
-        System.out.println("Leader frontend listener2 has started");
+        System.out.println("Leader frontend listener3 has started");
 
         Runnable broadCastTaskUDP = () -> {
             try {
@@ -34,8 +34,8 @@ public class Leader {
             }
         };
         new Thread(broadCastTaskUDP).start();
-        System.out.println("Leader broadcast listener2 has started");
-        System.out.println("Leader server2 has started");
+        System.out.println("Leader broadCast listener3 has started");
+        System.out.println("Leader server3 has started");
     }
 
 
@@ -48,15 +48,16 @@ public class Leader {
                 DatagramPacket request = new DatagramPacket(buffer, buffer.length);
                 aSocket.receive(request);
                 String requestData = new String(request.getData());
-                System.out.println("The leader2 receives the message from the front end: "+requestData);
+                System.out.println("The leader3 receives the message from the front end: "+requestData);
+
                 String result;
                 String result1 = operation(requestData);
                 String result2 = broadCast(requestData,PortConfig.leader1);
-                String result3 = broadCast(requestData,PortConfig.leader3);
+                String result3 = broadCast(requestData,PortConfig.leader2);
                 ArrayList<String> res = new ArrayList<>();
                 if(result1==null){
-                    String Msg = "RM2";
-                    notifyRM(Msg,PortConfig.RMPort2);
+                    String Msg = "RM3";
+                    notifyRM(Msg,PortConfig.RMPort3);
                 }else{
                     res.add(result1);
                 }
@@ -66,7 +67,7 @@ public class Leader {
                 }else{
                     res.add(result2);
                 }
-                if(result3==null){
+                if(result2==null){
                     String Msg = "RM3";
                     notifyRM(Msg,PortConfig.RMPort3);
                 }else{
@@ -110,7 +111,7 @@ public class Leader {
     public static void listenBroadCast() throws Exception{
         DatagramSocket aSocket = null;
         try{
-            aSocket = new DatagramSocket(PortConfig.leader2);
+            aSocket = new DatagramSocket(PortConfig.leader3);
             byte[] buffer = new byte[1000];
             while(true){
                 DatagramPacket request = new DatagramPacket(buffer, buffer.length);
@@ -177,56 +178,56 @@ public class Leader {
         String result = null;
         if(str.startsWith("createPlayerAccount|")){
             if(strs[6].startsWith("93.")){
-                obj = DPSSHelper.narrow(ncRef.resolve_str("EU2"));
+                obj = DPSSHelper.narrow(ncRef.resolve_str("EU3"));
             }else if(strs[6].startsWith("132.")){
-                obj = DPSSHelper.narrow(ncRef.resolve_str("NA2"));
+                obj = DPSSHelper.narrow(ncRef.resolve_str("NA3"));
             }else{
-                obj = DPSSHelper.narrow(ncRef.resolve_str("AS2"));
+                obj = DPSSHelper.narrow(ncRef.resolve_str("AS3"));
             }
             result = obj.createPlayerAccount(strs[1],strs[2],strs[3],strs[4],strs[5],strs[6]);
         }else if(str.startsWith("playerSignIn|")){
             if(strs[3].startsWith("93.")){
-                obj = DPSSHelper.narrow(ncRef.resolve_str("EU2"));
+                obj = DPSSHelper.narrow(ncRef.resolve_str("EU3"));
             }else if(strs[3].startsWith("132.")){
-                obj = DPSSHelper.narrow(ncRef.resolve_str("NA2"));
+                obj = DPSSHelper.narrow(ncRef.resolve_str("NA3"));
             }else{
-                obj = DPSSHelper.narrow(ncRef.resolve_str("AS2"));
+                obj = DPSSHelper.narrow(ncRef.resolve_str("AS3"));
             }
             result = obj.playerSignIn(strs[1],strs[2],strs[3]);
         }else if(str.startsWith("playerSignOut|")){
             if(strs[2].startsWith("93.")){
-                obj = DPSSHelper.narrow(ncRef.resolve_str("EU2"));
+                obj = DPSSHelper.narrow(ncRef.resolve_str("EU3"));
             }else if(strs[2].startsWith("132.")){
-                obj = DPSSHelper.narrow(ncRef.resolve_str("NA2"));
+                obj = DPSSHelper.narrow(ncRef.resolve_str("NA3"));
             }else{
-                obj = DPSSHelper.narrow(ncRef.resolve_str("AS2"));
+                obj = DPSSHelper.narrow(ncRef.resolve_str("AS3"));
             }
             result = obj.playerSignOut(strs[1],strs[2]);
         }else if(str.startsWith("getPlayerStatus|")){
             if(strs[3].startsWith("93.")){
-                obj = DPSSHelper.narrow(ncRef.resolve_str("EU2"));
+                obj = DPSSHelper.narrow(ncRef.resolve_str("EU3"));
             }else if(strs[3].startsWith("132.")){
-                obj = DPSSHelper.narrow(ncRef.resolve_str("NA2"));
+                obj = DPSSHelper.narrow(ncRef.resolve_str("NA3"));
             }else{
-                obj = DPSSHelper.narrow(ncRef.resolve_str("AS2"));
+                obj = DPSSHelper.narrow(ncRef.resolve_str("AS3"));
             }
             result = obj.getPlayerStatus(strs[1],strs[2],strs[3]);
         }else if(str.startsWith("transferAccount|")){
             if(strs[3].startsWith("93.")){
-                obj = DPSSHelper.narrow(ncRef.resolve_str("EU2"));
+                obj = DPSSHelper.narrow(ncRef.resolve_str("EU3"));
             }else if(strs[3].startsWith("132.")){
-                obj = DPSSHelper.narrow(ncRef.resolve_str("NA2"));
+                obj = DPSSHelper.narrow(ncRef.resolve_str("NA3"));
             }else{
-                obj = DPSSHelper.narrow(ncRef.resolve_str("AS2"));
+                obj = DPSSHelper.narrow(ncRef.resolve_str("AS3"));
             }
             result = obj.transferAccount(strs[1],strs[2],strs[3],strs[4]);
         }else if(str.startsWith("suspendAccount|")){
             if(strs[3].startsWith("93.")){
-                obj = DPSSHelper.narrow(ncRef.resolve_str("EU2"));
+                obj = DPSSHelper.narrow(ncRef.resolve_str("EU3"));
             }else if(strs[3].startsWith("132.")){
-                obj = DPSSHelper.narrow(ncRef.resolve_str("NA2"));
+                obj = DPSSHelper.narrow(ncRef.resolve_str("NA3"));
             }else{
-                obj = DPSSHelper.narrow(ncRef.resolve_str("AS2"));
+                obj = DPSSHelper.narrow(ncRef.resolve_str("AS3"));
             }
             result = obj.suspendAccount(strs[1],strs[2],strs[3],strs[4]);
         }
