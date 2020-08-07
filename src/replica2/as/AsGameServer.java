@@ -83,7 +83,7 @@ public class AsGameServer {
     public static void serverReceive(){
         DatagramSocket aSocket = null;
         try {
-            aSocket = new DatagramSocket(PortConfig.replicaAS3);
+            aSocket = new DatagramSocket(PortConfig.replicaAS2);
             byte[] buffer = new byte[1024];
             while (true){
                 DatagramPacket request = new DatagramPacket(buffer, buffer.length);
@@ -142,7 +142,7 @@ public class AsGameServer {
      * @throws IOException
      */
     public static void load() throws IOException {
-        FileReader fr = new FileReader("src/replica3/as/asAccounts.txt");
+        FileReader fr = new FileReader("src/replica2/as/asAccounts.txt");
         BufferedReader br = new BufferedReader(fr);
         String str;
         while((str=br.readLine())!=null){

@@ -11,6 +11,10 @@ public class ReplicaManager {
 
     public static Integer RMFailureCount = 0;
 
+    /**
+     * replica manager main method
+     * @param args
+     */
     public static void main(String[] args) {
         Runnable taskUDP = () -> {
             try {
@@ -23,6 +27,9 @@ public class ReplicaManager {
         System.out.println("Replica manager is ready and listening");
     }
 
+    /**
+     * replica manager listener
+     */
     public static void RMListener(){
         DatagramSocket aSocket = null;
         try{

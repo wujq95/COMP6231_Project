@@ -87,6 +87,7 @@ public class FrontEndImpl extends FrontEndPOA {
             byte[] sendData = message.getBytes();
             InetAddress host = InetAddress.getByName("localhost");
             Integer leaderUDPPort = getLeaderUDPPort();
+            System.out.println("Front end sends the request to the leader: "+message);
             DatagramPacket request = new DatagramPacket(sendData, message.length(), host,leaderUDPPort);
             aSocket.send(request);
             while(true){

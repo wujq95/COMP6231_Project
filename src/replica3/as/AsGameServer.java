@@ -7,8 +7,8 @@ import org.omg.CosNaming.NamingContextExt;
 import org.omg.CosNaming.NamingContextExtHelper;
 import org.omg.PortableServer.POA;
 import org.omg.PortableServer.POAHelper;
-import replica2.DPSSModule.DPSS;
-import replica2.DPSSModule.DPSSHelper;
+import replica3.DPSSModule.DPSS;
+import replica3.DPSSModule.DPSSHelper;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -83,7 +83,7 @@ public class AsGameServer {
     public static void serverReceive(){
         DatagramSocket aSocket = null;
         try {
-            aSocket = new DatagramSocket(PortConfig.replicaAS2);
+            aSocket = new DatagramSocket(PortConfig.replicaAS3);
             byte[] buffer = new byte[1024];
             while (true){
                 DatagramPacket request = new DatagramPacket(buffer, buffer.length);
@@ -142,7 +142,7 @@ public class AsGameServer {
      * @throws IOException
      */
     public static void load() throws IOException {
-        FileReader fr = new FileReader("src/replica2/as/asAccounts.txt");
+        FileReader fr = new FileReader("src/replica3/as/asAccounts.txt");
         BufferedReader br = new BufferedReader(fr);
         String str;
         while((str=br.readLine())!=null){

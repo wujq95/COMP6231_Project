@@ -20,7 +20,7 @@ public class ReplicaManager {
             }
         };
         new Thread(taskUDP).start();
-        System.out.println("Replica Manager is ready and listening");
+        System.out.println("Replica Manager2 is ready and listening");
     }
 
     public static void RMListener(){

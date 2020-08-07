@@ -2,11 +2,6 @@ package config;
 
 public class PortConfig {
 
-
-    public static final Integer sequencerPort = 3002;
-
-
-    public static final Integer FrontEndPort = 4000;
     public static final Integer RMPort1 = 4001;
     public static final Integer RMPort2 = 4002;
     public static final Integer RMPort3 = 4003;

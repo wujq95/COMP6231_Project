@@ -10,11 +10,14 @@ import org.omg.CosNaming.NamingContextExtHelper;
 import java.io.IOException;
 import java.net.*;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
 
 public class Leader {
 
+    /**
+     * leader class main method
+     * @param args
+     */
     public static void main(String[] args) {
         Runnable frontEndTaskUDP = () -> {
             try {
@@ -39,6 +42,10 @@ public class Leader {
         System.out.println("Leader server1 has started");
     }
 
+    /**
+     * The listener for front end requests
+     * @throws Exception
+     */
     public static void listenFrontEnd() throws Exception{
         DatagramSocket aSocket = null;
         try {
@@ -113,6 +120,10 @@ public class Leader {
         }
     }
 
+    /**
+     * The listener for broadcast from other leaders
+     * @throws Exception
+     */
     public static void listenBroadCast() throws Exception{
         DatagramSocket aSocket = null;
         try{
@@ -138,6 +149,12 @@ public class Leader {
         }
     }
 
+    /**
+     * broadcast message to other leaders
+     * @param message
+     * @param port
+     * @return
+     */
     public static String broadCast(String message,Integer port){
         DatagramSocket aSocket = null;
         String result = null;
@@ -167,6 +184,12 @@ public class Leader {
         }
     }
 
+    /**
+     * Use corba to do the operations
+     * @param str
+     * @return
+     * @throws Exception
+     */
     public static String operation(String str) throws Exception{
         DPSS obj;
         Properties props = new Properties();
@@ -239,6 +262,11 @@ public class Leader {
         return result;
     }
 
+    /**
+     * notify the failure information to the replica manager
+     * @param Msg
+     * @param port
+     */
     public static void notifyRM(String Msg,Integer port){
         DatagramSocket aSocket = null;
         try {

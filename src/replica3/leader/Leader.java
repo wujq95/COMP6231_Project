@@ -42,7 +42,7 @@ public class Leader {
     public static void listenFrontEnd() throws Exception{
         DatagramSocket aSocket = null;
         try {
-            aSocket = new DatagramSocket(PortConfig.leader2);
+            aSocket = new DatagramSocket(PortConfig.leader3);
             byte[] buffer = new byte[1024];
             while(true){
                 DatagramPacket request = new DatagramPacket(buffer, buffer.length);
@@ -67,9 +67,9 @@ public class Leader {
                 }else{
                     res.add(result2);
                 }
-                if(result2==null){
+                if(result3==null){
                     String Msg = "RM3";
-                    notifyRM(Msg,PortConfig.RMPort3);
+                    notifyRM(Msg,PortConfig.RMPort2);
                 }else{
                     res.add(result3);
                 }
