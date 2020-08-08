@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import config.PortConfig;
+import replica1.config.PortConfig;
 import replica1.DPSSModule.DPSSPOA;
 import org.omg.CORBA.ORB;
 import replica1.logger.Logger;

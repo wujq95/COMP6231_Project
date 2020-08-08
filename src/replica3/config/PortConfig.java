@@ -1,12 +1,11 @@
-package config;
+package replica3.config;
 
 public class PortConfig {
 
     public static final Integer RMPort1 = 4001;
     public static final Integer RMPort2 = 4002;
     public static final Integer RMPort3 = 4003;
-
-
+    
     public static final Integer leader1 = 5000;
     public static final Integer FEListener1 = 5001;
     public static final Integer replicaNA1 = 5002;

@@ -1,14 +1,13 @@
-package frontend;
+package frontend.frontend;
 
-import config.PortConfig;
 import frontend.FrontEndModule.FrontEndPOA;
+import frontend.config.FrontEndConfig;
 import org.omg.CORBA.ORB;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketTimeoutException;
-import java.util.Arrays;
 
 
 public class FrontEndImpl extends FrontEndPOA {
@@ -147,7 +146,7 @@ public class FrontEndImpl extends FrontEndPOA {
             byte[] sendData = message.getBytes();
             InetAddress host = InetAddress.getByName("localhost");
             Integer leaderUDPPort = getLeaderUDPPort();
-            System.out.println("Front end sends the request to the leader: "+ sendData.length);
+            System.out.println("Front end sends the request to the leader: "+ message);
             DatagramPacket request = new DatagramPacket(sendData, message.length(), host,leaderUDPPort);
             aSocket.send(request);
             while(true){
@@ -187,6 +186,6 @@ public class FrontEndImpl extends FrontEndPOA {
      * @return
      */
     public static Integer getLeaderUDPPort(){
-        return PortConfig.FEListener1;
+        return FrontEndConfig.FEListener1;
     }
 }

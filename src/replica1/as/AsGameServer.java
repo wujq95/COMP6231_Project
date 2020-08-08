@@ -9,7 +9,7 @@ import java.net.SocketException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-import config.PortConfig;
+import replica1.config.PortConfig;
 import replica1.DPSSModule.DPSS;
 import replica1.DPSSModule.DPSSHelper;
 import org.omg.CORBA.ORB;

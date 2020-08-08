@@ -1,4 +1,4 @@
-package frontend;
+package frontend.frontend;
 
 import frontend.FrontEndModule.FrontEnd;
 import frontend.FrontEndModule.FrontEndHelper;

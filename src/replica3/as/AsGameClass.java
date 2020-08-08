@@ -1,6 +1,6 @@
 package replica3.as;
 
-import config.PortConfig;
+import replica3.config.PortConfig;
 import org.omg.CORBA.ORB;
 import replica3.DPSSModule.DPSSPOA;
 import replica3.logger.Logger;

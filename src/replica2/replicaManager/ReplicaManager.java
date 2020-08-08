@@ -1,6 +1,6 @@
 package replica2.replicaManager;
 
-import config.PortConfig;
+import replica2.config.PortConfig;
 
 import java.io.IOException;
 import java.net.DatagramPacket;

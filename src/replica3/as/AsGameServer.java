@@ -1,6 +1,6 @@
 package replica3.as;
 
-import config.PortConfig;
+import replica3.config.PortConfig;
 import org.omg.CORBA.ORB;
 import org.omg.CosNaming.NameComponent;
 import org.omg.CosNaming.NamingContextExt;

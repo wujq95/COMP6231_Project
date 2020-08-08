@@ -60,3 +60,8 @@ DATE: 2020-08-07 08:30:20 PM Successfully login: guanyu
 DATE: 2020-08-07 08:31:10 PM Fail to suspend the account: Admin user name is wrong
 DATE: 2020-08-07 08:31:22 PM Successfully suspend the user account: uziuzi
 DATE: 2020-08-07 08:31:36 PM Fail to login: User name does not exist
+DATE: 2020-08-08 09:47:13 AM Successfully suspend the user account: guanyu
+DATE: 2020-08-08 09:47:28 AM Fail to login: User name does not exist
+DATE: 2020-08-08 09:47:48 AM Successfully create an account: guanyu
+DATE: 2020-08-08 09:47:56 AM Successfully login: guanyu
+DATE: 2020-08-08 09:48:05 AM Successfully logout: guanyu

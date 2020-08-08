@@ -1,6 +1,6 @@
 package replica2.leader;
 
-import config.PortConfig;
+import replica2.config.PortConfig;
 import org.omg.CORBA.ORB;
 import org.omg.CosNaming.NamingContextExt;
 import org.omg.CosNaming.NamingContextExtHelper;
@@ -51,26 +51,26 @@ public class Leader {
                 DatagramPacket request = new DatagramPacket(buffer, buffer.length);
                 aSocket.receive(request);
                 String requestData = new String(request.getData());
-                System.out.println("The leader2 receives the message from the front end: "+requestData);
+                System.out.println("The leader2 receives the message from the front end: "+requestData.trim());
                 String result;
                 String result1 = operation(requestData);
                 String result2 = broadCast(requestData,PortConfig.leader1);
                 String result3 = broadCast(requestData,PortConfig.leader3);
                 ArrayList<String> res = new ArrayList<>();
                 if(result1==null||result1.equals("Random incorrect result")){
-                    String Msg = "RM2";
+                    String Msg = "RM2 failure";
                     notifyRM(Msg,PortConfig.RMPort2);
                 }else{
                     res.add(result1);
                 }
                 if(result2==null||result2.equals("Random incorrect result")){
-                    String Msg = "RM1";
+                    String Msg = "RM1 failure";
                     notifyRM(Msg,PortConfig.RMPort1);
                 }else{
                     res.add(result2);
                 }
                 if(result3==null||result3.equals("Random incorrect result")){
-                    String Msg = "RM3";
+                    String Msg = "RM3 failure";
                     notifyRM(Msg,PortConfig.RMPort3);
                 }else{
                     res.add(result3);
@@ -126,12 +126,12 @@ public class Leader {
                 DatagramPacket request = new DatagramPacket(buffer, buffer.length);
                 aSocket.receive(request);
                 String requestData = new String(request.getData()).trim();
-                System.out.println("Leader2 receives a message from broadcast: "+requestData);
+                System.out.println("Leader2 receives a message from broadcast: "+requestData.trim());
                 String result = operation(requestData);
                 byte[] sendData = result.getBytes();
                 DatagramPacket reply = new DatagramPacket(sendData, result.length(), request.getAddress(),
                         request.getPort());
-                System.out.println("Leader2 replies to broadcast: "+result);
+                System.out.println("Leader2 replies to broadcast: "+result.trim());
                 aSocket.send(reply);
             }
         }catch (SocketException e) {
@@ -158,7 +158,7 @@ public class Leader {
             byte[] sendData = message.getBytes();
             InetAddress host = InetAddress.getByName("localhost");
             DatagramPacket request = new DatagramPacket(sendData, message.length(), host,port);
-            System.out.println("Lead1 broadcast request to other two leaders:"+message);
+            System.out.println("Lead1 broadcast request to other two leaders:"+message.trim());
             aSocket.send(request);
             try {
                 aSocket.setSoTimeout(2000);
@@ -255,7 +255,9 @@ public class Leader {
             }
             result = obj.suspendAccount(strs[1],strs[2],strs[3],strs[4]);
         }
-        if(Math.random()>0.2){
+
+        //simulate random failure
+        if(Math.random()<0.1){
             result = "Random incorrect result";
             System.out.println("A random incorrect result appears");
         }
@@ -274,7 +276,7 @@ public class Leader {
             byte[] sendData = Msg.getBytes();
             InetAddress host = InetAddress.getByName("localhost");
             DatagramPacket request = new DatagramPacket(sendData, Msg.length(), host, port);
-            System.out.println("Leader2 notify a failure to replica manager: "+Msg);
+            System.out.println("Leader2 notify a failure to replica manager: "+Msg.trim());
             aSocket.send(request);
             while(true){
                 try {

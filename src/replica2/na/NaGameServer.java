@@ -1,6 +1,6 @@
 package replica2.na;
 
-import config.PortConfig;
+import replica2.config.PortConfig;
 import org.omg.CORBA.ORB;
 import org.omg.CosNaming.NameComponent;
 import org.omg.CosNaming.NamingContextExt;
