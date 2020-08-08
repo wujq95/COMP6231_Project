@@ -13,6 +13,10 @@ import java.util.Properties;
 
 public class FrontEndServer {
 
+    /**
+     * front end server main method
+     * @param args
+     */
     public static void main(String[] args) {
 
         FrontEndImpl servant = new FrontEndImpl();

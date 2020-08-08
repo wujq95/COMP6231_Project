@@ -17,3 +17,8 @@ DATE: 2020-07-30 08:42:44 PM Fail to login: User name does not exist
 DATE: 2020-07-30 08:44:21 PM Successfully login: ming11
 DATE: 2020-07-30 08:44:33 PM Successfully logout: ming11
 DATE: 2020-07-30 08:44:52 PM Successfully login: ming11
+DATE: 2020-08-07 07:00:02 PM Fail to create a player account: The length of the user name does not meet requirements
+DATE: 2020-08-07 07:00:37 PM Successfully create an account: uziuzi
+DATE: 2020-08-07 07:00:57 PM Fail to transfer the account: New ip address is not right
+DATE: 2020-08-07 07:12:35 PM Successfully login: uziuzi
+DATE: 2020-08-07 08:30:41 PM successfully transfer the player

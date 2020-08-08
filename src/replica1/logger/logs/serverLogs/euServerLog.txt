@@ -48,3 +48,18 @@ DATE: 2020-08-03 05:27:10 PM Fail to login: User is currently signed-in
 DATE: 2020-08-03 05:29:17 PM Successfully login: guanyu
 DATE: 2020-08-03 05:29:31 PM Successfully logout: guanyu
 DATE: 2020-08-03 05:29:39 PM Fail to logout: User is not currently signed-in
+DATE: 2020-08-07 06:11:13 PM Successfully login: guanyu
+DATE: 2020-08-07 06:12:27 PM Successfully create an account: xiaohu
+DATE: 2020-08-07 06:12:55 PM Successfully login: xiaohu
+DATE: 2020-08-07 06:48:19 PM Successfully login: guanyu
+DATE: 2020-08-07 06:48:30 PM Successfully logout: guanyu
+DATE: 2020-08-07 06:48:39 PM Fail to logout: User is not currently signed-in
+DATE: 2020-08-07 07:01:42 PM Fail to suspend the account: User name does not exist
+DATE: 2020-08-07 07:11:22 PM Successfully create an account: machao
+DATE: 2020-08-07 07:11:35 PM Successfully login: machao
+DATE: 2020-08-07 07:11:52 PM Fail to transfer the account: New ip address is not right
+DATE: 2020-08-07 08:18:51 PM Successfully login: guanyu
+DATE: 2020-08-07 08:30:20 PM Successfully login: guanyu
+DATE: 2020-08-07 08:31:10 PM Fail to suspend the account: Admin user name is wrong
+DATE: 2020-08-07 08:31:22 PM Successfully suspend the user account: uziuzi
+DATE: 2020-08-07 08:31:36 PM Fail to login: User name does not exist

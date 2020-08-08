@@ -4,3 +4,6 @@ DATE: 2020-07-23 09:37:43 PM successfully transfer the player
 DATE: 2020-07-28 09:36:08 AM Fail to login: User name does not exist
 DATE: 2020-07-28 02:51:10 PM Fail to login: User name does not exist
 DATE: 2020-07-28 02:51:15 PM Fail to login: User name does not exist
+DATE: 2020-08-07 06:46:49 PM Fail to login: User name does not exist
+DATE: 2020-08-07 06:49:41 PM Successfully create an account: ming11
+DATE: 2020-08-07 06:51:04 PM Successfully check players status: NA: 0 online, 2offline, EU: 0 online, 3offline, AS: 0online, 4 offline

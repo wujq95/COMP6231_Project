@@ -8,6 +8,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketTimeoutException;
+import java.util.Arrays;
 
 
 public class FrontEndImpl extends FrontEndPOA {
@@ -18,76 +19,135 @@ public class FrontEndImpl extends FrontEndPOA {
         orb = orb_val;
     };
 
+    /**
+     * corba request: create player account
+     * @param firstName
+     * @param lastName
+     * @param age
+     * @param userName
+     * @param password
+     * @param ipAddress
+     * @return
+     */
     @Override
     public String createPlayerAccount(String firstName, String lastName, String age, String userName, String password, String ipAddress) {
         synchronized (this){
+            System.out.println("Front end receives a client request: create player account");
             String message = "createPlayerAccount"+"|"+firstName+"|"+lastName+"|"+age+"|"+userName+"|"+password+"|"+ipAddress;
             String result = sendMsgToLeader(message);
             return result;
         }
     }
 
+    /**
+     * corba request: player sign in
+     * @param userName
+     * @param password
+     * @param ipAddress
+     * @return
+     */
     @Override
     public String playerSignIn(String userName, String password, String ipAddress) {
         synchronized (this) {
+            System.out.println("Front end receives a client request: player sign in");
             String message = "playerSignIn" + "|" + userName + "|" + password + "|" + ipAddress;
             String result = sendMsgToLeader(message);
             return result;
         }
     }
 
+    /**
+     * corba request: player sign out
+     * @param userName
+     * @param ipAddress
+     * @return
+     */
     @Override
     public String playerSignOut(String userName, String ipAddress) {
         synchronized (this){
+            System.out.println("Front end receives a client request: player sign out");
             String message = "playerSignOut"+"|"+userName+"|"+ipAddress;
             String result = sendMsgToLeader(message);
             return result;
         }
     }
 
+    /**
+     * corba request: get players status
+     * @param adminUsername
+     * @param adminPassword
+     * @param ipAddress
+     * @return
+     */
     @Override
     public String getPlayerStatus(String adminUsername, String adminPassword, String ipAddress) {
         synchronized (this){
+            System.out.println("Front end receives a client request: get players status");
             String message = "getPlayerStatus"+"|"+adminUsername+"|"+adminPassword+"|"+ipAddress;
             String result = sendMsgToLeader(message);
             return result;
         }
     }
 
+    /**
+     * transfer players account
+     * @param userName
+     * @param password
+     * @param oldIPAddress
+     * @param newIPAddress
+     * @return
+     */
     @Override
     public String transferAccount(String userName, String password, String oldIPAddress, String newIPAddress) {
         synchronized (this){
+            System.out.println("Front end receives a client request: transfer player account");
             String message = "transferAccount"+"|"+userName+"|"+password+"|"+oldIPAddress+"|"+newIPAddress;
             String result = sendMsgToLeader(message);
             return result;
         }
     }
 
+    /**
+     * suspend player account
+     * @param adminUsername
+     * @param adminPassword
+     * @param ipAddress
+     * @param usernameToSuspend
+     * @return
+     */
     @Override
     public String suspendAccount(String adminUsername, String adminPassword, String ipAddress, String usernameToSuspend) {
         synchronized (this){
+            System.out.println("Front end receives a client request: suspend player account");
             String message = "suspendAccount"+"|"+adminUsername+"|"+adminPassword+"|"+ipAddress+"|"+usernameToSuspend;
             String result = sendMsgToLeader(message);
             return result;
         }
     }
 
+    /**
+     * shut down
+     */
     @Override
     public void shutdown() {
         orb.shutdown(false);
     }
 
+    /**
+     * forward request to the leader
+     * @param message
+     * @return
+     */
     public static String sendMsgToLeader(String message){
 
         DatagramSocket aSocket = null;
         String result = "Network failure!";
-
         try {
             aSocket = new DatagramSocket();
             byte[] sendData = message.getBytes();
             InetAddress host = InetAddress.getByName("localhost");
             Integer leaderUDPPort = getLeaderUDPPort();
-            System.out.println("Front end sends the request to the leader: "+message);
+            System.out.println("Front end sends the request to the leader: "+ sendData.length);
             DatagramPacket request = new DatagramPacket(sendData, message.length(), host,leaderUDPPort);
             aSocket.send(request);
             while(true){
@@ -122,7 +182,11 @@ public class FrontEndImpl extends FrontEndPOA {
         }
     }
 
+    /**
+     * assign the leader port
+     * @return
+     */
     public static Integer getLeaderUDPPort(){
-        return PortConfig.leader1;
+        return PortConfig.FEListener1;
     }
 }

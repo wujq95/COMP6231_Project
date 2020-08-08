@@ -24,7 +24,7 @@ public class ReplicaManager {
             }
         };
         new Thread(taskUDP).start();
-        System.out.println("Replica manager is ready and listening");
+        System.out.println("Replica manager1 is ready and listening");
     }
 
     /**
@@ -39,7 +39,7 @@ public class ReplicaManager {
                 DatagramPacket request = new DatagramPacket(buffer, buffer.length);
                 aSocket.receive(request);
                 String requestData = new String(request.getData()).trim();
-                System.out.println("RM1 Listen: "+requestData);
+                System.out.println("Replica manager listener1 receives a request: "+requestData);
                 RMFailureCount++;
                 if(RMFailureCount>=3){
                     reload();

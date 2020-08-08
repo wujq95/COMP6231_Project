@@ -49,33 +49,33 @@ public class Leader {
     public static void listenFrontEnd() throws Exception{
         DatagramSocket aSocket = null;
         try {
-            aSocket = new DatagramSocket(PortConfig.leader1);
-            byte[] buffer = new byte[1024];
+            aSocket = new DatagramSocket(PortConfig.FEListener1);
             while(true){
+                byte[] buffer = new byte[1024];
                 DatagramPacket request = new DatagramPacket(buffer, buffer.length);
                 aSocket.receive(request);
                 String requestData = new String(request.getData());
                 System.out.println("The leader1 receives the message from the front end: "+requestData);
 
                 String result;
-                String result1 = operation(requestData);
+                String result1 = operation(requestData.trim());
                 String result2 = broadCast(requestData,PortConfig.leader2);
                 String result3 = broadCast(requestData,PortConfig.leader3);
 
                 ArrayList<String> res = new ArrayList<>();
-                if(result1==null){
+                if(result1==null||result1.equals("Random incorrect result")){
                     String Msg = "RM1";
                     notifyRM(Msg,PortConfig.RMPort1);
                 }else{
                     res.add(result1);
                 }
-                if(result2==null){
+                if(result2==null||result2.equals("Random incorrect result")){
                     String Msg = "RM2";
                     notifyRM(Msg,PortConfig.RMPort2);
                 }else{
                     res.add(result2);
                 }
-                if(result3==null){
+                if(result3==null||result3.equals("Random incorrect result")){
                     String Msg = "RM3";
                     notifyRM(Msg,PortConfig.RMPort3);
                 }else{
@@ -104,7 +104,6 @@ public class Leader {
                 if(result==null){
                     result = "No reply";
                 }
-
                 byte[] sendData = result.getBytes();
                 DatagramPacket reply = new DatagramPacket(sendData, result.length(), request.getAddress(),
                         request.getPort());
@@ -133,10 +132,12 @@ public class Leader {
                 DatagramPacket request = new DatagramPacket(buffer, buffer.length);
                 aSocket.receive(request);
                 String requestData = new String(request.getData()).trim();
+                System.out.println("Leader1 receives a message from broadcast: "+requestData);
                 String result = operation(requestData);
                 byte[] sendData = result.getBytes();
                 DatagramPacket reply = new DatagramPacket(sendData, result.length(), request.getAddress(),
                         request.getPort());
+                System.out.println("Leader1 replies to broadcast: "+result);
                 aSocket.send(reply);
             }
         }catch (SocketException e) {
@@ -163,6 +164,7 @@ public class Leader {
             byte[] sendData = message.getBytes();
             InetAddress host = InetAddress.getByName("localhost");
             DatagramPacket request = new DatagramPacket(sendData, message.length(), host,port);
+            System.out.println("Lead1 broadcast request to other two leaders:"+message);
             aSocket.send(request);
             try {
                 aSocket.setSoTimeout(2000);
@@ -259,6 +261,10 @@ public class Leader {
             }
             result = obj.suspendAccount(strs[1],strs[2],strs[3],strs[4]);
         }
+        if(Math.random()>0.2){
+            result = "Random incorrect result";
+            System.out.println("A random incorrect result appears");
+        }
         return result;
     }
 
@@ -274,6 +280,7 @@ public class Leader {
             byte[] sendData = Msg.getBytes();
             InetAddress host = InetAddress.getByName("localhost");
             DatagramPacket request = new DatagramPacket(sendData, Msg.length(), host, port);
+            System.out.println("Leader1 notify a failure to replica manager: "+Msg);
             aSocket.send(request);
             while(true){
                 try {
