@@ -258,10 +258,10 @@ public class Leader {
         }
 
         //simulate random failure
-        if(Math.random()<0.1){
+        /*if(Math.random()<0.1){
             result = "Random incorrect result";
             System.out.println("A random incorrect result appears");
-        }
+        }*/
         return result;
     }
 
