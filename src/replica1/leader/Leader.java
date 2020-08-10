@@ -14,6 +14,8 @@ import java.util.Properties;
 
 public class Leader {
 
+    static Integer sequencer = 0;
+
     /**
      * leader class main method
      * @param args
@@ -55,9 +57,22 @@ public class Leader {
                 DatagramPacket request = new DatagramPacket(buffer, buffer.length);
                 aSocket.receive(request);
                 String requestData = new String(request.getData());
+                String seNum = requestData.split(":")[0];
+                String result;
+                if(sequencer<Integer.parseInt(seNum)){
+                    System.out.println("Sequencer problem");
+                    System.out.println("Lead sequencer: "+sequencer);
+                    System.out.println("Front end sequencer: "+seNum);
+                    result = "No reply";
+                    byte[] sendData = result.getBytes();
+                    DatagramPacket reply = new DatagramPacket(sendData, result.length(), request.getAddress(),
+                            request.getPort());
+                    aSocket.send(reply);
+                    continue;
+                }
+                requestData  = requestData.split(":")[1];
                 System.out.println("The leader1 receives the message from the front end: "+requestData.trim());
 
-                String result;
                 String result1 = operation(requestData.trim());
                 String result2 = broadCast(requestData,PortConfig.leader2);
                 String result3 = broadCast(requestData,PortConfig.leader3);
@@ -104,6 +119,7 @@ public class Leader {
                 if(result==null){
                     result = "No reply";
                 }
+                sequencer++;
                 byte[] sendData = result.getBytes();
                 DatagramPacket reply = new DatagramPacket(sendData, result.length(), request.getAddress(),
                         request.getPort());

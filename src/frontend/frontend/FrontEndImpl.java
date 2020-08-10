@@ -14,6 +14,12 @@ public class FrontEndImpl extends FrontEndPOA {
 
     private ORB orb;
 
+    Integer sequencer = 0;
+
+    /**
+     * set orb
+     * @param orb_val
+     */
     public void setORB(ORB orb_val) {
         orb = orb_val;
     };
@@ -32,7 +38,8 @@ public class FrontEndImpl extends FrontEndPOA {
     public String createPlayerAccount(String firstName, String lastName, String age, String userName, String password, String ipAddress) {
         synchronized (this){
             System.out.println("Front end receives a client request: create player account");
-            String message = "createPlayerAccount"+"|"+firstName+"|"+lastName+"|"+age+"|"+userName+"|"+password+"|"+ipAddress;
+            String sqStr  =  String.format("%06d",sequencer++);
+            String message = sqStr+":"+"createPlayerAccount"+"|"+firstName+"|"+lastName+"|"+age+"|"+userName+"|"+password+"|"+ipAddress;
             String result = sendMsgToLeader(message);
             return result;
         }
@@ -49,7 +56,8 @@ public class FrontEndImpl extends FrontEndPOA {
     public String playerSignIn(String userName, String password, String ipAddress) {
         synchronized (this) {
             System.out.println("Front end receives a client request: player sign in");
-            String message = "playerSignIn" + "|" + userName + "|" + password + "|" + ipAddress;
+            String sqStr  =  String.format("%06d",sequencer++);
+            String message = sqStr+":"+"playerSignIn" + "|" + userName + "|" + password + "|" + ipAddress;
             String result = sendMsgToLeader(message);
             return result;
         }
@@ -65,7 +73,8 @@ public class FrontEndImpl extends FrontEndPOA {
     public String playerSignOut(String userName, String ipAddress) {
         synchronized (this){
             System.out.println("Front end receives a client request: player sign out");
-            String message = "playerSignOut"+"|"+userName+"|"+ipAddress;
+            String sqStr  =  String.format("%06d",sequencer++);
+            String message = sqStr+":"+"playerSignOut"+"|"+userName+"|"+ipAddress;
             String result = sendMsgToLeader(message);
             return result;
         }
@@ -82,7 +91,8 @@ public class FrontEndImpl extends FrontEndPOA {
     public String getPlayerStatus(String adminUsername, String adminPassword, String ipAddress) {
         synchronized (this){
             System.out.println("Front end receives a client request: get players status");
-            String message = "getPlayerStatus"+"|"+adminUsername+"|"+adminPassword+"|"+ipAddress;
+            String sqStr  =  String.format("%06d",sequencer++);
+            String message = sqStr+":"+"getPlayerStatus"+"|"+adminUsername+"|"+adminPassword+"|"+ipAddress;
             String result = sendMsgToLeader(message);
             return result;
         }
@@ -100,7 +110,8 @@ public class FrontEndImpl extends FrontEndPOA {
     public String transferAccount(String userName, String password, String oldIPAddress, String newIPAddress) {
         synchronized (this){
             System.out.println("Front end receives a client request: transfer player account");
-            String message = "transferAccount"+"|"+userName+"|"+password+"|"+oldIPAddress+"|"+newIPAddress;
+            String sqStr  =  String.format("%06d",sequencer++);
+            String message = sqStr+":"+"transferAccount"+"|"+userName+"|"+password+"|"+oldIPAddress+"|"+newIPAddress;
             String result = sendMsgToLeader(message);
             return result;
         }
@@ -118,7 +129,8 @@ public class FrontEndImpl extends FrontEndPOA {
     public String suspendAccount(String adminUsername, String adminPassword, String ipAddress, String usernameToSuspend) {
         synchronized (this){
             System.out.println("Front end receives a client request: suspend player account");
-            String message = "suspendAccount"+"|"+adminUsername+"|"+adminPassword+"|"+ipAddress+"|"+usernameToSuspend;
+            String sqStr  =  String.format("%06d",sequencer++);
+            String message = sqStr+":"+"suspendAccount"+"|"+adminUsername+"|"+adminPassword+"|"+ipAddress+"|"+usernameToSuspend;
             String result = sendMsgToLeader(message);
             return result;
         }
