@@ -192,3 +192,27 @@ DATE: 2020-08-10 10:48:12 AM Fail to transfer the account: User name does not ex
 DATE: 2020-08-10 10:48:12 AM Fail to transfer the account: User name does not exist
 DATE: 2020-08-10 10:48:12 AM Fail to transfer the account: User name does not exist
 DATE: 2020-08-10 10:48:15 AM Fail to login: User name does not exist
+DATE: 2020-08-10 03:52:44 PM successfully transfer the player
+DATE: 2020-08-11 09:57:19 AM successfully transfer the player
+DATE: 2020-08-11 09:57:58 AM Fail to login: User name does not exist
+DATE: 2020-08-11 09:59:53 AM successfully transfer the player
+DATE: 2020-08-11 09:59:53 AM Fail to transfer the account: User name does not exist
+DATE: 2020-08-11 09:59:53 AM Fail to transfer the account: User name does not exist
+DATE: 2020-08-11 09:59:53 AM Fail to transfer the account: User name does not exist
+DATE: 2020-08-11 09:59:53 AM Fail to transfer the account: User name does not exist
+DATE: 2020-08-11 09:59:53 AM Fail to transfer the account: User name does not exist
+DATE: 2020-08-11 09:59:53 AM Fail to transfer the account: User name does not exist
+DATE: 2020-08-11 09:59:53 AM Fail to transfer the account: User name does not exist
+DATE: 2020-08-11 09:59:53 AM Fail to transfer the account: User name does not exist
+DATE: 2020-08-11 09:59:53 AM Fail to transfer the account: User name does not exist
+DATE: 2020-08-11 09:59:53 AM Fail to transfer the account: User name does not exist
+DATE: 2020-08-11 09:59:53 AM Fail to transfer the account: User name does not exist
+DATE: 2020-08-11 09:59:53 AM Fail to transfer the account: User name does not exist
+DATE: 2020-08-11 09:59:53 AM Fail to transfer the account: User name does not exist
+DATE: 2020-08-11 09:59:53 AM Fail to transfer the account: User name does not exist
+DATE: 2020-08-11 09:59:53 AM Fail to transfer the account: User name does not exist
+DATE: 2020-08-11 09:59:53 AM Fail to transfer the account: User name does not exist
+DATE: 2020-08-11 09:59:53 AM Fail to transfer the account: User name does not exist
+DATE: 2020-08-11 09:59:53 AM Fail to transfer the account: User name does not exist
+DATE: 2020-08-11 09:59:53 AM Fail to transfer the account: User name does not exist
+DATE: 2020-08-11 09:59:55 AM Fail to login: User name does not exist

@@ -2,25 +2,25 @@ package replica1.config;
 
 public class PortConfig {
 
-    public static final Integer RMPort1 = 4001;
-    public static final Integer RMPort2 = 4002;
-    public static final Integer RMPort3 = 4003;
+    public static final Integer RMPort1 = 4101;
+    public static final Integer RMPort2 = 4102;
+    public static final Integer RMPort3 = 4103;
     
-    public static final Integer leader1 = 5000;
-    public static final Integer FEListener1 = 5001;
-    public static final Integer replicaNA1 = 5002;
-    public static final Integer replicaEU1 = 5003;
-    public static final Integer replicaAS1 = 5004;
+    public static final Integer leader1 = 5100;
+    public static final Integer FEListener1 = 5101;
+    public static final Integer replicaNA1 = 5102;
+    public static final Integer replicaEU1 = 5103;
+    public static final Integer replicaAS1 = 5104;
 
-    public static final Integer leader2 = 6000;
-    public static final Integer FEListener2 = 6001;
-    public static final Integer replicaNA2 = 6002;
-    public static final Integer replicaEU2 = 6003;
-    public static final Integer replicaAS2 = 6004;
+    public static final Integer leader2 = 6100;
+    public static final Integer FEListener2 = 6101;
+    public static final Integer replicaNA2 = 6102;
+    public static final Integer replicaEU2 = 6103;
+    public static final Integer replicaAS2 = 6104;
 
-    public static final Integer leader3 = 7000;
-    public static final Integer FEListener3 = 7001;
-    public static final Integer replicaNA3 = 7002;
-    public static final Integer replicaEU3 = 7003;
-    public static final Integer replicaAS3 = 7004;
+    public static final Integer leader3 = 7100;
+    public static final Integer FEListener3 = 7101;
+    public static final Integer replicaNA3 = 7102;
+    public static final Integer replicaEU3 = 7103;
+    public static final Integer replicaAS3 = 7104;
 }

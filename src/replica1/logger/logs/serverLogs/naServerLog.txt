@@ -140,3 +140,37 @@ DATE: 2020-08-10 10:50:24 AM Fail to suspend the account: Admin user name is wro
 DATE: 2020-08-10 10:50:55 AM Successfully check players status: NA: 0 online, 2offline, EU: 0 online, 4offline, AS: 1 online, 2offline 
 DATE: 2020-08-10 10:51:33 AM Successfully create an account: pppppp
 DATE: 2020-08-10 10:51:45 AM Successfully login: pppppp
+DATE: 2020-08-10 03:09:17 PM Successfully login: uziuzi
+DATE: 2020-08-10 03:51:28 PM Fail to transfer the account: Unable to add the player to new location, and the reason may be that an account with the same user name already exists in the new server
+DATE: 2020-08-10 03:51:50 PM Successfully login: ming11
+DATE: 2020-08-10 03:51:59 PM Successfully logout: ming11
+DATE: 2020-08-10 03:52:32 PM Successfully check players status: NA: 0 online, 4offline, EU: 0 online, 4offline, AS: 0 online, 4offline 
+DATE: 2020-08-10 03:52:55 PM Successfully check players status: NA: 0 online, 5offline, EU: 0 online, 3offline, AS: 0 online, 4offline 
+DATE: 2020-08-10 05:10:30 PM Successfully create an account: xiaoming
+DATE: 2020-08-10 05:11:40 PM Successfully login: xiaoming
+DATE: 2020-08-10 05:12:48 PM Successfully logout: xiaoming
+DATE: 2020-08-11 09:54:45 AM Successfully login: uziuzi
+DATE: 2020-08-11 09:55:00 AM Successfully logout: uziuzi
+DATE: 2020-08-11 09:56:15 AM Successfully check players status: NA: 0 online, 5offline, EU: 0 online, 4offline, AS: 0 online, 5offline 
+DATE: 2020-08-11 09:56:36 AM Fail to suspend the account: Admin user name is wrong
+DATE: 2020-08-11 09:57:29 AM Successfully check players status: NA: 0 online, 6offline, EU: 0 online, 3offline, AS: 0 online, 4offline 
+DATE: 2020-08-11 09:59:53 AM Successfully suspend the user account: ming11
+DATE: 2020-08-11 09:59:53 AM Fail to suspend the account: User name does not exist
+DATE: 2020-08-11 09:59:53 AM Fail to suspend the account: User name does not exist
+DATE: 2020-08-11 09:59:53 AM Fail to suspend the account: User name does not exist
+DATE: 2020-08-11 09:59:53 AM Fail to suspend the account: User name does not exist
+DATE: 2020-08-11 09:59:53 AM Fail to suspend the account: User name does not exist
+DATE: 2020-08-11 09:59:53 AM Fail to suspend the account: User name does not exist
+DATE: 2020-08-11 09:59:53 AM Fail to suspend the account: User name does not exist
+DATE: 2020-08-11 09:59:54 AM Fail to suspend the account: User name does not exist
+DATE: 2020-08-11 09:59:54 AM Fail to suspend the account: User name does not exist
+DATE: 2020-08-11 09:59:54 AM Fail to suspend the account: User name does not exist
+DATE: 2020-08-11 09:59:54 AM Fail to suspend the account: User name does not exist
+DATE: 2020-08-11 09:59:54 AM Fail to suspend the account: User name does not exist
+DATE: 2020-08-11 09:59:54 AM Fail to suspend the account: User name does not exist
+DATE: 2020-08-11 09:59:54 AM Fail to suspend the account: User name does not exist
+DATE: 2020-08-11 09:59:54 AM Fail to suspend the account: User name does not exist
+DATE: 2020-08-11 09:59:54 AM Fail to suspend the account: User name does not exist
+DATE: 2020-08-11 09:59:54 AM Fail to suspend the account: User name does not exist
+DATE: 2020-08-11 09:59:54 AM Fail to suspend the account: User name does not exist
+DATE: 2020-08-11 09:59:54 AM Fail to suspend the account: User name does not exist

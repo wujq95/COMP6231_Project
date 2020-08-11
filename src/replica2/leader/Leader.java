@@ -158,7 +158,7 @@ public class Leader {
             byte[] sendData = message.getBytes();
             InetAddress host = InetAddress.getByName("localhost");
             DatagramPacket request = new DatagramPacket(sendData, message.length(), host,port);
-            System.out.println("Lead1 broadcast request to other two leaders:"+message.trim());
+            System.out.println("Lead2 broadcast request to other two leaders:"+message.trim());
             aSocket.send(request);
             try {
                 aSocket.setSoTimeout(2000);
