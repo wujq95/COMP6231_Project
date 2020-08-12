@@ -216,3 +216,8 @@ DATE: 2020-08-11 09:59:53 AM Fail to transfer the account: User name does not ex
 DATE: 2020-08-11 09:59:53 AM Fail to transfer the account: User name does not exist
 DATE: 2020-08-11 09:59:53 AM Fail to transfer the account: User name does not exist
 DATE: 2020-08-11 09:59:55 AM Fail to login: User name does not exist
+DATE: 2020-08-12 10:13:28 AM Successfully login: guanyu
+DATE: 2020-08-12 10:15:51 AM Successfully logout: guanyu
+DATE: 2020-08-12 10:18:25 AM successfully transfer the player
+DATE: 2020-08-12 10:21:36 AM Fail to login: User name does not exist
+DATE: 2020-08-12 11:02:00 AM Successfully login: guanyu

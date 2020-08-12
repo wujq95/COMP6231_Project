@@ -142,3 +142,6 @@ DATE: 2020-08-11 09:59:55 AM Fail to transfer the account: User name does not ex
 DATE: 2020-08-11 09:59:55 AM Fail to transfer the account: User name does not exist
 DATE: 2020-08-11 09:59:55 AM Fail to transfer the account: User name does not exist
 DATE: 2020-08-11 09:59:55 AM Successfully login: guanyu
+DATE: 2020-08-12 10:26:18 AM Successfully suspend the user account: ming88
+DATE: 2020-08-12 10:28:24 AM Fail to login: User name does not exist
+DATE: 2020-08-12 10:29:23 AM Fail to transfer the account: User name does not exist

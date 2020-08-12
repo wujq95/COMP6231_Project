@@ -174,3 +174,13 @@ DATE: 2020-08-11 09:59:54 AM Fail to suspend the account: User name does not exi
 DATE: 2020-08-11 09:59:54 AM Fail to suspend the account: User name does not exist
 DATE: 2020-08-11 09:59:54 AM Fail to suspend the account: User name does not exist
 DATE: 2020-08-11 09:59:54 AM Fail to suspend the account: User name does not exist
+DATE: 2020-08-12 10:07:16 AM Successfully create an account: zzzzzz
+DATE: 2020-08-12 10:22:43 AM Successfully check players status: NA: 0 online, 5offline, EU: 0 online, 3offline, AS: 0 online, 3offline 
+DATE: 2020-08-12 11:07:21 AM Successfully check players status: NA: 0 online, 4offline, EU: 0 online, 4offline, AS: 0 online, 3offline 
+DATE: 2020-08-12 11:08:17 AM Successfully check players status: NA: 0 online, 4offline, EU: 0 online, 4offline, AS: 0 online, 3offline 
+DATE: 2020-08-12 11:08:28 AM Successfully check players status: NA: 0 online, 4offline, EU: 0 online, 4offline, AS: 0 online, 3offline 
+DATE: 2020-08-12 11:08:28 AM Successfully check players status: NA: 0 online, 4offline, EU: 0 online, 4offline, AS: 0 online, 3offline 
+DATE: 2020-08-12 11:08:28 AM Successfully check players status: NA: 0 online, 4offline, EU: 0 online, 4offline, AS: 0 online, 3offline 
+DATE: 2020-08-12 11:08:28 AM Successfully check players status: NA: 0 online, 4offline, EU: 0 online, 4offline, AS: 0 online, 3offline 
+DATE: 2020-08-12 11:08:28 AM Successfully check players status: NA: 0 online, 4offline, EU: 0 online, 4offline, AS: 0 online, 3offline 
+DATE: 2020-08-12 11:08:28 AM Successfully check players status: NA: 0 online, 4offline, EU: 0 online, 4offline, AS: 0 online, 3offline 
