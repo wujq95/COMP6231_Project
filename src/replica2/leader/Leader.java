@@ -57,19 +57,19 @@ public class Leader {
                 String result2 = broadCast(requestData,PortConfig.leader1);
                 String result3 = broadCast(requestData,PortConfig.leader3);
                 ArrayList<String> res = new ArrayList<>();
-                if(result1==null||result1.equals("Random incorrect result")){
+                if(result1==null){
                     String Msg = "RM2 failure";
                     notifyRM(Msg,PortConfig.RMPort2);
                 }else{
                     res.add(result1);
                 }
-                if(result2==null||result2.equals("Random incorrect result")){
+                if(result2==null){
                     String Msg = "RM1 failure";
                     notifyRM(Msg,PortConfig.RMPort1);
                 }else{
                     res.add(result2);
                 }
-                if(result3==null||result3.equals("Random incorrect result")){
+                if(result3==null){
                     String Msg = "RM3 failure";
                     notifyRM(Msg,PortConfig.RMPort3);
                 }else{
@@ -256,11 +256,6 @@ public class Leader {
             result = obj.suspendAccount(strs[1],strs[2],strs[3],strs[4]);
         }
 
-        //simulate random failure
-        if(Math.random()<0.1){
-            result = "Random incorrect result";
-            System.out.println("A random incorrect result appears");
-        }
         return result;
     }
 

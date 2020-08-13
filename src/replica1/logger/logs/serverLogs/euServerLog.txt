@@ -224,3 +224,12 @@ DATE: 2020-08-12 10:15:51 AM Successfully logout: guanyu
 DATE: 2020-08-12 10:18:25 AM successfully transfer the player
 DATE: 2020-08-12 10:21:35 AM Fail to login: User name does not exist
 DATE: 2020-08-12 11:02:00 AM Successfully login: guanyu
+DATE: 2020-08-12 07:59:46 PM Successfully login: guanyu
+DATE: 2020-08-12 08:01:47 PM Successfully check players status: NA: 0 online, 4 offline, EU: 0 online, 4 offline, AS: 0 online, 3offline
+DATE: 2020-08-12 08:02:00 PM Successfully login: guanyu
+DATE: 2020-08-12 08:02:10 PM Successfully logout: guanyu
+DATE: 2020-08-12 08:02:24 PM Fail to logout: User is not currently signed-in
+DATE: 2020-08-13 01:36:46 PM Successfully login: guanyu
+DATE: 2020-08-13 01:37:01 PM Successfully logout: guanyu
+DATE: 2020-08-13 04:06:45 PM Successfully login: guanyu
+DATE: 2020-08-13 04:06:53 PM Fail to logout: User name does not exist

@@ -57,20 +57,7 @@ public class Leader {
                 DatagramPacket request = new DatagramPacket(buffer, buffer.length);
                 aSocket.receive(request);
                 String requestData = new String(request.getData());
-                String seNum = requestData.split(":")[0];
                 String result;
-                if(sequencer<Integer.parseInt(seNum)){
-                    System.out.println("Sequencer problem");
-                    System.out.println("Lead sequencer: "+sequencer);
-                    System.out.println("Front end sequencer: "+seNum);
-                    result = "No reply";
-                    byte[] sendData = result.getBytes();
-                    DatagramPacket reply = new DatagramPacket(sendData, result.length(), request.getAddress(),
-                            request.getPort());
-                    aSocket.send(reply);
-                    continue;
-                }
-                requestData  = requestData.split(":")[1];
                 System.out.println("The leader1 receives the message from the front end: "+requestData.trim());
 
                 String result1 = operation(requestData.trim());
@@ -78,19 +65,19 @@ public class Leader {
                 String result3 = broadCast(requestData,PortConfig.leader3);
 
                 ArrayList<String> res = new ArrayList<>();
-                if(result1==null||result1.equals("Random incorrect result")){
+                if(result1==null){
                     String Msg = "RM1 failure";
                     notifyRM(Msg,PortConfig.RMPort1);
                 }else{
                     res.add(result1);
                 }
-                if(result2==null||result2.equals("Random incorrect result")){
+                if(result2==null){
                     String Msg = "RM2 failure";
                     notifyRM(Msg,PortConfig.RMPort2);
                 }else{
                     res.add(result2);
                 }
-                if(result3==null||result3.equals("Random incorrect result")){
+                if(result3==null){
                     String Msg = "RM3 failure";
                     notifyRM(Msg,PortConfig.RMPort3);
                 }else{
@@ -119,7 +106,6 @@ public class Leader {
                 if(result==null){
                     result = "No reply";
                 }
-                sequencer++;
                 byte[] sendData = result.getBytes();
                 DatagramPacket reply = new DatagramPacket(sendData, result.length(), request.getAddress(),
                         request.getPort());
@@ -278,11 +264,6 @@ public class Leader {
             result = obj.suspendAccount(strs[1],strs[2],strs[3],strs[4]);
         }
 
-        //simulate random failure
-        if(Math.random()<0.1){
-            result = "Random incorrect result";
-            System.out.println("A random incorrect result appears");
-        }
         return result;
     }
 
