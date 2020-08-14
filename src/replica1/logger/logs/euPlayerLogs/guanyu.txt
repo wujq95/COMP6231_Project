@@ -53,3 +53,4 @@ DATE: 2020-08-12 08:02:10 PM Logout the game
 DATE: 2020-08-13 01:36:46 PM Login to game
 DATE: 2020-08-13 01:37:01 PM Logout the game
 DATE: 2020-08-13 04:06:45 PM Login to game
+DATE: 2020-08-14 09:09:04 AM successfully transfer the player

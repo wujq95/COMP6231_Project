@@ -183,3 +183,24 @@ DATE: 2020-08-12 07:58:01 PM Successfully check players status: NA: 0 online, 4o
 DATE: 2020-08-12 07:59:17 PM Successfully check players status: NA: 0 online, 4offline, EU: 0 online, 4offline, AS: 0 online, 3offline 
 DATE: 2020-08-12 08:01:23 PM Successfully check players status: NA: 0 online, 4offline, EU: 0 online, 4offline, AS: 0 online, 3offline 
 DATE: 2020-08-13 04:07:10 PM Successfully check players status: NA: 0 online, 4offline, EU: 1 online, 3offline, AS: 0 online, 3offline 
+DATE: 2020-08-14 09:08:17 AM Successfully check players status: NA: 0 online, 5offline, EU: 0 online, 4offline, AS: 0 online, 3offline 
+DATE: 2020-08-14 09:09:05 AM Successfully suspend the user account: ming11
+DATE: 2020-08-14 09:09:05 AM Fail to suspend the account: User name does not exist
+DATE: 2020-08-14 09:09:05 AM Fail to suspend the account: User name does not exist
+DATE: 2020-08-14 09:09:05 AM Fail to suspend the account: User name does not exist
+DATE: 2020-08-14 09:09:05 AM Fail to suspend the account: User name does not exist
+DATE: 2020-08-14 09:09:05 AM Fail to suspend the account: User name does not exist
+DATE: 2020-08-14 09:09:05 AM Fail to suspend the account: User name does not exist
+DATE: 2020-08-14 09:09:05 AM Fail to suspend the account: User name does not exist
+DATE: 2020-08-14 09:09:06 AM Fail to suspend the account: User name does not exist
+DATE: 2020-08-14 09:09:06 AM Fail to suspend the account: User name does not exist
+DATE: 2020-08-14 09:09:06 AM Fail to suspend the account: User name does not exist
+DATE: 2020-08-14 09:09:06 AM Fail to suspend the account: User name does not exist
+DATE: 2020-08-14 09:09:06 AM Fail to suspend the account: User name does not exist
+DATE: 2020-08-14 09:09:06 AM Fail to suspend the account: User name does not exist
+DATE: 2020-08-14 09:09:06 AM Fail to suspend the account: User name does not exist
+DATE: 2020-08-14 09:09:06 AM Fail to suspend the account: User name does not exist
+DATE: 2020-08-14 09:09:06 AM Fail to suspend the account: User name does not exist
+DATE: 2020-08-14 09:09:06 AM Fail to suspend the account: User name does not exist
+DATE: 2020-08-14 09:09:06 AM Fail to suspend the account: User name does not exist
+DATE: 2020-08-14 09:09:06 AM Fail to suspend the account: User name does not exist
