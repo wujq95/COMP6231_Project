@@ -15,7 +15,7 @@ There are two types of users: Players and Administrators. A player or administra
 1. Get player status
 2. Suspend player account
 
-## Architecture and Process
+## System Design and Architecture
 The project contains two clients, a front end and three replicas. Each replica consists of a leader, a replica manager, and three servers. One of the leaders is assigned as the main leader. Players and administrators send a CORBA request to the front end through the client, and then the front end forwards the request to the main leader. The main leader forwards this message to the other two leaders using reliable UDP. The three replicas independently perform operations upon request and return the results to the main leader. The main leader analyzes the three results and sends the single correct result back to the front end. At the same time, for the replica that returns the incorrect result, the main leader will remind its corresponding replica manager. After receiving the response returned by the leaders, the front end returns the result to the client and complete the entire process.
 
 ## Active Replication
