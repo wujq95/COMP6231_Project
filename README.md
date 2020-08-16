@@ -18,7 +18,7 @@ There are two types of users: Players and Administrators. A player or administra
 ## System Design and Architecture
 The project contains two clients, a front end and three replicas. Each replica consists of a leader, a replica manager, and three servers. One of the leaders is assigned as the main leader. Players and administrators send a CORBA request to the front end through the client, and then the front end forwards the request to the main leader. The main leader broadcasts this message to the other two leaders using reliable UDP. The three replicas independently perform operations upon this request and return the results to the main leader. The main leader analyzes the three results and sends the single correct result back to the front end. At the same time, for the replica that returns the incorrect result, the main leader will notify its corresponding replica manager. After receiving the response from the leaders, the front end returns the result to the client and complete the entire process.
 
-## Fault tolerance
+## Fault Tolerance
 The system uses an active replication strategy to guarantee failure tolerance. The main leader can broadcast the message to all replicas, and each replica returns a result. If some failure happens, it can be found by the main replica according to returned results. At this time, the main leader can ignore the incorrect result and notify the specific replica manager. Also, there is a low probability that all replicas have a failure. If this happens, the leader will return the message to the front end and ask for resending the request and notify all three replica managers. 
 
 ## UDP Reliability
