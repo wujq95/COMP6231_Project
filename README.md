@@ -20,7 +20,11 @@ The project contains two clients, a front end and three replicas. Each replica c
 
 ## Active Replication
 ## Reliable UDP
-## CORBA
 ## Concurrency
-## Use the Project
+## Run the Project
+1. Input the command in the terminal: orbd -ORBInitialPort 1050 -ORBInitialHost localhost
+2. Start all replica servers
+3. Start the front end server
+4. Start the clents
+
 
