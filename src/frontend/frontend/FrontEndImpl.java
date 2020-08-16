@@ -14,7 +14,6 @@ public class FrontEndImpl extends FrontEndPOA {
 
     private ORB orb;
 
-
     /**
      * set orb
      * @param orb_val
