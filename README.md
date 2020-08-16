@@ -20,6 +20,8 @@ The project contains two clients, a front end and three replicas. Each replica c
 
 ## Fault tolerance
 ## UDP Reliability
+The system has two mechanisms to ensure UDP reliability: timeout retransmission and fast retransmission. It can set the timeout limitation in advance, and if no response returned within the time, the sender is willing to resend the same message. This mechanism can reduce the risk of information loss. Also, if the returned information does not meet the requirement, it will still send the same information again to the receiver to confirm to get the right result.
+
 ## Run the Project
 1. Input the command in the terminal: orbd -ORBInitialPort 1050 -ORBInitialHost localhost
 2. Start all replica servers
