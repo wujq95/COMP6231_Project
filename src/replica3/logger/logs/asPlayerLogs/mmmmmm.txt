@@ -1,0 +1,4 @@
+DATE: 2020-08-14 09:07:32 AM The account has been created
+DATE: 2020-08-14 09:07:44 AM Login to game
+DATE: 2020-08-14 09:07:51 AM Logout the game
+DATE: 2020-08-14 09:08:05 AM successfully transfer the player
